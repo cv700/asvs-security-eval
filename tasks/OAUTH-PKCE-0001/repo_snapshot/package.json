@@ -1,0 +1,5 @@
+{
+  "name": "oauth-pkce-migration",
+  "private": true,
+  "type": "commonjs"
+}

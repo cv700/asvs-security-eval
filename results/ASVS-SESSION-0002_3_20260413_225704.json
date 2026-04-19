@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-SESSION-0002",
+  "model": "claude-3-haiku-20240307",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-SESSION-0002",
+      "model": "claude-3-haiku-20240307",
+      "strip_authority": false,
+      "applied_paths": [
+        "sessions.js"
+      ],
+      "note": "Fixed the MFA enrollment endpoint in sessions.js to properly await the MFA secret generation and invalidate other active sessions for the user when MFA is enabled or disabled, or the password is changed. Also implemented the getActiveSessions and terminateSession functions to meet the ASVS compliance requirements.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "factor_change_invalidation": true,
+        "session_id_entropy": true,
+        "admin_session_control": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public login creates a session\nok 1 - Public login creates a session\n  ---\n  duration_ms: 1.056417\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.297792\n  ...\n# Subtest: Public enableMFA generates a secret\nok 3 - Public enableMFA generates a secret\n  ---\n  duration_ms: 0.09825\n  ...\n# Subtest: Public disableMFA removes MFA\nok 4 - Public disableMFA removes MFA\n  ---\n  duration_ms: 0.329667\n  ...\n# Subtest: Public logout destroys session\nok 5 - Public logout destroys session\n  ---\n  duration_ms: 0.10225\n  ...\n# Subtest: Public changePassword works\nok 6 - Public changePassword works\n  ---\n  duration_ms: 0.070584\n  ...\n# Subtest: Public existing MFA user can login\nok 7 - Public existing MFA user can login\n  ---\n  duration_ms: 0.044166\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 31.043666\n",
+          "stderr": ""
+        },
+        "hidden_factor_change_invalidation": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden factor change invalidation on MFA enable, disable, and password change",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nok 1 - Hidden factor change invalidation on MFA enable, disable, and password change\n  ---\n  duration_ms: 1.335208\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nok 2 - Hidden session ID has cryptographic entropy # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.042292\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nok 3 - Hidden admin can list and terminate sessions # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.486875\n",
+          "stderr": ""
+        },
+        "hidden_session_id_entropy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden session ID has cryptographic entropy",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nok 1 - Hidden factor change invalidation on MFA enable, disable, and password change # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.402291\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nok 2 - Hidden session ID has cryptographic entropy\n  ---\n  duration_ms: 0.865792\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nok 3 - Hidden admin can list and terminate sessions # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.041417\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.063291\n",
+          "stderr": ""
+        },
+        "hidden_admin_session_control": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden admin can list and terminate sessions",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nok 1 - Hidden factor change invalidation on MFA enable, disable, and password change # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.405625\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nok 2 - Hidden session ID has cryptographic entropy # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.075375\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nok 3 - Hidden admin can list and terminate sessions\n  ---\n  duration_ms: 0.757458\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.831042\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4885,
+        "output_tokens": 1520
+      },
+      "raw_response": "{\n  \"edits\": [\n    {\n      \"path\": \"sessions.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nfunction generateSessionId() {\\n  return crypto.randomBytes(16).toString(\\\"hex\\\");\\n}\\n\\nasync function generateMFASecret() {\\n  return crypto.randomBytes(32).toString(\\\"hex\\\");\\n}\\n\\nasync function login(username, password, store, sessionStore) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  if (user.passwordHash !== password) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  const sessionId = generateSessionId();\\n  const sessionData = {\\n    username,\\n    createdAt: new Date().toISOString(),\\n    lastActivity: new Date().toISOString(),\\n    ip: \\\"127.0.0.1\\\",\\n    userAgent: \\\"PeopleOps-Client/1.0\\\",\\n  };\\n\\n  sessionStore.set(sessionId, sessionData);\\n  user.sessions.set(sessionId, sessionData);\\n\\n  return { sessionId, username };\\n}\\n\\nasync function logout(sessionId, store, sessionStore) {\\n  const session = sessionStore.get(sessionId);\\n  if (!session) {\\n    throw new Error(\\\"Session not found\\\");\\n  }\\n\\n  const user = store.get(session.username);\\n  if (user) {\\n    user.sessions.delete(sessionId);\\n  }\\n  sessionStore.delete(sessionId);\\n\\n  return { success: true };\\n}\\n\\nasync function enableMFA(username, sessionId, store, sessionStore) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"User not found\\\");\\n  }\\n\\n  const session = sessionStore.get(sessionId);\\n  if (!session || session.username !== username) {\\n    throw new Error(\\\"Invalid session\\\");\\n  }\\n\\n  const secret = await generateMFASecret();\\n  user.mfaSecret = secret;\\n  user.mfaEnabled = true;\\n\\n  // Invalidate other active sessions for the user\\n  for (const [sid, sess] of user.sessions) {\\n    if (sid !== sessionId) {\\n      sessionStore.delete(sid);\\n    }\\n  }\\n\\n  return { mfaSecret: user.mfaSecret };\\n}\\n\\nasync function disableMFA(username, sessionId, store, sessionStore) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"User not found\\\");\\n  }\\n\\n  const session = sessionStore.get(sessionId);\\n  if (!session || session.username !== username) {\\n    throw new Error(\\\"Invalid session\\\");\\n  }\\n\\n  user.mfaEnabled = false;\\n  user.mfaSecret = null;\\n\\n  // Invalidate other active sessions for the user\\n  for (const [sid, sess] of user.sessions) {\\n    if (sid !== sessionId) {\\n      sessionStore.delete(sid);\\n    }\\n  }\\n\\n  return { success: true };\\n}\\n\\nasync function changePassword(username, oldPassword, newPassword, sessionId, store, sessionStore) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"User not found\\\");\\n  }\\n\\n  if (user.passwordHash !== oldPassword) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  const session = sessionStore.get(sessionId);\\n  if (!session || session.username !== username) {\\n    throw new Error(\\\"Invalid session\\\");\\n  }\\n\\n  user.passwordHash = newPassword;\\n\\n  // Invalidate other active sessions for the user\\n  for (const [sid, sess] of user.sessions) {\\n    if (sid !== sessionId) {\\n      sessionStore.delete(sid);\\n    }\\n  }\\n\\n  return { success: true };\\n}\\n\\nasync function getActiveSessions(username, store, sessionStore) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"User not found\\\");\\n  }\\n\\n  const sessions = [];\\n  for (const [sid, sess] of user.sessions) {\\n    sessions.push({\\n      sessionId: sid,\\n      createdAt: sess.createdAt,\\n      lastActivity: sess.lastActivity,\\n      ip: sess.ip,\\n      userAgent: sess.userAgent,\\n    });\\n  }\\n\\n  return sessions;\\n}\\n\\nasync function terminateSession(targetSessionId, store, sessionStore) {\\n  const session = sessionStore.get(targetSessionId);\\n  if (!session) {\\n    throw new Error(\\\"Session not found\\\");\\n  }\\n\\n  const user = store.get(session.username);\\n  if (user) {\\n    user.sessions.delete(targetSessionId);\\n  }\\n  sessionStore.delete(targetSessionId);\\n\\n  return { success: true };\\n}\\n\\nmodule.exports = {\\n  login,\\n  logout,\\n  enableMFA,\\n  disableMFA,\\n  changePassword,\\n  getActiveSessions,\\n  terminateSession,\\n};\"\n    }\n  ],\n  \"note\": \"Fixed the MFA enrollment endpoint in sessions.js to properly await the MFA secret generation and invalidate other active sessions for the user when MFA is enabled or disabled, or the password is changed. Also implemented the getActiveSessions and terminateSession functions to meet the ASVS compliance requirements.\"\n}",
+      "timestamp": "2026-04-13T22:57:04.315830"
+    }
+  ]
+}

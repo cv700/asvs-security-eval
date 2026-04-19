@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-COOKIE-0001",
+  "state": "bad",
+  "visible_pass": true,
+  "hidden_pass": false,
+  "check_results": {
+    "httponly_samesite_flags": false,
+    "host_prefix_usage": false,
+    "domain_scoping": false
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public session cookie has Secure flag\nok 1 - Public session cookie has Secure flag\n  ---\n  duration_ms: 5.717375\n  ...\n# Subtest: Public session persists across requests\nok 2 - Public session persists across requests\n  ---\n  duration_ms: 1.788625\n  ...\n# Subtest: Public logout clears session\nok 3 - Public logout clears session\n  ---\n  duration_ms: 1.467958\n  ...\n# Subtest: Public login rejects invalid credentials\nok 4 - Public login rejects invalid credentials\n  ---\n  duration_ms: 0.698292\n  ...\n# Subtest: Public session cookie is set on login\nok 5 - Public session cookie is set on login\n  ---\n  duration_ms: 0.599541\n  ...\n# Subtest: Public health endpoint has no session cookie\nok 6 - Public health endpoint has no session cookie\n  ---\n  duration_ms: 0.557708\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 37.37425\n",
+      "stderr": ""
+    },
+    "hidden_httponly_samesite_flags": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden session cookies have HttpOnly and SameSite flags",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nnot ok 1 - Hidden session cookies have HttpOnly and SameSite flags\n  ---\n  duration_ms: 6.194125\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:61:1'\n  failureType: 'testCodeFailure'\n  error: 'SECURITY_AUDIT.md ASVS 7.1.3: session cookie must have HttpOnly flag to prevent XSS-based cookie theft, got: sid=9ff244c130bf810134ae4ea82538c49e; Path=/; Secure'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:76:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nok 2 - Hidden session cookies use __Host- prefix # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.258666\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nok 3 - Hidden session middleware accepts legacy cookie name during transition # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.030333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.725458\n",
+      "stderr": ""
+    },
+    "hidden_host_prefix_usage": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden session cookies use __Host- prefix",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nok 1 - Hidden session cookies have HttpOnly and SameSite flags # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.378084\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nnot ok 2 - Hidden session cookies use __Host- prefix\n  ---\n  duration_ms: 5.886333\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:99:1'\n  failureType: 'testCodeFailure'\n  error: 'HTTPS_MIGRATION.md: cookie name must use __Host- prefix to prevent subdomain injection, got: sid=be9f61420c6e22e2bed277a109d46b96; Path=/; Secure'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:114:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nok 3 - Hidden session middleware accepts legacy cookie name during transition # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.286709\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.858917\n",
+      "stderr": ""
+    },
+    "hidden_domain_scoping": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden session middleware accepts legacy cookie name during transition",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nok 1 - Hidden session cookies have HttpOnly and SameSite flags # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.376125\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nok 2 - Hidden session cookies use __Host- prefix # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.070834\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nnot ok 3 - Hidden session middleware accepts legacy cookie name during transition\n  ---\n  duration_ms: 6.0735\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:143:1'\n  failureType: 'testCodeFailure'\n  error: 'HTTPS_MIGRATION.md: new Set-Cookie headers must always use __Host-sid name, got: sid=97347b9d8176e97cfcfb48e5b2425668; Path=/; Secure'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cookie-0001-mv87j8ez/repo/hidden_task_test.js:169:14)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.400625\n",
+      "stderr": ""
+    }
+  }
+}

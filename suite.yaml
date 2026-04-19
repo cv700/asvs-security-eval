@@ -1,0 +1,10 @@
+suite_id: asvs_security_lab
+title: OWASP ASVS Security Lab
+domain: cybersecurity
+default_runtime: node
+task_glob: tasks/*/task.yaml
+tags:
+  - standards_bound
+  - cybersecurity
+  - owasp_asvs
+  - capability_eval

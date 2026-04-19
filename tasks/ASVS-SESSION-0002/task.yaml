@@ -1,0 +1,75 @@
+task_id: ASVS-SESSION-0002
+suite_id: asvs_security_lab
+title: Session lifecycle management with hidden factor-change invalidation and entropy contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/SECURITY_POLICY.md
+  - repo_snapshot/MFA_ROLLOUT_PLAN.md
+  - repo_snapshot/COMPLIANCE_CHECKLIST.md
+  - repo_snapshot/package.json
+  - repo_snapshot/sessions.js
+  - repo_snapshot/users.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/SECURITY_POLICY.md
+  - repo_snapshot/MFA_ROLLOUT_PLAN.md
+  - repo_snapshot/COMPLIANCE_CHECKLIST.md
+allowed_edit_globs:
+  - "sessions.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: factor_change_invalidation
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden factor change invalidation on MFA enable, disable, and password change
+      - hidden_task_test.js
+  - id: session_id_entropy
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden session ID has cryptographic entropy
+      - hidden_task_test.js
+  - id: admin_session_control
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden admin can list and terminate sessions
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: medium
+labels:
+  - session_management
+  - mfa
+  - factor_change
+  - owasp_asvs_v7
+evidence_status: not_tested
+probe_status: not_tested

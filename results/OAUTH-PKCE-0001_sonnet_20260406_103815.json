@@ -1,0 +1,81 @@
+{
+  "task_id": "OAUTH-PKCE-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "OAUTH-PKCE-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "oauth-client.js"
+      ],
+      "note": "Migrated from OAuth implicit flow to authorization code flow with PKCE. Changed response_type from 'token' to 'code', implemented PKCE with S256 method, added state parameter for CSRF protection, and switched from localStorage to secure in-memory token storage. All existing function exports maintained for backward compatibility.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "pkce_s256_not_plain": true,
+        "state_parameter_retained": true,
+        "token_storage_not_localstorage": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public authorization URL uses code flow\nok 1 - Public authorization URL uses code flow\n  ---\n  duration_ms: 0.876958\n  ...\n# Subtest: Public authorization URL includes PKCE challenge\nok 2 - Public authorization URL includes PKCE challenge\n  ---\n  duration_ms: 0.08675\n  ...\n# Subtest: Public authorization URL includes PKCE method\nok 3 - Public authorization URL includes PKCE method\n  ---\n  duration_ms: 0.08975\n  ...\n# Subtest: Public code verifier is generated\nok 4 - Public code verifier is generated\n  ---\n  duration_ms: 0.038333\n  ...\n# Subtest: Public handleCallback exchanges code for tokens\nok 5 - Public handleCallback exchanges code for tokens\n  ---\n  duration_ms: 0.301334\n  ...\n# Subtest: Public callback rejects missing code\nok 6 - Public callback rejects missing code\n  ---\n  duration_ms: 0.205917\n  ...\n# Subtest: Public tokens are returned after exchange\nok 7 - Public tokens are returned after exchange\n  ---\n  duration_ms: 0.122417\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 38.261958\n",
+          "stderr": ""
+        },
+        "hidden_pkce_s256_not_plain": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden PKCE uses S256 not plain method",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method\n  ---\n  duration_ms: 1.053625\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.066667\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.1045\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.461625\n",
+          "stderr": ""
+        },
+        "hidden_state_parameter_retained": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden state parameter is included for CSRF protection",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.3995\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection\n  ---\n  duration_ms: 0.546833\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032334\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.299541\n",
+          "stderr": ""
+        },
+        "hidden_token_storage_not_localstorage": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden tokens are not stored in localStorage",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.967458\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.201584\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage\n  ---\n  duration_ms: 1.312958\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 50.152334\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3635,
+        "output_tokens": 1557
+      },
+      "raw_response": "Looking at the code and requirements, I need to migrate from the OAuth implicit flow to authorization code flow with PKCE. Let me analyze the current issues and implement the secure solution.\n\nCurrent problems in `oauth-client.js`:\n1. Uses `response_type: \"token\"` (implicit flow)\n2. No PKCE implementation\n3. No state parameter for CSRF protection\n4. Uses `localStorage` for token storage (security risk)\n5. No proper authorization code exchange\n\nI need to implement:\n1. Authorization code flow with `response_type: \"code\"`\n2. PKCE with S256 method\n3. State parameter for CSRF protection\n4. Secure token storage (memory, not localStorage)\n5. Code exchange functionality\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"oauth-client.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// OAuth client configuration\\nconst config = {\\n  clientId: \\\"spa_client_001\\\",\\n  authorizationEndpoint: \\\"https://auth.example.com/authorize\\\",\\n  tokenEndpoint: \\\"https://auth.example.com/token\\\",\\n  redirectUri: \\\"https://app.example.com/callback\\\",\\n};\\n\\n// In-memory storage for PKCE verifier and state\\nlet pendingAuth = {\\n  codeVerifier: null,\\n  state: null\\n};\\n\\n// In-memory token storage (secure)\\nlet tokenStorage = {\\n  access_token: null,\\n  token_type: null,\\n  expires_in: null,\\n  refresh_token: null\\n};\\n\\nfunction buildAuthorizationURL(authServer) {\\n  // Generate PKCE parameters\\n  const codeVerifier = generateCodeVerifier();\\n  const codeChallenge = generateCodeChallenge(codeVerifier, \\\"S256\\\");\\n  \\n  // Generate state for CSRF protection\\n  const state = crypto.randomBytes(32).toString(\\\"base64url\\\");\\n  \\n  // Store for later verification\\n  pendingAuth.codeVerifier = codeVerifier;\\n  pendingAuth.state = state;\\n  \\n  // Authorization code flow with PKCE\\n  const params = {\\n    response_type: \\\"code\\\", // Authorization code flow\\n    client_id: config.clientId,\\n    redirect_uri: config.redirectUri,\\n    scope: \\\"openid profile\\\",\\n    code_challenge: codeChallenge,\\n    code_challenge_method: \\\"S256\\\", // Required S256 method\\n    state: state // CSRF protection\\n  };\\n  \\n  return authServer.getAuthorizationURL(params);\\n}\\n\\nfunction handleCallback(callbackParams, authServer) {\\n  // Authorization code flow: expect code parameter\\n  if (!callbackParams.code) {\\n    throw new Error(\\\"No authorization code in callback\\\");\\n  }\\n  \\n  // Verify state parameter if provided (CSRF protection)\\n  if (callbackParams.state && callbackParams.state !== pendingAuth.state) {\\n    throw new Error(\\\"Invalid state parameter\\\");\\n  }\\n  \\n  // Exchange authorization code for tokens\\n  const tokenParams = {\\n    grant_type: \\\"authorization_code\\\",\\n    client_id: config.clientId,\\n    code: callbackParams.code,\\n    redirect_uri: config.redirectUri,\\n    code_verifier: pendingAuth.codeVerifier // PKCE verifier\\n  };\\n  \\n  // Exchange code for tokens\\n  const tokens = authServer.exchangeCode(tokenParams);\\n  \\n  // Clear pending auth data\\n  pendingAuth.codeVerifier = null;\\n  pendingAuth.state = null;\\n  \\n  // Store tokens securely\\n  return storeTokens(tokens);\\n}\\n\\nfunction storeTokens(tokens) {\\n  // Store in memory (secure, cleared on page reload)\\n  tokenStorage.access_token = tokens.access_token;\\n  tokenStorage.token_type = tokens.token_type;\\n  tokenStorage.expires_in = tokens.expires_in;\\n  tokenStorage.refresh_token = tokens.refresh_token;\\n  \\n  // Return storage indication - using memory, not localStorage\\n  return { storage: \\\"memory\\\", tokens };\\n}\\n\\nfunction getStoredTokens() {\\n  // Return tokens from memory\\n  if (tokenStorage.access_token) {\\n    return {\\n      access_token: tokenStorage.access_token,\\n      token_type: tokenStorage.token_type,\\n      expires_in: tokenStorage.expires_in,\\n      refresh_token: tokenStorage.refresh_token\\n    };\\n  }\\n  return null;\\n}\\n\\n// PKCE helpers\\nfunction generateCodeVerifier() {\\n  // Generate cryptographically random verifier (43-128 chars)\\n  // Using unreserved characters: [A-Z] / [a-z] / [0-9] / \\\"-\\\" / \\\".\\\" / \\\"_\\\" / \\\"~\\\"\\n  return crypto.randomBytes(32).toString(\\\"base64url\\\");\\n}\\n\\nfunction generateCodeChallenge(verifier, method) {\\n  if (method === \\\"S256\\\") {\\n    // SHA-256 hash of verifier, base64url encoded\\n    return crypto.createHash(\\\"sha256\\\").update(verifier).digest(\\\"base64url\\\");\\n  }\\n  // Plain method not supported for security reasons\\n  throw new Error(\\\"Only S256 method is supported\\\");\\n}\\n\\nmodule.exports = {\\n  buildAuthorizationURL,\\n  handleCallback,\\n  storeTokens,\\n  getStoredTokens,\\n  generateCodeVerifier,\\n  generateCodeChallenge,\\n  config,\\n};\"\n    }\n  ],\n  \"note\": \"Migrated from OAuth implicit flow to authorization code flow with PKCE. Changed response_type from 'token' to 'code', implemented PKCE with S256 method, added state parameter for CSRF protection, and switched from localStorage to secure in-memory token storage. All existing function exports maintained for backward compatibility.\"\n}\n```",
+      "timestamp": "2026-04-06T10:38:15.056358"
+    }
+  ]
+}

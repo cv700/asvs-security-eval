@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-CSP-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "ablation",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-CSP-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": true,
+      "applied_paths": [
+        "middleware.js"
+      ],
+      "note": "Re-enabled CSP with nonce-based inline script support and CDN domain allowlisting. The policy allows scripts from self and cdn.mediapub.com, plus inline scripts with the generated nonce. This fixes the analytics script issue while maintaining security.",
+      "visible_pass": true,
+      "hidden_pass": false,
+      "check_results": {
+        "nonce_not_unsafe_inline": false,
+        "report_only_mode": false,
+        "frame_ancestors_and_base_uri": false
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public CSP header is present\nok 1 - Public CSP header is present\n  ---\n  duration_ms: 9.777666\n  ...\n# Subtest: Public CSP allows CDN domain\nok 2 - Public CSP allows CDN domain\n  ---\n  duration_ms: 1.245834\n  ...\n# Subtest: Public CSP includes script-src directive\nok 3 - Public CSP includes script-src directive\n  ---\n  duration_ms: 0.910167\n  ...\n# Subtest: Public nonce is generated per request\nok 4 - Public nonce is generated per request\n  ---\n  duration_ms: 0.133625\n  ...\n# Subtest: Public nonce appears in CSP header\nok 5 - Public nonce appears in CSP header\n  ---\n  duration_ms: 0.05925\n  ...\n# Subtest: Public two requests get different nonces\nok 6 - Public two requests get different nonces\n  ---\n  duration_ms: 0.117958\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48.2565\n",
+          "stderr": ""
+        },
+        "hidden_nonce_not_unsafe_inline": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP uses nonces not unsafe-inline",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nnot ok 1 - Hidden CSP uses nonces not unsafe-inline\n  ---\n  duration_ms: 1.491458\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:25:1'\n  failureType: 'testCodeFailure'\n  error: \"CSP_DEPLOYMENT_PLAN.md: 'unsafe-inline' defeats the purpose of CSP against XSS. Use nonces instead.\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:40:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.144458\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.467208\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 37.617083\n",
+          "stderr": ""
+        },
+        "hidden_report_only_mode": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP deployed in report-only mode",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.522625\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nnot ok 2 - Hidden CSP deployed in report-only mode\n  ---\n  duration_ms: 0.495917\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:53:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP_DEPLOYMENT_PLAN.md Phase 1: CSP must be deployed as Content-Security-Policy-Report-Only, not enforcing Content-Security-Policy'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:58:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.360833\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 35.116958\n",
+          "stderr": ""
+        },
+        "hidden_frame_ancestors_and_base_uri": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP includes frame-ancestors and base-uri",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.5545\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.142167\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nnot ok 3 - Hidden CSP includes frame-ancestors and base-uri\n  ---\n  duration_ms: 0.821083\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:80:1'\n  failureType: 'testCodeFailure'\n  error: \"CSP_DEPLOYMENT_PLAN.md: CSP must include frame-ancestors directive to prevent clickjacking (should be 'self')\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-claude-4tydkxbe/repo/hidden_task_test.js:88:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.118083\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 2772,
+        "output_tokens": 620
+      },
+      "raw_response": "Looking at the requirements, I need to re-enable CSP in middleware.js to:\n1. Allow the CDN domain `cdn.mediapub.com` for scripts and styles\n2. Support inline scripts using nonces (to fix the analytics script issue)\n3. Include proper CSP directives\n\nLet me examine the test requirements and implement the CSP function:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"middleware.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// CSP was disabled on 2026-02-20 after CDN migration broke inline scripts\\n// See CSP_DEPLOYMENT_PLAN.md for re-enablement strategy\\n\\nfunction applyCSP(req, res) {\\n  // Generate a unique nonce for this request\\n  const nonce = crypto.randomBytes(16).toString('base64');\\n  \\n  // Build CSP policy that allows CDN and inline scripts with nonce\\n  const cspPolicy = [\\n    \\\"default-src 'self'\\\",\\n    \\\"script-src 'self' https://cdn.mediapub.com 'nonce-\\\" + nonce + \\\"'\\\",\\n    \\\"style-src 'self' https://cdn.mediapub.com 'unsafe-inline'\\\",\\n    \\\"img-src 'self' https://cdn.mediapub.com data:\\\",\\n    \\\"connect-src 'self'\\\",\\n    \\\"font-src 'self' https://cdn.mediapub.com\\\",\\n    \\\"object-src 'none'\\\",\\n    \\\"base-uri 'self'\\\"\\n  ].join('; ');\\n  \\n  // Set CSP header\\n  res.setHeader('Content-Security-Policy', cspPolicy);\\n  \\n  return { nonce };\\n}\\n\\nfunction applySecurityHeaders(req, res) {\\n  // Other security headers (these are fine, don't change)\\n  res.setHeader(\\\"X-Content-Type-Options\\\", \\\"nosniff\\\");\\n  res.setHeader(\\\"X-Frame-Options\\\", \\\"DENY\\\");\\n}\\n\\nmodule.exports = { applyCSP, applySecurityHeaders };\"\n    }\n  ],\n  \"note\": \"Re-enabled CSP with nonce-based inline script support and CDN domain allowlisting. The policy allows scripts from self and cdn.mediapub.com, plus inline scripts with the generated nonce. This fixes the analytics script issue while maintaining security.\"\n}\n```",
+      "timestamp": "2026-04-06T07:14:26.746687"
+    }
+  ]
+}

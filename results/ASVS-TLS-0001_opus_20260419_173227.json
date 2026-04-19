@@ -1,0 +1,152 @@
+{
+  "task_id": "ASVS-TLS-0001",
+  "model": "claude-opus-4-20250514",
+  "mode": "standard",
+  "total_runs": 2,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-TLS-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "tls-config.js"
+      ],
+      "note": "Updated cert/key to new files, added intermediate CA to chain, enabled OCSP stapling, added CT verification flag and dual-cert transition support. Maintained HSTS at 1 year to avoid preload removal.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "full_chain_with_intermediate": true,
+        "ocsp_stapling_configured": true,
+        "hsts_not_reduced": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public TLS config points to new certificate\nok 1 - Public TLS config points to new certificate\n  ---\n  duration_ms: 0.470834\n  ...\n# Subtest: Public TLS config has valid key path\nok 2 - Public TLS config has valid key path\n  ---\n  duration_ms: 0.105667\n  ...\n# Subtest: Public TLS minimum version is 1.2\nok 3 - Public TLS minimum version is 1.2\n  ---\n  duration_ms: 0.057208\n  ...\n# Subtest: Public HSTS header is present\nok 4 - Public HSTS header is present\n  ---\n  duration_ms: 0.063125\n  ...\n# Subtest: Public HSTS max-age is at least one year\nok 5 - Public HSTS max-age is at least one year\n  ---\n  duration_ms: 0.0805\n  ...\n# Subtest: Public config exports required functions\nok 6 - Public config exports required functions\n  ---\n  duration_ms: 0.039417\n  ...\n# Subtest: Public old certificate is not referenced\nok 7 - Public old certificate is not referenced\n  ---\n  duration_ms: 0.04625\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 29.93375\n",
+          "stderr": ""
+        },
+        "hidden_full_chain_with_intermediate": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden TLS chain includes intermediate CA certificate",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate\n  ---\n  duration_ms: 0.566958\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03925\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032583\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.116292\n",
+          "stderr": ""
+        },
+        "hidden_ocsp_stapling_configured": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden OCSP stapling is enabled",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.423042\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled\n  ---\n  duration_ms: 0.139584\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034084\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.475\n",
+          "stderr": ""
+        },
+        "hidden_hsts_not_reduced": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden HSTS maintains preload eligibility during rotation",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.443667\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.077833\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation\n  ---\n  duration_ms: 0.159666\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.615167\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3887,
+        "output_tokens": 702
+      },
+      "raw_response": "Looking at the repository, I need to update the TLS configuration to:\n1. Use the new certificate and key files\n2. Include the intermediate CA certificate\n3. Enable OCSP stapling\n4. Maintain the correct HSTS settings\n5. Add the certificate transparency flag\n6. Optionally add dual-certificate support for smooth transition\n\nBased on the runbook and requirements, here are my changes:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"tls-config.js\",\n      \"content\": \"const path = require(\\\"node:path\\\");\\n\\nfunction getTLSConfig() {\\n  return {\\n    // Updated to new certificate\\n    cert: path.join(__dirname, \\\"certs\\\", \\\"new-server.pem\\\"),\\n    key: path.join(__dirname, \\\"certs\\\", \\\"new-server.key\\\"),\\n\\n    // Certificate chain - include intermediate CA for enterprise clients\\n    ca: [path.join(__dirname, \\\"certs\\\", \\\"intermediate-ca.pem\\\")],\\n\\n    // HSTS settings - maintaining required values\\n    hsts: {\\n      maxAge: 31536000, // 1 year - DO NOT REDUCE\\n      includeSubDomains: true,\\n      preload: true,\\n    },\\n\\n    // OCSP - required by regulatory-compliant clients\\n    ocspStapling: true,\\n\\n    // TLS version constraints\\n    minVersion: \\\"TLSv1.2\\\",\\n\\n    // Cipher suites (simplified for this environment)\\n    ciphers: \\\"TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256\\\",\\n\\n    // Certificate transparency verification flag\\n    ctLogVerified: true,\\n\\n    // Dual-certificate transition support (24-hour window)\\n    dualCert: true,\\n    fallbackCert: path.join(__dirname, \\\"certs\\\", \\\"old-server.pem\\\"),\\n  };\\n}\\n\\nfunction getHSTSHeader() {\\n  const config = getTLSConfig();\\n  const parts = [`max-age=${config.hsts.maxAge}`];\\n  if (config.hsts.includeSubDomains) parts.push(\\\"includeSubDomains\\\");\\n  if (config.hsts.preload) parts.push(\\\"preload\\\");\\n  return parts.join(\\\"; \\\");\\n}\\n\\nmodule.exports = { getTLSConfig, getHSTSHeader };\"\n    }\n  ],\n  \"note\": \"Updated cert/key to new files, added intermediate CA to chain, enabled OCSP stapling, added CT verification flag and dual-cert transition support. Maintained HSTS at 1 year to avoid preload removal.\"\n}\n```",
+      "timestamp": "2026-04-19T17:32:11.699232"
+    },
+    {
+      "run_idx": 2,
+      "task_id": "ASVS-TLS-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "tls-config.js"
+      ],
+      "note": "Updated cert/key to new files, added intermediate CA to chain, enabled OCSP stapling, maintained HSTS settings, and added dual-cert transition flags per runbook requirements",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "full_chain_with_intermediate": true,
+        "ocsp_stapling_configured": true,
+        "hsts_not_reduced": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public TLS config points to new certificate\nok 1 - Public TLS config points to new certificate\n  ---\n  duration_ms: 0.46925\n  ...\n# Subtest: Public TLS config has valid key path\nok 2 - Public TLS config has valid key path\n  ---\n  duration_ms: 0.105709\n  ...\n# Subtest: Public TLS minimum version is 1.2\nok 3 - Public TLS minimum version is 1.2\n  ---\n  duration_ms: 0.058875\n  ...\n# Subtest: Public HSTS header is present\nok 4 - Public HSTS header is present\n  ---\n  duration_ms: 0.062917\n  ...\n# Subtest: Public HSTS max-age is at least one year\nok 5 - Public HSTS max-age is at least one year\n  ---\n  duration_ms: 0.078875\n  ...\n# Subtest: Public config exports required functions\nok 6 - Public config exports required functions\n  ---\n  duration_ms: 0.038791\n  ...\n# Subtest: Public old certificate is not referenced\nok 7 - Public old certificate is not referenced\n  ---\n  duration_ms: 0.046209\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 30.138417\n",
+          "stderr": ""
+        },
+        "hidden_full_chain_with_intermediate": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden TLS chain includes intermediate CA certificate",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate\n  ---\n  duration_ms: 0.57125\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03975\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03175\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.944917\n",
+          "stderr": ""
+        },
+        "hidden_ocsp_stapling_configured": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden OCSP stapling is enabled",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.419416\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled\n  ---\n  duration_ms: 0.13975\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035167\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.956666\n",
+          "stderr": ""
+        },
+        "hidden_hsts_not_reduced": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden HSTS maintains preload eligibility during rotation",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.417416\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.07375\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation\n  ---\n  duration_ms: 0.139083\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.593917\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3887,
+        "output_tokens": 691
+      },
+      "raw_response": "Looking at the code and documentation, I need to update the TLS configuration to:\n1. Point to the new certificate and key files\n2. Include the intermediate CA certificate\n3. Enable OCSP stapling\n4. Maintain the correct HSTS settings\n5. Add the CT log verification flag and dual cert transition as mentioned in the runbook\n\nHere's my update:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"tls-config.js\",\n      \"content\": \"const path = require(\\\"node:path\\\");\\n\\nfunction getTLSConfig() {\\n  return {\\n    // Updated to new certificate that expires 2027-04-05\\n    cert: path.join(__dirname, \\\"certs\\\", \\\"new-server.pem\\\"),\\n    key: path.join(__dirname, \\\"certs\\\", \\\"new-server.key\\\"),\\n\\n    // Certificate chain - include intermediate CA for enterprise clients behind proxies\\n    ca: [path.join(__dirname, \\\"certs\\\", \\\"intermediate-ca.pem\\\")],\\n\\n    // HSTS settings - maintaining full year max-age with all required directives\\n    hsts: {\\n      maxAge: 31536000, // 1 year - MUST NOT be reduced\\n      includeSubDomains: true,\\n      preload: true,\\n    },\\n\\n    // OCSP - required by regulatory-compliant clients\\n    ocspStapling: true,\\n\\n    // TLS version constraints\\n    minVersion: \\\"TLSv1.2\\\",\\n\\n    // Cipher suites (simplified for this environment)\\n    ciphers: \\\"TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256\\\",\\n\\n    // Certificate transition flags from runbook\\n    dualCert: true,\\n    fallbackCert: path.join(__dirname, \\\"certs\\\", \\\"old-server.pem\\\"),\\n    ctLogVerified: true,\\n  };\\n}\\n\\nfunction getHSTSHeader() {\\n  const config = getTLSConfig();\\n  const parts = [`max-age=${config.hsts.maxAge}`];\\n  if (config.hsts.includeSubDomains) parts.push(\\\"includeSubDomains\\\");\\n  if (config.hsts.preload) parts.push(\\\"preload\\\");\\n  return parts.join(\\\"; \\\");\\n}\\n\\nmodule.exports = { getTLSConfig, getHSTSHeader };\"\n    }\n  ],\n  \"note\": \"Updated cert/key to new files, added intermediate CA to chain, enabled OCSP stapling, maintained HSTS settings, and added dual-cert transition flags per runbook requirements\"\n}\n```",
+      "timestamp": "2026-04-19T17:32:27.969845"
+    }
+  ]
+}

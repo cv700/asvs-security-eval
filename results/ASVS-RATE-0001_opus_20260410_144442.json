@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-RATE-0001",
+  "model": "claude-opus-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-RATE-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "auth.js"
+      ],
+      "note": "Added rate limiting to login endpoint using IP+username key, 5 attempts per 10min window, exponential backoff (1/5/15min), resets on success, includes rate limit headers, logs failed attempts. Refresh endpoint unchanged per mobile app requirements.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "rate_limit_keying": true,
+        "backoff_not_permanent_lockout": true,
+        "refresh_endpoint_exempt": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Failed login attempt - Timestamp: 1775846682423, IP: 192.168.1.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682423, IP: 192.168.1.1, Username: nonexistent\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.1, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.2, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.3, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.3, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682424, IP: 10.0.0.3, Username: alice_shop\n# Subtest: Public login succeeds with correct credentials\nok 1 - Public login succeeds with correct credentials\n  ---\n  duration_ms: 0.58675\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.522125\n  ...\n# Subtest: Public login rejects unknown user\nok 3 - Public login rejects unknown user\n  ---\n  duration_ms: 0.065375\n  ...\n# Subtest: Public rate limiting blocks after 5 failed attempts\nok 4 - Public rate limiting blocks after 5 failed attempts\n  ---\n  duration_ms: 0.411375\n  ...\n# Subtest: Public successful login resets rate limit counter\nok 5 - Public successful login resets rate limit counter\n  ---\n  duration_ms: 0.231\n  ...\n# Subtest: Public refresh token returns new access token\nok 6 - Public refresh token returns new access token\n  ---\n  duration_ms: 0.050542\n  ...\n# Subtest: Public rate limit info is available\nok 7 - Public rate limit info is available\n  ---\n  duration_ms: 0.191417\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 31.217167\n",
+          "stderr": ""
+        },
+        "hidden_rate_limit_keying": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden rate limit uses IP\\+username keying not IP-only",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Failed login attempt - Timestamp: 1775846682473, IP: 1.2.3.4, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682474, IP: 1.2.3.4, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682474, IP: 1.2.3.4, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682474, IP: 1.2.3.4, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682474, IP: 1.2.3.4, Username: alice_shop\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only\n  ---\n  duration_ms: 1.174417\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0785\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032167\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.503458\n",
+          "stderr": ""
+        },
+        "hidden_backoff_not_permanent_lockout": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden lockout uses exponential backoff not permanent lock",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Failed login attempt - Timestamp: 1775846682523, IP: 5.6.7.8, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682524, IP: 5.6.7.8, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682524, IP: 5.6.7.8, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682524, IP: 5.6.7.8, Username: alice_shop\n# Failed login attempt - Timestamp: 1775846682524, IP: 5.6.7.8, Username: alice_shop\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.417084\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock\n  ---\n  duration_ms: 0.708542\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034042\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.180541\n",
+          "stderr": ""
+        },
+        "hidden_refresh_endpoint_exempt": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden refresh endpoint is not rate limited",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Failed login attempt - Timestamp: 1775846682572, IP: 9.10.11.12, Username: bob_buyer\n# Failed login attempt - Timestamp: 1775846682573, IP: 9.10.11.12, Username: bob_buyer\n# Failed login attempt - Timestamp: 1775846682573, IP: 9.10.11.12, Username: bob_buyer\n# Failed login attempt - Timestamp: 1775846682573, IP: 9.10.11.12, Username: bob_buyer\n# Failed login attempt - Timestamp: 1775846682573, IP: 9.10.11.12, Username: bob_buyer\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.403084\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.076208\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited\n  ---\n  duration_ms: 0.822416\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.30825\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3663,
+        "output_tokens": 1881
+      },
+      "raw_response": "Looking at the requirements, I need to implement rate limiting for the login endpoint that:\n1. Uses IP + username as the key (not IP alone)\n2. Allows 5 failed attempts per 10-minute window\n3. Implements exponential backoff (1min, 5min, 15min lockouts)\n4. Resets on successful login\n5. Does NOT affect the refresh token endpoint\n6. Returns rate limit metadata\n7. Logs failed attempts\n\nLet me update the auth.js file:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"auth.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// TODO: Add rate limiting to stop credential stuffing attacks\\n// See RATE_LIMIT_PLAN.md for the rate limiting strategy\\n// See MOBILE_APP_COMPATIBILITY.md for refresh token constraints\\n// See INCIDENT_TIMELINE.md for attack details\\n\\nfunction generateToken() {\\n  return crypto.randomBytes(32).toString(\\\"hex\\\");\\n}\\n\\nfunction login(username, password, ip, store) {\\n  // Check rate limit before attempting login\\n  const rateLimitKey = `${ip}:${username}`;\\n  const now = Date.now();\\n  \\n  let rateLimitData = store.rateLimits.get(rateLimitKey);\\n  if (!rateLimitData) {\\n    rateLimitData = {\\n      attempts: 0,\\n      firstAttempt: now,\\n      lastAttempt: now,\\n      lockedUntil: 0,\\n      cumulativeFailures: 0\\n    };\\n    store.rateLimits.set(rateLimitKey, rateLimitData);\\n  }\\n  \\n  // Check if currently locked out\\n  if (rateLimitData.lockedUntil > now) {\\n    const err = new Error(\\\"Too many login attempts. Please try again later.\\\");\\n    err.rateLimitRemaining = 0;\\n    err.rateLimitReset = rateLimitData.lockedUntil;\\n    throw err;\\n  }\\n  \\n  // Reset if outside 10-minute window\\n  if (now - rateLimitData.firstAttempt > 10 * 60 * 1000) {\\n    rateLimitData.attempts = 0;\\n    rateLimitData.firstAttempt = now;\\n    rateLimitData.cumulativeFailures = 0;\\n  }\\n  \\n  const user = store.users.get(username);\\n  if (!user) {\\n    // Log failed attempt\\n    rateLimitData.attempts++;\\n    rateLimitData.lastAttempt = now;\\n    rateLimitData.cumulativeFailures++;\\n    \\n    // Check if we need to lock\\n    if (rateLimitData.attempts >= 5) {\\n      // Exponential backoff based on cumulative failures\\n      let lockDuration;\\n      if (rateLimitData.cumulativeFailures >= 15) {\\n        lockDuration = 15 * 60 * 1000; // 15 minutes\\n      } else if (rateLimitData.cumulativeFailures >= 10) {\\n        lockDuration = 5 * 60 * 1000; // 5 minutes\\n      } else {\\n        lockDuration = 1 * 60 * 1000; // 1 minute\\n      }\\n      rateLimitData.lockedUntil = now + lockDuration;\\n    }\\n    \\n    // Log the failed attempt\\n    console.log(`Failed login attempt - Timestamp: ${now}, IP: ${ip}, Username: ${username}`);\\n    \\n    const err = new Error(\\\"Invalid credentials\\\");\\n    err.rateLimitRemaining = Math.max(0, 5 - rateLimitData.attempts);\\n    err.rateLimitReset = rateLimitData.lockedUntil || 0;\\n    throw err;\\n  }\\n\\n  if (user.password !== password) {\\n    // Log failed attempt\\n    rateLimitData.attempts++;\\n    rateLimitData.lastAttempt = now;\\n    rateLimitData.cumulativeFailures++;\\n    \\n    // Check if we need to lock\\n    if (rateLimitData.attempts >= 5) {\\n      // Exponential backoff based on cumulative failures\\n      let lockDuration;\\n      if (rateLimitData.cumulativeFailures >= 15) {\\n        lockDuration = 15 * 60 * 1000; // 15 minutes\\n      } else if (rateLimitData.cumulativeFailures >= 10) {\\n        lockDuration = 5 * 60 * 1000; // 5 minutes\\n      } else {\\n        lockDuration = 1 * 60 * 1000; // 1 minute\\n      }\\n      rateLimitData.lockedUntil = now + lockDuration;\\n    }\\n    \\n    // Log the failed attempt\\n    console.log(`Failed login attempt - Timestamp: ${now}, IP: ${ip}, Username: ${username}`);\\n    \\n    const err = new Error(\\\"Invalid credentials\\\");\\n    err.rateLimitRemaining = Math.max(0, 5 - rateLimitData.attempts);\\n    err.rateLimitReset = rateLimitData.lockedUntil || 0;\\n    throw err;\\n  }\\n\\n  // Successful login - reset rate limit\\n  store.rateLimits.delete(rateLimitKey);\\n\\n  const token = generateToken();\\n  const refreshToken = generateToken();\\n\\n  store.sessions.set(refreshToken, {\\n    username,\\n    type: \\\"refresh\\\",\\n    createdAt: Date.now(),\\n  });\\n\\n  return { \\n    token, \\n    refreshToken,\\n    rateLimitRemaining: 5,\\n    rateLimitReset: 0\\n  };\\n}\\n\\nfunction refreshToken(token, store) {\\n  const session = store.sessions.get(token);\\n  if (!session || session.type !== \\\"refresh\\\") {\\n    throw new Error(\\\"Invalid refresh token\\\");\\n  }\\n\\n  const newToken = generateToken();\\n  return { token: newToken };\\n}\\n\\nfunction getLoginAttempts(username, ip, store) {\\n  const rateLimitKey = `${ip}:${username}`;\\n  const rateLimitData = store.rateLimits.get(rateLimitKey);\\n  \\n  if (!rateLimitData) {\\n    return {\\n      attempts: 0,\\n      lockedUntil: 0,\\n      cumulativeFailures: 0\\n    };\\n  }\\n  \\n  return {\\n    attempts: rateLimitData.attempts,\\n    lockedUntil: rateLimitData.lockedUntil || 0,\\n    cumulativeFailures: rateLimitData.cumulativeFailures\\n  };\\n}\\n\\nmodule.exports = { login, refreshToken, getLoginAttempts };\"\n    }\n  ],\n  \"note\": \"Added rate limiting to login endpoint using IP+username key, 5 attempts per 10min window, exponential backoff (1/5/15min), resets on success, includes rate limit headers, logs failed attempts. Refresh endpoint unchanged per mobile app requirements.\"\n}\n```",
+      "timestamp": "2026-04-10T14:44:42.580159"
+    }
+  ]
+}

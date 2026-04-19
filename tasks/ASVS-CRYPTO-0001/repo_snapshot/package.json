@@ -1,0 +1,5 @@
+{
+  "name": "api-key-encryption",
+  "version": "1.0.0",
+  "description": "Secure API key encryption and key rotation for partner integrations"
+}

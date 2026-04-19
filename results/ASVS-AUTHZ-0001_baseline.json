@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-AUTHZ-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "resource_level_tenant_check": false,
+    "field_level_authorization": false,
+    "error_response_opacity": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public search returns only same-tenant results\nnot ok 1 - Public search returns only same-tenant results\n  ---\n  duration_ms: 0.673417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:13:1'\n  failureType: 'testCodeFailure'\n  error: 'Should NOT include Globex project proj_3'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:19:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Public search returns matching projects\nok 2 - Public search returns matching projects\n  ---\n  duration_ms: 0.073458\n  ...\n# Subtest: Public list returns only same-tenant projects\nnot ok 3 - Public list returns only same-tenant projects\n  ---\n  duration_ms: 0.302375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:30:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    4 !== 2\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 2\n  actual: 4\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:33:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public get project works for own tenant\nok 4 - Public get project works for own tenant\n  ---\n  duration_ms: 0.054083\n  ...\n# Subtest: Public get project rejects cross-tenant access\nnot ok 5 - Public get project rejects cross-tenant access\n  ---\n  duration_ms: 0.119625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:46:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception: Cross-tenant access should throw an error'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/public.test.js:48:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public update project works for authorized field\nok 6 - Public update project works for authorized field\n  ---\n  duration_ms: 0.058041\n  ...\n# Subtest: Public delete project works for project manager\nok 7 - Public delete project works for project manager\n  ---\n  duration_ms: 0.041625\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 4\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.285333\n",
+      "stderr": ""
+    },
+    "hidden_resource_level_tenant_check": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden resource-level tenant check on direct access",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nnot ok 1 - Hidden resource-level tenant check on direct access\n  ---\n  duration_ms: 0.709167\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:11:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:15:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden field-level authorization on project update\nok 2 - Hidden field-level authorization on project update # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0585\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nok 3 - Hidden error response opacity for cross-tenant access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.492667\n",
+      "stderr": ""
+    },
+    "hidden_field_level_authorization": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden field-level authorization on project update",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nok 1 - Hidden resource-level tenant check on direct access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.420083\n  ...\n# Subtest: Hidden field-level authorization on project update\nnot ok 2 - Hidden field-level authorization on project update\n  ---\n  duration_ms: 0.349375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:54:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:58:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nok 3 - Hidden error response opacity for cross-tenant access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.013208\n",
+      "stderr": ""
+    },
+    "hidden_error_response_opacity": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden error response opacity for cross-tenant access",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nok 1 - Hidden resource-level tenant check on direct access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.421083\n  ...\n# Subtest: Hidden field-level authorization on project update\nok 2 - Hidden field-level authorization on project update # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.077416\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nnot ok 3 - Hidden error response opacity for cross-tenant access\n  ---\n  duration_ms: 0.388958\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:144:1'\n  failureType: 'testCodeFailure'\n  error: 'AUTHORIZATION_DESIGN.md Principle 4: cross-tenant update error must say \"Not found\", got: \"Cross-tenant update should have thrown\"'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-46zk2gmt/repo/hidden_task_test.js:152:12)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.841417\n",
+      "stderr": ""
+    }
+  }
+}

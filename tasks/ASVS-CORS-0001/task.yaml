@@ -1,0 +1,75 @@
+task_id: ASVS-CORS-0001
+suite_id: asvs_security_lab
+title: CORS configuration with hidden credential-mode and cache-poisoning contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/CORS_POLICY.md
+  - repo_snapshot/API_GATEWAY_SPEC.md
+  - repo_snapshot/FRONTEND_MIGRATION.md
+  - repo_snapshot/package.json
+  - repo_snapshot/server.js
+  - repo_snapshot/routes.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/CORS_POLICY.md
+  - repo_snapshot/API_GATEWAY_SPEC.md
+  - repo_snapshot/FRONTEND_MIGRATION.md
+allowed_edit_globs:
+  - "server.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: vary_origin_cache_poisoning
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden CORS responses include Vary Origin to prevent cache poisoning
+      - hidden_task_test.js
+  - id: health_endpoint_excluded
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden health endpoint excluded from CORS
+      - hidden_task_test.js
+  - id: preflight_max_age_policy
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden preflight max-age respects policy limit
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - cors
+  - web_security
+  - cache_poisoning
+  - owasp_asvs_v3
+evidence_status: not_tested
+probe_status: not_tested

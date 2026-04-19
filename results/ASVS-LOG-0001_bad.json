@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-LOG-0001",
+  "state": "bad",
+  "visible_pass": true,
+  "hidden_pass": false,
+  "check_results": {
+    "no_sensitive_data_in_logs": false,
+    "pii_masking": false,
+    "structured_json_format": false
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public logAuthEvent records a login event\nok 1 - Public logAuthEvent records a login event\n  ---\n  duration_ms: 0.423958\n  ...\n# Subtest: Public logAuthEvent records failure events\nok 2 - Public logAuthEvent records failure events\n  ---\n  duration_ms: 0.046625\n  ...\n# Subtest: Public logPermissionChange records role change\nok 3 - Public logPermissionChange records role change\n  ---\n  duration_ms: 0.047708\n  ...\n# Subtest: Public logDataExport records export event\nok 4 - Public logDataExport records export event\n  ---\n  duration_ms: 0.040625\n  ...\n# Subtest: Public log entries contain event type\nok 5 - Public log entries contain event type\n  ---\n  duration_ms: 0.083292\n  ...\n# Subtest: Public log entries contain timestamp\nok 6 - Public log entries contain timestamp\n  ---\n  duration_ms: 0.031458\n  ...\n# Subtest: Public getLogEntries returns all entries\nok 7 - Public getLogEntries returns all entries\n  ---\n  duration_ms: 0.036042\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 28.064417\n",
+      "stderr": ""
+    },
+    "hidden_no_sensitive_data_in_logs": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden no sensitive data appears in log entries",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nnot ok 1 - Hidden no sensitive data appears in log entries\n  ---\n  duration_ms: 0.621292\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:6:1'\n  failureType: 'testCodeFailure'\n  error: 'LOGGING_POLICY.md: passwords must NEVER appear in log entries'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:38:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.05\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031125\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.016208\n",
+      "stderr": ""
+    },
+    "hidden_pii_masking": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden PII is masked in log entries",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.393625\n  ...\n# Subtest: Hidden PII is masked in log entries\nnot ok 2 - Hidden PII is masked in log entries\n  ---\n  duration_ms: 0.273459\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:71:1'\n  failureType: 'testCodeFailure'\n  error: \"LOGGING_POLICY.md: email addresses must be masked \u2014 'alice@hospital.com' should not appear\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:100:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 26.94875\n",
+      "stderr": ""
+    },
+    "hidden_structured_json_format": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden log entries are structured JSON objects",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.392417\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.069375\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nnot ok 3 - Hidden log entries are structured JSON objects\n  ---\n  duration_ms: 0.298375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:124:1'\n  failureType: 'testCodeFailure'\n  error: `SIEM_INTEGRATION.md: each entry must have a 'severity' field \u2014 one of \"info\", \"warning\", \"critical\" \u2014 got: undefined`\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-84cy1gwu/repo/hidden_task_test.js:186:12)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 26.975625\n",
+      "stderr": ""
+    }
+  }
+}

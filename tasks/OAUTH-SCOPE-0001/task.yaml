@@ -1,0 +1,75 @@
+task_id: OAUTH-SCOPE-0001
+suite_id: asvs_security_lab
+title: OAuth scope migration with hidden token-format, scope-downgrade, and refresh-migration contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/SCOPE_MIGRATION.md
+  - repo_snapshot/API_DEPRECATION_POLICY.md
+  - repo_snapshot/THIRD_PARTY_REGISTRY.md
+  - repo_snapshot/package.json
+  - repo_snapshot/scope-service.js
+  - repo_snapshot/store.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/SCOPE_MIGRATION.md
+  - repo_snapshot/API_DEPRECATION_POLICY.md
+  - repo_snapshot/THIRD_PARTY_REGISTRY.md
+allowed_edit_globs:
+  - "scope-service.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: new_strings_in_tokens
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden tokens contain only new scope strings
+      - hidden_task_test.js
+  - id: scope_downgrade
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden scope downgrade limits to approved scopes
+      - hidden_task_test.js
+  - id: refresh_token_scope_migration
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden refresh tokens with old scopes are migrated
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - oauth
+  - scope_migration
+  - backward_compatibility
+  - owasp_asvs_v10
+evidence_status: not_tested
+probe_status: not_tested

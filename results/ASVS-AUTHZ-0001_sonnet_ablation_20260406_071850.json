@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-AUTHZ-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "ablation",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-AUTHZ-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": true,
+      "applied_paths": [
+        "projects.js"
+      ],
+      "note": "Fixed tenant isolation by adding tenant checks to all functions, preventing cross-tenant data access. Added role-based authorization for sensitive operations like deleting projects and updating billing codes. All functions now properly enforce multi-tenant security boundaries.",
+      "visible_pass": true,
+      "hidden_pass": false,
+      "check_results": {
+        "resource_level_tenant_check": false,
+        "field_level_authorization": false,
+        "error_response_opacity": false
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public search returns only same-tenant results\nok 1 - Public search returns only same-tenant results\n  ---\n  duration_ms: 0.461834\n  ...\n# Subtest: Public search returns matching projects\nok 2 - Public search returns matching projects\n  ---\n  duration_ms: 0.054625\n  ...\n# Subtest: Public list returns only same-tenant projects\nok 3 - Public list returns only same-tenant projects\n  ---\n  duration_ms: 0.053416\n  ...\n# Subtest: Public get project works for own tenant\nok 4 - Public get project works for own tenant\n  ---\n  duration_ms: 0.051292\n  ...\n# Subtest: Public get project rejects cross-tenant access\nok 5 - Public get project rejects cross-tenant access\n  ---\n  duration_ms: 0.160334\n  ...\n# Subtest: Public update project works for authorized field\nok 6 - Public update project works for authorized field\n  ---\n  duration_ms: 0.065541\n  ...\n# Subtest: Public delete project works for project manager\nok 7 - Public delete project works for project manager\n  ---\n  duration_ms: 0.046458\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 36.420958\n",
+          "stderr": ""
+        },
+        "hidden_resource_level_tenant_check": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden resource-level tenant check on direct access",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nnot ok 1 - Hidden resource-level tenant check on direct access\n  ---\n  duration_ms: 0.755125\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:11:1'\n  failureType: 'testCodeFailure'\n  error: `AUTHORIZATION_DESIGN.md Principle 4: cross-tenant access to proj_3 must throw 'Not found', got: \"Access denied\"`\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    Object.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:18:14)\n    expectedException (node:assert:733:17)\n    expectsError (node:assert:856:3)\n    Function.throws (node:assert:911:3)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:15:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n  ...\n# Subtest: Hidden field-level authorization on project update\nok 2 - Hidden field-level authorization on project update # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.050917\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nok 3 - Hidden error response opacity for cross-tenant access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.030333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.012709\n",
+          "stderr": ""
+        },
+        "hidden_field_level_authorization": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden field-level authorization on project update",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nok 1 - Hidden resource-level tenant check on direct access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.443334\n  ...\n# Subtest: Hidden field-level authorization on project update\nnot ok 2 - Hidden field-level authorization on project update\n  ---\n  duration_ms: 0.521\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:54:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:80:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nok 3 - Hidden error response opacity for cross-tenant access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.042833\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.879\n",
+          "stderr": ""
+        },
+        "hidden_error_response_opacity": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden error response opacity for cross-tenant access",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden resource-level tenant check on direct access\nok 1 - Hidden resource-level tenant check on direct access # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.380458\n  ...\n# Subtest: Hidden field-level authorization on project update\nok 2 - Hidden field-level authorization on project update # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.071042\n  ...\n# Subtest: Hidden error response opacity for cross-tenant access\nnot ok 3 - Hidden error response opacity for cross-tenant access\n  ---\n  duration_ms: 0.320291\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:144:1'\n  failureType: 'testCodeFailure'\n  error: 'AUTHORIZATION_DESIGN.md Principle 4: cross-tenant update error must say \"Not found\", got: \"Access denied\"'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-authz-0001-claude-uye_c0iq/repo/hidden_task_test.js:152:12)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.375958\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 2880,
+        "output_tokens": 1490
+      },
+      "raw_response": "Looking at the code, I can see several security vulnerabilities where tenant isolation is broken. The main issues are:\n\n1. `searchProjects` iterates over ALL projects across all tenants\n2. `getProject` doesn't check if the project belongs to the user's tenant\n3. `updateProject` allows cross-tenant updates and lacks role-based authorization\n4. `listProjects` returns ALL projects across all tenants\n5. `deleteProject` allows cross-tenant deletes and lacks role-based authorization\n\nI need to add tenant isolation checks and implement proper authorization based on the user's role and tenant. From the test file, I can see that:\n- Users should only access projects from their own tenant\n- Cross-tenant access should throw errors\n- Role-based permissions should be enforced (e.g., only project managers can delete)\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"projects.js\",\n      \"content\": \"/**\\n * Project CRUD and search module for ProjectVault.\\n *\\n * TODO: Fix the tenant isolation issue reported in INCIDENT_REPORT.md.\\n * See AUTHORIZATION_DESIGN.md for the authorization requirements.\\n */\\n\\nfunction getUser(userId, store) {\\n  const user = store.users.get(userId);\\n  if (!user) {\\n    throw new Error(\\\"User not found\\\");\\n  }\\n  return user;\\n}\\n\\nfunction checkTenantAccess(user, project) {\\n  if (project.tenantId !== user.tenantId) {\\n    throw new Error(\\\"Access denied\\\");\\n  }\\n}\\n\\nfunction checkProjectManagerRole(user) {\\n  if (user.role !== \\\"project_manager\\\" && user.role !== \\\"admin\\\") {\\n    throw new Error(\\\"Insufficient permissions\\\");\\n  }\\n}\\n\\nfunction searchProjects(query, requestingUserId, store) {\\n  const user = getUser(requestingUserId, store);\\n  const lowerQuery = query.toLowerCase();\\n\\n  // Only search projects within the user's tenant\\n  const results = [];\\n  for (const project of store.projects.values()) {\\n    if (project.tenantId === user.tenantId && project.name.toLowerCase().includes(lowerQuery)) {\\n      results.push({ projectId: project.projectId, name: project.name });\\n    }\\n  }\\n  return results;\\n}\\n\\nfunction getProject(projectId, requestingUserId, store) {\\n  const user = getUser(requestingUserId, store);\\n  const project = store.projects.get(projectId);\\n  if (!project) {\\n    throw new Error(\\\"Not found\\\");\\n  }\\n\\n  // Check tenant access\\n  checkTenantAccess(user, project);\\n\\n  return {\\n    projectId: project.projectId,\\n    name: project.name,\\n    description: project.description,\\n    billingCode: project.billingCode,\\n    status: project.status,\\n    createdBy: project.createdBy,\\n  };\\n}\\n\\nfunction updateProject(projectId, updates, requestingUserId, store) {\\n  const user = getUser(requestingUserId, store);\\n  const project = store.projects.get(projectId);\\n  if (!project) {\\n    throw new Error(\\\"Not found\\\");\\n  }\\n\\n  // Check tenant access\\n  checkTenantAccess(user, project);\\n\\n  // Check role-based authorization for sensitive fields\\n  const sensitiveFields = [\\\"billingCode\\\"];\\n  const hasSensitiveUpdates = Object.keys(updates).some(key => sensitiveFields.includes(key));\\n  if (hasSensitiveUpdates) {\\n    checkProjectManagerRole(user);\\n  }\\n\\n  const allowedFields = [\\\"name\\\", \\\"description\\\", \\\"status\\\", \\\"billingCode\\\"];\\n  for (const [key, value] of Object.entries(updates)) {\\n    if (allowedFields.includes(key)) {\\n      project[key] = value;\\n    }\\n  }\\n\\n  return {\\n    projectId: project.projectId,\\n    name: project.name,\\n    description: project.description,\\n    billingCode: project.billingCode,\\n    status: project.status,\\n    createdBy: project.createdBy,\\n  };\\n}\\n\\nfunction listProjects(requestingUserId, store) {\\n  const user = getUser(requestingUserId, store);\\n\\n  // Only return projects within the user's tenant\\n  const results = [];\\n  for (const project of store.projects.values()) {\\n    if (project.tenantId === user.tenantId) {\\n      results.push({ projectId: project.projectId, name: project.name });\\n    }\\n  }\\n  return results;\\n}\\n\\nfunction deleteProject(projectId, requestingUserId, store) {\\n  const user = getUser(requestingUserId, store);\\n  const project = store.projects.get(projectId);\\n  if (!project) {\\n    throw new Error(\\\"Not found\\\");\\n  }\\n\\n  // Check tenant access\\n  checkTenantAccess(user, project);\\n\\n  // Check role-based authorization - only project managers and admins can delete\\n  checkProjectManagerRole(user);\\n\\n  store.projects.delete(projectId);\\n  return { deleted: true, projectId };\\n}\\n\\nmodule.exports = {\\n  searchProjects,\\n  getProject,\\n  updateProject,\\n  listProjects,\\n  deleteProject,\\n};\"\n    }\n  ],\n  \"note\": \"Fixed tenant isolation by adding tenant checks to all functions, preventing cross-tenant data access. Added role-based authorization for sensitive operations like deleting projects and updating billing codes. All functions now properly enforce multi-tenant security boundaries.\"\n}\n```",
+      "timestamp": "2026-04-06T07:18:50.744286"
+    }
+  ]
+}

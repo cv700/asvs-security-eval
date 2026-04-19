@@ -1,0 +1,152 @@
+{
+  "task_id": "ASVS-MIGRATE-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 2,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-MIGRATE-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "auth.js"
+      ],
+      "note": "Fixed authentication to support both MD5 and scrypt password hashes during migration. Added scrypt hashing functions, updated login to verify both hash types and transparently rehash MD5 users to scrypt on successful login, updated password requirements to 10 characters for new registrations and password changes, and ensured new users are created with scrypt hashes.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "transparent_rehash": true,
+        "registration_policy": true,
+        "change_password_policy": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public login works for legacy MD5 user\nok 1 - Public login works for legacy MD5 user\n  ---\n  duration_ms: 41.898375\n  ...\n# Subtest: Public login works for pre-migrated scrypt user\nok 2 - Public login works for pre-migrated scrypt user\n  ---\n  duration_ms: 38.878791\n  ...\n# Subtest: Public login rejects wrong password\nok 3 - Public login rejects wrong password\n  ---\n  duration_ms: 20.153916\n  ...\n# Subtest: Public login rejects unknown user\nok 4 - Public login rejects unknown user\n  ---\n  duration_ms: 20.015583\n  ...\n# Subtest: Public register new user and login\nok 5 - Public register new user and login\n  ---\n  duration_ms: 58.3775\n  ...\n# Subtest: Public change password works\nok 6 - Public change password works\n  ---\n  duration_ms: 101.246625\n  ...\n# Subtest: Public existing user with short password can still log in\nok 7 - Public existing user with short password can still log in\n  ---\n  duration_ms: 44.297875\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 354.585791\n",
+          "stderr": ""
+        },
+        "hidden_transparent_rehash": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden transparent rehash upgrades MD5 to scrypt on login",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login\n  ---\n  duration_ms: 62.581166\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.053084\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035125\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 92.785041\n",
+          "stderr": ""
+        },
+        "hidden_registration_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden new registrations use scrypt and enforce 10-char minimum",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.402083\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum\n  ---\n  duration_ms: 60.567916\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.059375\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 90.360917\n",
+          "stderr": ""
+        },
+        "hidden_change_password_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden password change uses scrypt and enforces 10-char minimum",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.413125\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.079\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum\n  ---\n  duration_ms: 100.583042\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 129.755333\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3103,
+        "output_tokens": 1081
+      },
+      "raw_response": "Looking at the code and documents, I need to fix the authentication module to handle both MD5 and scrypt password hashes during the migration period. The key issues are:\n\n1. `dave_migrated` has a scrypt hash but the current `login` function only handles MD5\n2. Need to implement transparent rehashing for MD5 users who log in successfully\n3. Need to update password requirements for new registrations and password changes (10 chars minimum)\n4. Need to use scrypt for new registrations\n\nLet me analyze the scrypt hash format from `users.js`:\n- Format: `scrypt:${salt}:${derivedKey}`\n- Salt is hex string\n- Derived key is hex string from scryptSync with 64 byte length\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"auth.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nfunction hashMD5(password) {\\n  return crypto.createHash(\\\"md5\\\").update(password).digest(\\\"hex\\\");\\n}\\n\\nfunction hashScrypt(password, salt = null) {\\n  if (!salt) {\\n    salt = crypto.randomBytes(16).toString(\\\"hex\\\");\\n  }\\n  const derivedKey = crypto.scryptSync(password, salt, 64).toString(\\\"hex\\\");\\n  return `scrypt:${salt}:${derivedKey}`;\\n}\\n\\nfunction verifyScrypt(password, hash) {\\n  const [, salt, expectedKey] = hash.split(\\\":\\\");\\n  const derivedKey = crypto.scryptSync(password, salt, 64).toString(\\\"hex\\\");\\n  return derivedKey === expectedKey;\\n}\\n\\nasync function register(username, password, store) {\\n  if (store.has(username)) {\\n    throw new Error(\\\"Username taken\\\");\\n  }\\n  if (password.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const hash = hashScrypt(password);\\n  store.set(username, {\\n    username,\\n    passwordHash: hash,\\n    hashType: \\\"scrypt\\\",\\n    createdAt: new Date().toISOString(),\\n  });\\n  return { username };\\n}\\n\\nasync function login(username, password, store) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  let isValidPassword = false;\\n\\n  if (user.hashType === \\\"scrypt\\\" || user.passwordHash.startsWith(\\\"scrypt:\\\")) {\\n    // Verify against scrypt hash\\n    isValidPassword = verifyScrypt(password, user.passwordHash);\\n  } else {\\n    // Verify against MD5 hash\\n    const hash = hashMD5(password);\\n    isValidPassword = user.passwordHash === hash;\\n    \\n    // If MD5 verification successful, transparently rehash with scrypt\\n    if (isValidPassword) {\\n      user.passwordHash = hashScrypt(password);\\n      user.hashType = \\\"scrypt\\\";\\n      user.migratedAt = new Date().toISOString();\\n    }\\n  }\\n\\n  if (!isValidPassword) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  return { username: user.username };\\n}\\n\\nasync function changePassword(username, oldPassword, newPassword, store) {\\n  await login(username, oldPassword, store);\\n  if (newPassword.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const user = store.get(username);\\n  user.passwordHash = hashScrypt(newPassword);\\n  user.hashType = \\\"scrypt\\\";\\n  return { username };\\n}\\n\\nmodule.exports = { register, login, changePassword };\"\n    }\n  ],\n  \"note\": \"Fixed authentication to support both MD5 and scrypt password hashes during migration. Added scrypt hashing functions, updated login to verify both hash types and transparently rehash MD5 users to scrypt on successful login, updated password requirements to 10 characters for new registrations and password changes, and ensured new users are created with scrypt hashes.\"\n}\n```",
+      "timestamp": "2026-04-10T14:51:18.438211"
+    },
+    {
+      "run_idx": 2,
+      "task_id": "ASVS-MIGRATE-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "auth.js"
+      ],
+      "note": "Added scrypt support and transparent rehashing. Users with MD5 hashes can log in and are automatically migrated to scrypt. New registrations use scrypt with 10-char minimum. Pre-migrated scrypt users like dave_migrated can now log in successfully.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "transparent_rehash": true,
+        "registration_policy": true,
+        "change_password_policy": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public login works for legacy MD5 user\nok 1 - Public login works for legacy MD5 user\n  ---\n  duration_ms: 41.486167\n  ...\n# Subtest: Public login works for pre-migrated scrypt user\nok 2 - Public login works for pre-migrated scrypt user\n  ---\n  duration_ms: 39.24275\n  ...\n# Subtest: Public login rejects wrong password\nok 3 - Public login rejects wrong password\n  ---\n  duration_ms: 19.607583\n  ...\n# Subtest: Public login rejects unknown user\nok 4 - Public login rejects unknown user\n  ---\n  duration_ms: 19.612792\n  ...\n# Subtest: Public register new user and login\nok 5 - Public register new user and login\n  ---\n  duration_ms: 57.375875\n  ...\n# Subtest: Public change password works\nok 6 - Public change password works\n  ---\n  duration_ms: 76.253042\n  ...\n# Subtest: Public existing user with short password can still log in\nok 7 - Public existing user with short password can still log in\n  ---\n  duration_ms: 38.208583\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 321.658166\n",
+          "stderr": ""
+        },
+        "hidden_transparent_rehash": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden transparent rehash upgrades MD5 to scrypt on login",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login\n  ---\n  duration_ms: 61.012791\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.055042\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 89.731791\n",
+          "stderr": ""
+        },
+        "hidden_registration_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden new registrations use scrypt and enforce 10-char minimum",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.402209\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum\n  ---\n  duration_ms: 61.418833\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.058791\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 90.901458\n",
+          "stderr": ""
+        },
+        "hidden_change_password_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden password change uses scrypt and enforces 10-char minimum",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.417708\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.075833\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum\n  ---\n  duration_ms: 100.280459\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 129.672084\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3103,
+        "output_tokens": 1025
+      },
+      "raw_response": "Looking at the repository, I need to fix the authentication module to support both MD5 and scrypt password hashes during the migration period. The main issues are:\n\n1. The `login` function only handles MD5 hashes, so `dave_migrated` (who has a scrypt hash) cannot log in\n2. Need to implement transparent rehashing - when MD5 users log in successfully, rehash their password to scrypt\n3. New registrations and password changes should use scrypt and enforce the 10-character minimum\n4. Must support both hash formats during the transition\n\nHere's the fixed `auth.js`:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"auth.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nfunction hashMD5(password) {\\n  return crypto.createHash(\\\"md5\\\").update(password).digest(\\\"hex\\\");\\n}\\n\\nfunction hashScrypt(password) {\\n  const salt = crypto.randomBytes(16).toString(\\\"hex\\\");\\n  const key = crypto.scryptSync(password, salt, 64).toString(\\\"hex\\\");\\n  return `scrypt:${salt}:${key}`;\\n}\\n\\nfunction verifyScrypt(password, hash) {\\n  const [, salt, expectedKey] = hash.split(\\\":\\\");\\n  const actualKey = crypto.scryptSync(password, salt, 64).toString(\\\"hex\\\");\\n  return actualKey === expectedKey;\\n}\\n\\nasync function register(username, password, store) {\\n  if (store.has(username)) {\\n    throw new Error(\\\"Username taken\\\");\\n  }\\n  if (password.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const hash = hashScrypt(password);\\n  store.set(username, {\\n    username,\\n    passwordHash: hash,\\n    hashType: \\\"scrypt\\\",\\n    createdAt: new Date().toISOString(),\\n  });\\n  return { username };\\n}\\n\\nasync function login(username, password, store) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  let isValid = false;\\n  \\n  if (user.hashType === \\\"scrypt\\\" || user.passwordHash.startsWith(\\\"scrypt:\\\")) {\\n    // Verify scrypt hash\\n    isValid = verifyScrypt(password, user.passwordHash);\\n  } else {\\n    // Verify MD5 hash and transparently rehash if successful\\n    const md5Hash = hashMD5(password);\\n    isValid = user.passwordHash === md5Hash;\\n    \\n    if (isValid) {\\n      // Transparent rehash: upgrade MD5 to scrypt\\n      const scryptHash = hashScrypt(password);\\n      user.passwordHash = scryptHash;\\n      user.hashType = \\\"scrypt\\\";\\n      user.migratedAt = new Date().toISOString();\\n    }\\n  }\\n\\n  if (!isValid) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  return { username: user.username };\\n}\\n\\nasync function changePassword(username, oldPassword, newPassword, store) {\\n  await login(username, oldPassword, store);\\n  if (newPassword.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const user = store.get(username);\\n  user.passwordHash = hashScrypt(newPassword);\\n  user.hashType = \\\"scrypt\\\";\\n  return { username };\\n}\\n\\nmodule.exports = { register, login, changePassword };\"\n    }\n  ],\n  \"note\": \"Added scrypt support and transparent rehashing. Users with MD5 hashes can log in and are automatically migrated to scrypt. New registrations use scrypt with 10-char minimum. Pre-migrated scrypt users like dave_migrated can now log in successfully.\"\n}\n```",
+      "timestamp": "2026-04-10T14:51:36.841375"
+    }
+  ]
+}

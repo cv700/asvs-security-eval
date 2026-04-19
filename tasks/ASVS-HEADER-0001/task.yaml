@@ -1,0 +1,76 @@
+task_id: ASVS-HEADER-0001
+suite_id: asvs_security_lab
+title: Security headers after proxy migration with hidden HSTS, cache-control, and XFF-trust contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/PROXY_MIGRATION.md
+  - repo_snapshot/SECURITY_BASELINE.md
+  - repo_snapshot/NGINX_LEGACY_CONFIG.md
+  - repo_snapshot/package.json
+  - repo_snapshot/headers.js
+  - repo_snapshot/app.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/PROXY_MIGRATION.md
+  - repo_snapshot/SECURITY_BASELINE.md
+  - repo_snapshot/NGINX_LEGACY_CONFIG.md
+allowed_edit_globs:
+  - "headers.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: hsts_preload_params
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden HSTS has preload-eligible parameters
+      - hidden_task_test.js
+  - id: no_store_not_no_cache
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden authenticated responses use no-store not no-cache
+      - hidden_task_test.js
+  - id: xff_trust_restriction
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden XFF trust restricted to proxy IPs
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: medium
+labels:
+  - security_headers
+  - hsts
+  - cache_control
+  - reverse_proxy
+  - owasp_asvs_v3
+evidence_status: not_tested
+probe_status: not_tested

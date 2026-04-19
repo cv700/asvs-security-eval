@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-RATE-0001",
+  "state": "bad",
+  "visible_pass": true,
+  "hidden_pass": false,
+  "check_results": {
+    "rate_limit_keying": false,
+    "backoff_not_permanent_lockout": false,
+    "refresh_endpoint_exempt": false
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public login succeeds with correct credentials\nok 1 - Public login succeeds with correct credentials\n  ---\n  duration_ms: 0.576458\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.253\n  ...\n# Subtest: Public login rejects unknown user\nok 3 - Public login rejects unknown user\n  ---\n  duration_ms: 0.046125\n  ...\n# Subtest: Public rate limiting blocks after 5 failed attempts\nok 4 - Public rate limiting blocks after 5 failed attempts\n  ---\n  duration_ms: 0.120583\n  ...\n# Subtest: Public successful login resets rate limit counter\nok 5 - Public successful login resets rate limit counter\n  ---\n  duration_ms: 0.507541\n  ...\n# Subtest: Public refresh token returns new access token\nok 6 - Public refresh token returns new access token\n  ---\n  duration_ms: 0.054833\n  ...\n# Subtest: Public rate limit info is available\nok 7 - Public rate limit info is available\n  ---\n  duration_ms: 0.056875\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 31.391584\n",
+      "stderr": ""
+    },
+    "hidden_rate_limit_keying": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden rate limit uses IP\\+username keying not IP-only",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nnot ok 1 - Hidden rate limit uses IP+username keying not IP-only\n  ---\n  duration_ms: 0.802417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:7:1'\n  failureType: 'testCodeFailure'\n  error: 'Too many failed attempts. Account locked.'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    login (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/auth.js:25:11)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:28:18)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.050833\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031958\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.705541\n",
+      "stderr": ""
+    },
+    "hidden_backoff_not_permanent_lockout": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden lockout uses exponential backoff not permanent lock",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.3795\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nnot ok 2 - Hidden lockout uses exponential backoff not permanent lock\n  ---\n  duration_ms: 0.474583\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:36:1'\n  failureType: 'testCodeFailure'\n  error: 'RATE_LIMIT_PLAN.md: first lockout should be ~1 minute, not permanent. lockedUntil is 31536000 seconds from now, expected ~60 seconds'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:70:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.036542\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.816791\n",
+      "stderr": ""
+    },
+    "hidden_refresh_endpoint_exempt": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden refresh endpoint is not rate limited",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.397583\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.072542\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nnot ok 3 - Hidden refresh endpoint is not rate limited\n  ---\n  duration_ms: 0.421208\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:86:1'\n  failureType: 'testCodeFailure'\n  error: 'Account is temporarily locked. Please try again later.'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    refreshToken (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/auth.js:71:13)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-d4lebsyj/repo/hidden_task_test.js:107:18)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.165209\n",
+      "stderr": ""
+    }
+  }
+}

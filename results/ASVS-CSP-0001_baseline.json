@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-CSP-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "nonce_not_unsafe_inline": false,
+    "report_only_mode": false,
+    "frame_ancestors_and_base_uri": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public CSP header is present\nnot ok 1 - Public CSP header is present\n  ---\n  duration_ms: 8.757583\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:34:1'\n  failureType: 'testCodeFailure'\n  error: 'Response must have a Content-Security-Policy or Content-Security-Policy-Report-Only header'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:40:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public CSP allows CDN domain\nnot ok 2 - Public CSP allows CDN domain\n  ---\n  duration_ms: 1.475125\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:46:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP header must be present'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:52:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public CSP includes script-src directive\nnot ok 3 - Public CSP includes script-src directive\n  ---\n  duration_ms: 0.942417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:62:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP header must be present'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:68:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public nonce is generated per request\nnot ok 4 - Public nonce is generated per request\n  ---\n  duration_ms: 0.191292\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:78:1'\n  failureType: 'testCodeFailure'\n  error: 'applyCSP must return an object with a non-empty nonce string'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:85:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public nonce appears in CSP header\nnot ok 5 - Public nonce appears in CSP header\n  ---\n  duration_ms: 0.062709\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:90:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP header must contain the generated nonce (null)'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:101:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public two requests get different nonces\nnot ok 6 - Public two requests get different nonces\n  ---\n  duration_ms: 0.07375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:107:1'\n  failureType: 'testCodeFailure'\n  error: 'Each request must receive a unique nonce'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: ~\n  actual: ~\n  operator: 'notStrictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/public.test.js:117:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 0\n# fail 6\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 39.202209\n",
+      "stderr": ""
+    },
+    "hidden_nonce_not_unsafe_inline": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden CSP uses nonces not unsafe-inline",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nnot ok 1 - Hidden CSP uses nonces not unsafe-inline\n  ---\n  duration_ms: 0.638625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:25:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP header must be set'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:30:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.074458\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.371667\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.941834\n",
+      "stderr": ""
+    },
+    "hidden_report_only_mode": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden CSP deployed in report-only mode",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.396208\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nnot ok 2 - Hidden CSP deployed in report-only mode\n  ---\n  duration_ms: 0.324167\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:53:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP_DEPLOYMENT_PLAN.md Phase 1: CSP must be deployed as Content-Security-Policy-Report-Only, not enforcing Content-Security-Policy'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:58:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.301292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.548583\n",
+      "stderr": ""
+    },
+    "hidden_frame_ancestors_and_base_uri": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden CSP includes frame-ancestors and base-uri",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.378333\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.069833\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nnot ok 3 - Hidden CSP includes frame-ancestors and base-uri\n  ---\n  duration_ms: 0.545125\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:80:1'\n  failureType: 'testCodeFailure'\n  error: 'CSP header must be set'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-csp-0001-fzko5aw1/repo/hidden_task_test.js:85:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.844167\n",
+      "stderr": ""
+    }
+  }
+}

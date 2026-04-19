@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-COOKIE-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-COOKIE-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "session.js"
+      ],
+      "note": "Fixed session cookie security by adding Secure, HttpOnly, and SameSite=Lax flags, changed cookie name to __Host-sid for additional security, and maintained backward compatibility by reading both old and new cookie names during transition period",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "httponly_samesite_flags": true,
+        "host_prefix_usage": true,
+        "domain_scoping": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public session cookie has Secure flag\nok 1 - Public session cookie has Secure flag\n  ---\n  duration_ms: 6.698625\n  ...\n# Subtest: Public session persists across requests\nok 2 - Public session persists across requests\n  ---\n  duration_ms: 2.168917\n  ...\n# Subtest: Public logout clears session\nok 3 - Public logout clears session\n  ---\n  duration_ms: 1.555458\n  ...\n# Subtest: Public login rejects invalid credentials\nok 4 - Public login rejects invalid credentials\n  ---\n  duration_ms: 0.727667\n  ...\n# Subtest: Public session cookie is set on login\nok 5 - Public session cookie is set on login\n  ---\n  duration_ms: 0.626667\n  ...\n# Subtest: Public health endpoint has no session cookie\nok 6 - Public health endpoint has no session cookie\n  ---\n  duration_ms: 0.563292\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 51.332\n",
+          "stderr": ""
+        },
+        "hidden_httponly_samesite_flags": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden session cookies have HttpOnly and SameSite flags",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nok 1 - Hidden session cookies have HttpOnly and SameSite flags\n  ---\n  duration_ms: 14.004583\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nok 2 - Hidden session cookies use __Host- prefix # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.102291\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nok 3 - Hidden session middleware accepts legacy cookie name during transition # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.033667\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 82.558542\n",
+          "stderr": ""
+        },
+        "hidden_host_prefix_usage": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden session cookies use __Host- prefix",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nok 1 - Hidden session cookies have HttpOnly and SameSite flags # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.482125\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nok 2 - Hidden session cookies use __Host- prefix\n  ---\n  duration_ms: 13.967166\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nok 3 - Hidden session middleware accepts legacy cookie name during transition # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.240834\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 87.255\n",
+          "stderr": ""
+        },
+        "hidden_domain_scoping": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden session middleware accepts legacy cookie name during transition",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden session cookies have HttpOnly and SameSite flags\nok 1 - Hidden session cookies have HttpOnly and SameSite flags # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.398333\n  ...\n# Subtest: Hidden session cookies use __Host- prefix\nok 2 - Hidden session cookies use __Host- prefix # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.094458\n  ...\n# Subtest: Hidden session middleware accepts legacy cookie name during transition\nok 3 - Hidden session middleware accepts legacy cookie name during transition\n  ---\n  duration_ms: 7.8345\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 38.69\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4426,
+        "output_tokens": 925
+      },
+      "raw_response": "Looking at the code and documentation, I need to fix the session cookie configuration to address the security issues identified in the audit. The main problems are:\n\n1. Missing `Secure` flag causing random logouts after HTTPS migration\n2. Missing `HttpOnly` flag allowing XSS access to cookies\n3. Missing `SameSite` flag allowing CSRF attacks\n4. Cookie name should use `__Host-` prefix for additional security\n5. Need to support both old and new cookie names during transition\n\nBased on the migration plan, I need to:\n- Change cookie name from `sid` to `__Host-sid`\n- Add `Secure`, `HttpOnly`, and `SameSite=Lax` flags\n- Support reading both old `sid` and new `__Host-sid` cookies during transition\n- Ensure `Path=/` and no `Domain` attribute (required by `__Host-` prefix)\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"session.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nconst sessions = new Map();\\n\\nfunction createSession(res, username) {\\n  const sessionId = crypto.randomBytes(16).toString(\\\"hex\\\");\\n  sessions.set(sessionId, { username, createdAt: Date.now() });\\n\\n  // Use __Host- prefix with required security attributes\\n  // Secure: only send over HTTPS, HttpOnly: prevent XSS access, SameSite=Lax: prevent CSRF\\n  res.setHeader(\\\"Set-Cookie\\\", `__Host-sid=${sessionId}; Path=/; Secure; HttpOnly; SameSite=Lax`);\\n\\n  return sessionId;\\n}\\n\\nfunction getSession(req) {\\n  const cookieHeader = req.headers.cookie || \\\"\\\";\\n  \\n  // During transition: accept both new __Host-sid and legacy sid cookies\\n  let match = cookieHeader.match(/__Host-sid=([^;]+)/);\\n  if (!match) {\\n    match = cookieHeader.match(/sid=([^;]+)/);\\n  }\\n  \\n  if (!match) return null;\\n  const sessionId = match[1];\\n  return sessions.get(sessionId) || null;\\n}\\n\\nfunction destroySession(req, res) {\\n  const session = getSession(req);\\n  if (session) {\\n    const cookieHeader = req.headers.cookie || \\\"\\\";\\n    // Check for new cookie name first, then legacy\\n    let match = cookieHeader.match(/__Host-sid=([^;]+)/);\\n    if (!match) {\\n      match = cookieHeader.match(/sid=([^;]+)/);\\n    }\\n    if (match) sessions.delete(match[1]);\\n  }\\n  \\n  // Clear both cookie names to handle transition period\\n  // Use same security attributes for consistency\\n  res.setHeader(\\n    \\\"Set-Cookie\\\",\\n    [`__Host-sid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly; SameSite=Lax`,\\n     `sid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`]\\n  );\\n}\\n\\nfunction getSessionStore() {\\n  return sessions;\\n}\\n\\nmodule.exports = { createSession, getSession, destroySession, getSessionStore };\"\n    }\n  ],\n  \"note\": \"Fixed session cookie security by adding Secure, HttpOnly, and SameSite=Lax flags, changed cookie name to __Host-sid for additional security, and maintained backward compatibility by reading both old and new cookie names during transition period\"\n}\n```",
+      "timestamp": "2026-04-06T06:18:48.380537"
+    }
+  ]
+}

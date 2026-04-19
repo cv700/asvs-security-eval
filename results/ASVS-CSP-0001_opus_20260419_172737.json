@@ -1,0 +1,152 @@
+{
+  "task_id": "ASVS-CSP-0001",
+  "model": "claude-opus-4-20250514",
+  "mode": "standard",
+  "total_runs": 2,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-CSP-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "middleware.js"
+      ],
+      "note": "Re-enabled CSP in report-only mode with nonce-based inline script support. Added directives for CDN domain, frame protection, base URI restriction, and violation reporting as specified in deployment plan.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "nonce_not_unsafe_inline": true,
+        "report_only_mode": true,
+        "frame_ancestors_and_base_uri": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public CSP header is present\nok 1 - Public CSP header is present\n  ---\n  duration_ms: 9.191333\n  ...\n# Subtest: Public CSP allows CDN domain\nok 2 - Public CSP allows CDN domain\n  ---\n  duration_ms: 1.436792\n  ...\n# Subtest: Public CSP includes script-src directive\nok 3 - Public CSP includes script-src directive\n  ---\n  duration_ms: 1.156834\n  ...\n# Subtest: Public nonce is generated per request\nok 4 - Public nonce is generated per request\n  ---\n  duration_ms: 0.166125\n  ...\n# Subtest: Public nonce appears in CSP header\nok 5 - Public nonce appears in CSP header\n  ---\n  duration_ms: 0.065042\n  ...\n# Subtest: Public two requests get different nonces\nok 6 - Public two requests get different nonces\n  ---\n  duration_ms: 0.075291\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 40.392208\n",
+          "stderr": ""
+        },
+        "hidden_nonce_not_unsafe_inline": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP uses nonces not unsafe-inline",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline\n  ---\n  duration_ms: 0.564708\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.100875\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.384125\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.928209\n",
+          "stderr": ""
+        },
+        "hidden_report_only_mode": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP deployed in report-only mode",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.429917\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode\n  ---\n  duration_ms: 0.220375\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.372292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.541459\n",
+          "stderr": ""
+        },
+        "hidden_frame_ancestors_and_base_uri": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP includes frame-ancestors and base-uri",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.422084\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0815\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri\n  ---\n  duration_ms: 0.510084\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.058125\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3775,
+        "output_tokens": 644
+      },
+      "raw_response": "Looking at the repository, I need to re-enable Content Security Policy in middleware.js according to the deployment plan. The key requirements are:\n\n1. Use `Content-Security-Policy-Report-Only` header (Phase 1 of deployment plan)\n2. Generate unique nonces for inline scripts\n3. Allow the CDN domain `https://cdn.mediapub.com`\n4. Include reporting URI\n5. Add frame-ancestors and base-uri protections\n\nHere's my solution:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"middleware.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// CSP was disabled on 2026-02-20 after CDN migration broke inline scripts\\n// See CSP_DEPLOYMENT_PLAN.md for re-enablement strategy\\n\\nfunction applyCSP(req, res) {\\n  // Generate a unique nonce per request for inline scripts\\n  const nonce = crypto.randomBytes(16).toString(\\\"base64\\\");\\n  \\n  // Phase 1: Report-Only mode\\n  // Build CSP directives according to deployment plan\\n  const cspDirectives = [\\n    `default-src 'self'`,\\n    `script-src 'self' 'nonce-${nonce}' https://cdn.mediapub.com`,\\n    `style-src 'self' https://cdn.mediapub.com`,\\n    `img-src 'self' https://cdn.mediapub.com`,\\n    `frame-ancestors 'self'`,\\n    `base-uri 'self'`,\\n    `report-uri https://csp-reports.mediapub.com/report`\\n  ];\\n  \\n  // Set as Report-Only header per Phase 1 of deployment plan\\n  res.setHeader(\\\"Content-Security-Policy-Report-Only\\\", cspDirectives.join(\\\"; \\\"));\\n  \\n  return { nonce };\\n}\\n\\nfunction applySecurityHeaders(req, res) {\\n  // Other security headers (these are fine, don't change)\\n  res.setHeader(\\\"X-Content-Type-Options\\\", \\\"nosniff\\\");\\n  res.setHeader(\\\"X-Frame-Options\\\", \\\"DENY\\\");\\n}\\n\\nmodule.exports = { applyCSP, applySecurityHeaders };\"\n    }\n  ],\n  \"note\": \"Re-enabled CSP in report-only mode with nonce-based inline script support. Added directives for CDN domain, frame protection, base URI restriction, and violation reporting as specified in deployment plan.\"\n}\n```",
+      "timestamp": "2026-04-19T17:27:19.971878"
+    },
+    {
+      "run_idx": 2,
+      "task_id": "ASVS-CSP-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "middleware.js"
+      ],
+      "note": "Re-enabled CSP in report-only mode with nonce support for inline scripts, CDN allowlist for static assets, and violation reporting to monitor for issues before enforcement",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "nonce_not_unsafe_inline": true,
+        "report_only_mode": true,
+        "frame_ancestors_and_base_uri": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public CSP header is present\nok 1 - Public CSP header is present\n  ---\n  duration_ms: 9.196167\n  ...\n# Subtest: Public CSP allows CDN domain\nok 2 - Public CSP allows CDN domain\n  ---\n  duration_ms: 1.264167\n  ...\n# Subtest: Public CSP includes script-src directive\nok 3 - Public CSP includes script-src directive\n  ---\n  duration_ms: 1.130125\n  ...\n# Subtest: Public nonce is generated per request\nok 4 - Public nonce is generated per request\n  ---\n  duration_ms: 0.162959\n  ...\n# Subtest: Public nonce appears in CSP header\nok 5 - Public nonce appears in CSP header\n  ---\n  duration_ms: 0.070334\n  ...\n# Subtest: Public two requests get different nonces\nok 6 - Public two requests get different nonces\n  ---\n  duration_ms: 0.0705\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 40.6785\n",
+          "stderr": ""
+        },
+        "hidden_nonce_not_unsafe_inline": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP uses nonces not unsafe-inline",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline\n  ---\n  duration_ms: 0.558458\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.081708\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.413\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.816792\n",
+          "stderr": ""
+        },
+        "hidden_report_only_mode": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP deployed in report-only mode",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.419166\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode\n  ---\n  duration_ms: 0.215167\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.383333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.545042\n",
+          "stderr": ""
+        },
+        "hidden_frame_ancestors_and_base_uri": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CSP includes frame-ancestors and base-uri",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CSP uses nonces not unsafe-inline\nok 1 - Hidden CSP uses nonces not unsafe-inline # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.423333\n  ...\n# Subtest: Hidden CSP deployed in report-only mode\nok 2 - Hidden CSP deployed in report-only mode # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.077708\n  ...\n# Subtest: Hidden CSP includes frame-ancestors and base-uri\nok 3 - Hidden CSP includes frame-ancestors and base-uri\n  ---\n  duration_ms: 0.538333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.2615\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3775,
+        "output_tokens": 654
+      },
+      "raw_response": "Looking at the task and the provided documents, I need to re-enable Content Security Policy in the middleware.js file. Based on the documentation:\n\n1. **Phase 1**: Use `Content-Security-Policy-Report-Only` header (not enforcing)\n2. **Generate nonces** for inline scripts per request\n3. **Allow CDN domain** `https://cdn.mediapub.com` for scripts, styles, and images\n4. **Include reporting URI** `https://csp-reports.mediapub.com/report`\n5. **Set security directives** like `frame-ancestors`, `base-uri`, and `default-src`\n\nHere's my solution:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"middleware.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// CSP was disabled on 2026-02-20 after CDN migration broke inline scripts\\n// See CSP_DEPLOYMENT_PLAN.md for re-enablement strategy\\n\\nfunction applyCSP(req, res) {\\n  // Generate a unique nonce per request for inline scripts\\n  const nonce = crypto.randomBytes(16).toString('base64');\\n  \\n  // Phase 1: Report-Only mode to monitor violations without breaking the site\\n  const cspDirectives = [\\n    `default-src 'self'`,\\n    `script-src 'self' https://cdn.mediapub.com 'nonce-${nonce}'`,\\n    `style-src 'self' https://cdn.mediapub.com`,\\n    `img-src 'self' https://cdn.mediapub.com`,\\n    `frame-ancestors 'self'`,\\n    `base-uri 'self'`,\\n    `report-uri https://csp-reports.mediapub.com/report`\\n  ].join('; ');\\n  \\n  res.setHeader('Content-Security-Policy-Report-Only', cspDirectives);\\n  \\n  return { nonce };\\n}\\n\\nfunction applySecurityHeaders(req, res) {\\n  // Other security headers (these are fine, don't change)\\n  res.setHeader(\\\"X-Content-Type-Options\\\", \\\"nosniff\\\");\\n  res.setHeader(\\\"X-Frame-Options\\\", \\\"DENY\\\");\\n}\\n\\nmodule.exports = { applyCSP, applySecurityHeaders };\\n\"\n    }\n  ],\n  \"note\": \"Re-enabled CSP in report-only mode with nonce support for inline scripts, CDN allowlist for static assets, and violation reporting to monitor for issues before enforcement\"\n}\n```",
+      "timestamp": "2026-04-19T17:27:37.737605"
+    }
+  ]
+}

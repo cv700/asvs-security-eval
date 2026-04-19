@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-TLS-0001",
+  "state": "bad",
+  "visible_pass": true,
+  "hidden_pass": false,
+  "check_results": {
+    "full_chain_with_intermediate": false,
+    "ocsp_stapling_configured": false,
+    "hsts_not_reduced": false
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public TLS config points to new certificate\nok 1 - Public TLS config points to new certificate\n  ---\n  duration_ms: 0.481375\n  ...\n# Subtest: Public TLS config has valid key path\nok 2 - Public TLS config has valid key path\n  ---\n  duration_ms: 0.094959\n  ...\n# Subtest: Public TLS minimum version is 1.2\nok 3 - Public TLS minimum version is 1.2\n  ---\n  duration_ms: 0.055667\n  ...\n# Subtest: Public HSTS header is present\nok 4 - Public HSTS header is present\n  ---\n  duration_ms: 0.061459\n  ...\n# Subtest: Public HSTS max-age is at least one year\nok 5 - Public HSTS max-age is at least one year\n  ---\n  duration_ms: 0.083375\n  ...\n# Subtest: Public config exports required functions\nok 6 - Public config exports required functions\n  ---\n  duration_ms: 0.037375\n  ...\n# Subtest: Public old certificate is not referenced\nok 7 - Public old certificate is not referenced\n  ---\n  duration_ms: 0.089125\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 34.299667\n",
+      "stderr": ""
+    },
+    "hidden_full_chain_with_intermediate": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden TLS chain includes intermediate CA certificate",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nnot ok 1 - Hidden TLS chain includes intermediate CA certificate\n  ---\n  duration_ms: 0.762167\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:6:1'\n  failureType: 'testCodeFailure'\n  error: 'CERTIFICATE_ROTATION_RUNBOOK.md step 2: the ca array must include the intermediate CA certificate. Enterprise clients behind corporate proxies do not fetch intermediate CAs automatically \u2014 missing intermediate = connection failures for ~15% of enterprise clients.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:10:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.102\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.053541\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.59875\n",
+      "stderr": ""
+    },
+    "hidden_ocsp_stapling_configured": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden OCSP stapling is enabled",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.489083\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nnot ok 2 - Hidden OCSP stapling is enabled\n  ---\n  duration_ms: 0.2765\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:39:1'\n  failureType: 'testCodeFailure'\n  error: 'CERTIFICATE_ROTATION_RUNBOOK.md step 3: ocspStapling must be set to true. Without OCSP stapling, clients must check certificate revocation themselves, adding 100-300ms latency. Java-based financial systems require OCSP stapling and will reject connections without it.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:42:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nok 3 - Hidden HSTS maintains preload eligibility during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.039333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.456333\n",
+      "stderr": ""
+    },
+    "hidden_hsts_not_reduced": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden HSTS maintains preload eligibility during rotation",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden TLS chain includes intermediate CA certificate\nok 1 - Hidden TLS chain includes intermediate CA certificate # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.425458\n  ...\n# Subtest: Hidden OCSP stapling is enabled\nok 2 - Hidden OCSP stapling is enabled # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.070667\n  ...\n# Subtest: Hidden HSTS maintains preload eligibility during rotation\nnot ok 3 - Hidden HSTS maintains preload eligibility during rotation\n  ---\n  duration_ms: 0.322209\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:52:1'\n  failureType: 'testCodeFailure'\n  error: 'TLS_BASELINE.md: HSTS header must include the includeSubDomains directive. This is required for HSTS preload eligibility.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-tls-0001-k7eiekeb/repo/hidden_task_test.js:70:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.109167\n",
+      "stderr": ""
+    }
+  }
+}

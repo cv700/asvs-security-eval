@@ -1,0 +1,64 @@
+{
+  "task_id": "OAUTH-PKCE-0001",
+  "state": "good",
+  "visible_pass": true,
+  "hidden_pass": true,
+  "check_results": {
+    "pkce_s256_not_plain": true,
+    "state_parameter_retained": true,
+    "token_storage_not_localstorage": true
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": true
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public authorization URL uses code flow\nok 1 - Public authorization URL uses code flow\n  ---\n  duration_ms: 0.798292\n  ...\n# Subtest: Public authorization URL includes PKCE challenge\nok 2 - Public authorization URL includes PKCE challenge\n  ---\n  duration_ms: 0.080583\n  ...\n# Subtest: Public authorization URL includes PKCE method\nok 3 - Public authorization URL includes PKCE method\n  ---\n  duration_ms: 0.096916\n  ...\n# Subtest: Public code verifier is generated\nok 4 - Public code verifier is generated\n  ---\n  duration_ms: 0.048875\n  ...\n# Subtest: Public handleCallback exchanges code for tokens\nok 5 - Public handleCallback exchanges code for tokens\n  ---\n  duration_ms: 0.32025\n  ...\n# Subtest: Public callback rejects missing code\nok 6 - Public callback rejects missing code\n  ---\n  duration_ms: 0.194625\n  ...\n# Subtest: Public tokens are returned after exchange\nok 7 - Public tokens are returned after exchange\n  ---\n  duration_ms: 0.110584\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 30.601083\n",
+      "stderr": ""
+    },
+    "hidden_pkce_s256_not_plain": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden PKCE uses S256 not plain method",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method\n  ---\n  duration_ms: 0.821708\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038459\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.064459\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.531125\n",
+      "stderr": ""
+    },
+    "hidden_state_parameter_retained": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden state parameter is included for CSRF protection",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.397375\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection\n  ---\n  duration_ms: 0.5385\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03275\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.835125\n",
+      "stderr": ""
+    },
+    "hidden_token_storage_not_localstorage": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden tokens are not stored in localStorage",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.38775\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.077708\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage\n  ---\n  duration_ms: 0.51125\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.059\n",
+      "stderr": ""
+    }
+  }
+}

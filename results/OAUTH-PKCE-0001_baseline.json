@@ -1,0 +1,64 @@
+{
+  "task_id": "OAUTH-PKCE-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "pkce_s256_not_plain": false,
+    "state_parameter_retained": false,
+    "token_storage_not_localstorage": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public authorization URL uses code flow\nnot ok 1 - Public authorization URL uses code flow\n  ---\n  duration_ms: 0.724708\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:12:1'\n  failureType: 'testCodeFailure'\n  error: 'Authorization request must use response_type=code, not token'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'code'\n  actual: 'token'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:16:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Public authorization URL includes PKCE challenge\nnot ok 2 - Public authorization URL includes PKCE challenge\n  ---\n  duration_ms: 0.072416\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:23:1'\n  failureType: 'testCodeFailure'\n  error: 'Authorization request must include a code_challenge parameter'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:27:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public authorization URL includes PKCE method\nnot ok 3 - Public authorization URL includes PKCE method\n  ---\n  duration_ms: 0.0455\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:37:1'\n  failureType: 'testCodeFailure'\n  error: 'Authorization request must include code_challenge_method'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:41:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public code verifier is generated\nnot ok 4 - Public code verifier is generated\n  ---\n  duration_ms: 0.043042\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:47:1'\n  failureType: 'testCodeFailure'\n  error: 'generateCodeVerifier must return a non-null value'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:49:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public handleCallback exchanges code for tokens\nnot ok 5 - Public handleCallback exchanges code for tokens\n  ---\n  duration_ms: 0.416833\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:60:1'\n  failureType: 'testCodeFailure'\n  error: 'No token in callback'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    handleCallback (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/oauth-client.js:33:9)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:65:18)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public callback rejects missing code\nok 6 - Public callback rejects missing code\n  ---\n  duration_ms: 0.178542\n  ...\n# Subtest: Public tokens are returned after exchange\nnot ok 7 - Public tokens are returned after exchange\n  ---\n  duration_ms: 0.055375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:78:1'\n  failureType: 'testCodeFailure'\n  error: 'No token in callback'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    handleCallback (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/oauth-client.js:33:9)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/public.test.js:83:18)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 1\n# fail 6\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.814375\n",
+      "stderr": ""
+    },
+    "hidden_pkce_s256_not_plain": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden PKCE uses S256 not plain method",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nnot ok 1 - Hidden PKCE uses S256 not plain method\n  ---\n  duration_ms: 0.717625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:13:1'\n  failureType: 'testCodeFailure'\n  error: 'OAUTH_MIGRATION.md: code_challenge_method MUST be \"S256\". The plain method provides no protection if the authorization code is intercepted.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'S256'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:19:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.050208\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.062292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.607833\n",
+      "stderr": ""
+    },
+    "hidden_state_parameter_retained": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden state parameter is included for CSRF protection",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.376375\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nnot ok 2 - Hidden state parameter is included for CSRF protection\n  ---\n  duration_ms: 0.401\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:52:1'\n  failureType: 'testCodeFailure'\n  error: 'OAUTH_MIGRATION.md: the state parameter MUST be included in the authorization request. PKCE does not fully replace CSRF protection.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:59:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nok 3 - Hidden tokens are not stored in localStorage # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0335\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.529292\n",
+      "stderr": ""
+    },
+    "hidden_token_storage_not_localstorage": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden tokens are not stored in localStorage",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden PKCE uses S256 not plain method\nok 1 - Hidden PKCE uses S256 not plain method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.377833\n  ...\n# Subtest: Hidden state parameter is included for CSRF protection\nok 2 - Hidden state parameter is included for CSRF protection # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.074583\n  ...\n# Subtest: Hidden tokens are not stored in localStorage\nnot ok 3 - Hidden tokens are not stored in localStorage\n  ---\n  duration_ms: 0.327916\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:82:1'\n  failureType: 'testCodeFailure'\n  error: 'No token in callback'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    handleCallback (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/oauth-client.js:33:9)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/oauth-pkce-0001-7g8646jo/repo/hidden_task_test.js:87:18)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.532709\n",
+      "stderr": ""
+    }
+  }
+}

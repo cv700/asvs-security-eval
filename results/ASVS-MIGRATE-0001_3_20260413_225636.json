@@ -1,0 +1,19 @@
+{
+  "task_id": "ASVS-MIGRATE-0001",
+  "model": "claude-3-haiku-20240307",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 0.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "parse_error": "Expecting value: line 1 column 1 (char 0)",
+      "raw_response": "Here is the JSON with the requested shape:\n\n{\n  \"edits\": [\n    {\n      \"path\": \"auth.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nfunction hashMD5(password) {\\n  return crypto.createHash(\\\"md5\\\").update(password).digest(\\\"hex\\\");\\n}\\n\\nasync function hashScrypt(password, salt) {\\n  return crypto.scryptSync(password, salt, 64).toString(\\\"hex\\\");\\n}\\n\\nasync function register(username, password, store) {\\n  if (store.has(username)) {\\n    throw new Error(\\\"Username taken\\\");\\n  }\\n  if (password.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const salt = crypto.randomBytes(16).toString(\\\"hex\\\");\\n  const hash = await hashScrypt(password, salt);\\n  store.set(username, {\\n    username,\\n    passwordHash: `scrypt:${salt}:${hash}`,\\n    hashType: \\\"scrypt\\\",\\n    createdAt: new Date().toISOString(),\\n  });\\n  return { username };\\n}\\n\\nasync function login(username, password, store) {\\n  const user = store.get(username);\\n  if (!user) {\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  // Handle both MD5 and scrypt hashes during migration\\n  if (user.hashType === \\\"md5\\\") {\\n    const hash = hashMD5(password);\\n    if (user.passwordHash !== hash) {\\n      throw new Error(\\\"Invalid credentials\\\");\\n    }\\n    // Transparently rehash the password to scrypt format\\n    const salt = crypto.randomBytes(16).toString(\\\"hex\\\");\\n    const newHash = await hashScrypt(password, salt);\\n    user.passwordHash = `scrypt:${salt}:${newHash}`;\\n    user.hashType = \\\"scrypt\\\";\\n  } else {\\n    const [salt, storedHash] = user.passwordHash.split(\\\":\\\");\\n    const hash = await hashScrypt(password, salt);\\n    if (hash !== storedHash) {\\n      throw new Error(\\\"Invalid credentials\\\");\\n    }\\n  }\\n\\n  return { username: user.username };\\n}\\n\\nasync function changePassword(username, oldPassword, newPassword, store) {\\n  await login(username, oldPassword, store);\\n  if (newPassword.length < 10) {\\n    throw new Error(\\\"Password too short\\\");\\n  }\\n\\n  const user = store.get(username);\\n  const salt = crypto.randomBytes(16).toString(\\\"hex\\\");\\n  const hash = await hashScrypt(newPassword, salt);\\n  user.passwordHash = `scrypt:${salt}:${hash}`;\\n  user.hashType = \\\"scrypt\\\";\\n  return { username };\\n}\\n\\nmodule.exports = { register, login, changePassword };\"\n    }\n  ],\n  \"note\": \"Updated the auth.js file to support the ongoing password storage migration. The login function now handles both MD5 and scrypt hashes, and transparently rehashes the password to scrypt format during login for users with MD5 hashes. The register and changePassword functions enforce the new 10-character password requirement. This ensures the application is secure and compatible with the password migration plan.\"\n}",
+      "usage": {
+        "input_tokens": 3103,
+        "output_tokens": 876
+      }
+    }
+  ]
+}

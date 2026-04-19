@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-HEADER-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-HEADER-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "headers.js"
+      ],
+      "note": "Fixed security headers after NGINX decommission: set X-Frame-Options to DENY, added all missing required headers (HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy), set Cache-Control no-store only for authenticated responses, and fixed getTrustedClientIP to only trust X-Forwarded-For from Cloudflare IPs",
+      "visible_pass": true,
+      "hidden_pass": false,
+      "check_results": {
+        "hsts_preload_params": true,
+        "no_store_not_no_cache": true,
+        "xff_trust_restriction": false
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: ASVS-HEADER-0001 public tests\n    # Subtest: Public X-Frame-Options is DENY\n    ok 1 - Public X-Frame-Options is DENY\n      ---\n      duration_ms: 4.829792\n      ...\n    # Subtest: Public HSTS header is present\n    ok 2 - Public HSTS header is present\n      ---\n      duration_ms: 0.76675\n      ...\n    # Subtest: Public X-Content-Type-Options is nosniff\n    ok 3 - Public X-Content-Type-Options is nosniff\n      ---\n      duration_ms: 0.994792\n      ...\n    # Subtest: Public Cache-Control is set on authenticated responses\n    ok 4 - Public Cache-Control is set on authenticated responses\n      ---\n      duration_ms: 1.254667\n      ...\n    # Subtest: Public Referrer-Policy is set\n    ok 5 - Public Referrer-Policy is set\n      ---\n      duration_ms: 0.456\n      ...\n    # Subtest: Public health endpoint responds 200\n    ok 6 - Public health endpoint responds 200\n      ---\n      duration_ms: 0.476584\n      ...\n    # Subtest: Public login works\n    ok 7 - Public login works\n      ---\n      duration_ms: 0.383458\n      ...\n    1..7\nok 1 - ASVS-HEADER-0001 public tests\n  ---\n  duration_ms: 12.416458\n  ...\n1..1\n# tests 8\n# suites 0\n# pass 8\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 41.419334\n",
+          "stderr": ""
+        },
+        "hidden_hsts_preload_params": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden HSTS has preload-eligible parameters",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nok 1 - Hidden HSTS has preload-eligible parameters\n  ---\n  duration_ms: 6.655167\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nok 2 - Hidden authenticated responses use no-store not no-cache # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.088791\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nok 3 - Hidden XFF trust restricted to proxy IPs # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03125\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 35.697\n",
+          "stderr": ""
+        },
+        "hidden_no_store_not_no_cache": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden authenticated responses use no-store not no-cache",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nok 1 - Hidden HSTS has preload-eligible parameters # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.439625\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nok 2 - Hidden authenticated responses use no-store not no-cache\n  ---\n  duration_ms: 7.782125\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nok 3 - Hidden XFF trust restricted to proxy IPs # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.055709\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 37.173167\n",
+          "stderr": ""
+        },
+        "hidden_xff_trust_restriction": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden XFF trust restricted to proxy IPs",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nok 1 - Hidden HSTS has preload-eligible parameters # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.422084\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nok 2 - Hidden authenticated responses use no-store not no-cache # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.081167\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nnot ok 3 - Hidden XFF trust restricted to proxy IPs\n  ---\n  duration_ms: 0.420541\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-claude-m0pnz8oq/repo/hidden_task_test.js:126:1'\n  failureType: 'testCodeFailure'\n  error: 'When remoteAddress IS a Cloudflare IP, XFF should be trusted and the first entry returned as the client IP'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: '203.0.113.50'\n  actual: '172.64.0.1'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-claude-m0pnz8oq/repo/hidden_task_test.js:159:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.034084\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4750,
+        "output_tokens": 1318
+      },
+      "raw_response": "Looking at the files, I need to fix the security headers in `headers.js` after the proxy migration. The current issues are:\n\n1. `X-Frame-Options` is set to \"SAMEORIGIN\" instead of \"DENY\"\n2. Missing all other required security headers\n3. `getTrustedClientIP` trusts X-Forwarded-For from any source instead of only Cloudflare IPs\n\nBased on the security baseline and proxy migration notes, I need to:\n\n1. Set all required security headers with correct values\n2. Only trust X-Forwarded-For when the request comes from Cloudflare IP ranges\n3. Set `Cache-Control: no-store` only for authenticated responses\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"headers.js\",\n      \"content\": \"/**\\n * Security header middleware for InternalDash.\\n *\\n * Updated after NGINX decommission to set all required security headers.\\n * See PROXY_MIGRATION.md and SECURITY_BASELINE.md.\\n */\\n\\n// Cloudflare IPv4 ranges from PROXY_MIGRATION.md\\nconst CLOUDFLARE_IPS = [\\n  '173.245.48.0/20',\\n  '103.21.244.0/22', \\n  '103.22.200.0/22',\\n  '103.31.4.0/22',\\n  '141.101.64.0/18',\\n  '108.162.192.0/18',\\n  '190.93.240.0/20',\\n  '188.114.96.0/20',\\n  '197.234.240.0/22',\\n  '198.41.128.0/17',\\n  '162.158.0.0/15',\\n  '104.16.0.0/13',\\n  '104.24.0.0/14',\\n  '172.64.0.0/13',\\n  '131.0.72.0/22'\\n];\\n\\nfunction isCloudflareIP(ip) {\\n  const ipToNumber = (ip) => {\\n    return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;\\n  };\\n  \\n  const clientIP = ipToNumber(ip);\\n  \\n  for (const cidr of CLOUDFLARE_IPS) {\\n    const [network, prefixLength] = cidr.split('/');\\n    const mask = (0xFFFFFFFF << (32 - parseInt(prefixLength))) >>> 0;\\n    const networkIP = ipToNumber(network);\\n    \\n    if ((clientIP & mask) === networkIP) {\\n      return true;\\n    }\\n  }\\n  \\n  return false;\\n}\\n\\nfunction applyHeaders(req, res, options = {}) {\\n  // X-Frame-Options: DENY (security baseline requirement)\\n  res.setHeader(\\\"X-Frame-Options\\\", \\\"DENY\\\");\\n  \\n  // Strict-Transport-Security with 1 year max-age, includeSubDomains, and preload\\n  res.setHeader(\\\"Strict-Transport-Security\\\", \\\"max-age=31536000; includeSubDomains; preload\\\");\\n  \\n  // X-Content-Type-Options: nosniff (required on ALL responses)\\n  res.setHeader(\\\"X-Content-Type-Options\\\", \\\"nosniff\\\");\\n  \\n  // Cache-Control: no-store for authenticated responses only\\n  if (options.authenticated) {\\n    res.setHeader(\\\"Cache-Control\\\", \\\"no-store\\\");\\n  }\\n  \\n  // Referrer-Policy: strict-origin-when-cross-origin\\n  res.setHeader(\\\"Referrer-Policy\\\", \\\"strict-origin-when-cross-origin\\\");\\n  \\n  // Permissions-Policy: deny camera, microphone, geolocation\\n  res.setHeader(\\\"Permissions-Policy\\\", \\\"camera=(), microphone=(), geolocation=()\\\");\\n}\\n\\nfunction getTrustedClientIP(req) {\\n  const remoteAddress = req.socket?.remoteAddress;\\n  \\n  if (!remoteAddress) {\\n    return \\\"unknown\\\";\\n  }\\n  \\n  // Only trust X-Forwarded-For if the direct connection comes from Cloudflare\\n  if (isCloudflareIP(remoteAddress)) {\\n    const xff = req.headers[\\\"x-forwarded-for\\\"];\\n    if (xff) {\\n      return xff.split(\\\",\\\")[0].trim();\\n    }\\n  }\\n  \\n  // If not from Cloudflare, use the direct connection IP\\n  return remoteAddress;\\n}\\n\\nmodule.exports = { applyHeaders, getTrustedClientIP };\"\n    }\n  ],\n  \"note\": \"Fixed security headers after NGINX decommission: set X-Frame-Options to DENY, added all missing required headers (HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy), set Cache-Control no-store only for authenticated responses, and fixed getTrustedClientIP to only trust X-Forwarded-For from Cloudflare IPs\"\n}\n```",
+      "timestamp": "2026-04-19T17:10:16.221477"
+    }
+  ]
+}

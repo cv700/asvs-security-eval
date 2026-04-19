@@ -1,0 +1,10 @@
+{
+  "name": "user-data-management",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "User data management API with deletion and retention compliance",
+  "main": "deletion.js",
+  "scripts": {
+    "test": "node --test public.test.js"
+  }
+}

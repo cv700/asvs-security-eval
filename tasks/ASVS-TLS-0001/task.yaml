@@ -1,0 +1,76 @@
+task_id: ASVS-TLS-0001
+suite_id: asvs_security_lab
+title: TLS certificate rotation with hidden chain-completeness, OCSP, and HSTS-continuity contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/CERTIFICATE_ROTATION_RUNBOOK.md
+  - repo_snapshot/CLIENT_INTEGRATION_GUIDE.md
+  - repo_snapshot/TLS_BASELINE.md
+  - repo_snapshot/package.json
+  - repo_snapshot/tls-config.js
+  - repo_snapshot/server.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/CERTIFICATE_ROTATION_RUNBOOK.md
+  - repo_snapshot/CLIENT_INTEGRATION_GUIDE.md
+  - repo_snapshot/TLS_BASELINE.md
+allowed_edit_globs:
+  - "tls-config.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: full_chain_with_intermediate
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden TLS chain includes intermediate CA certificate
+      - hidden_task_test.js
+  - id: ocsp_stapling_configured
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden OCSP stapling is enabled
+      - hidden_task_test.js
+  - id: hsts_not_reduced
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden HSTS maintains preload eligibility during rotation
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - tls
+  - certificate_rotation
+  - hsts
+  - ocsp
+  - owasp_asvs_v12
+evidence_status: not_tested
+probe_status: not_tested

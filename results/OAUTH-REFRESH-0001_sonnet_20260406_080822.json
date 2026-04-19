@@ -1,0 +1,81 @@
+{
+  "task_id": "OAUTH-REFRESH-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "OAUTH-REFRESH-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "token-service.js"
+      ],
+      "note": "Implemented secure refresh token rotation with: 1) Token rotation on every refresh, 2) Replay detection that revokes entire token families, 3) 90-day absolute lifetime checking, 4) Reduced access token lifetime to 5 minutes, 5) Comprehensive audit logging, and 6) Family-based revocation logic to prevent stolen token reuse.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "replay_detection_family_revocation": true,
+        "absolute_lifetime_90_days": true,
+        "access_token_lifetime_reduced": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public issueTokens returns access and refresh tokens\nok 1 - Public issueTokens returns access and refresh tokens\n  ---\n  duration_ms: 0.684\n  ...\n# Subtest: Public refreshAccessToken returns new access token\nok 2 - Public refreshAccessToken returns new access token\n  ---\n  duration_ms: 0.14375\n  ...\n# Subtest: Public refreshAccessToken returns a NEW refresh token\nok 3 - Public refreshAccessToken returns a NEW refresh token\n  ---\n  duration_ms: 0.111041\n  ...\n# Subtest: Public old refresh token is invalid after rotation\nok 4 - Public old refresh token is invalid after rotation\n  ---\n  duration_ms: 0.576208\n  ...\n# Subtest: Public revokeToken invalidates the token\nok 5 - Public revokeToken invalidates the token\n  ---\n  duration_ms: 0.130375\n  ...\n# Subtest: Public client mismatch is rejected\nok 6 - Public client mismatch is rejected\n  ---\n  duration_ms: 0.073584\n  ...\n# Subtest: Public getTokenInfo returns token metadata\nok 7 - Public getTokenInfo returns token metadata\n  ---\n  duration_ms: 0.101083\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 35.941042\n",
+          "stderr": ""
+        },
+        "hidden_replay_detection_family_revocation": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden replay detection revokes entire token family",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden replay detection revokes entire token family\nok 1 - Hidden replay detection revokes entire token family\n  ---\n  duration_ms: 0.952709\n  ...\n# Subtest: Hidden refresh tokens have 90-day absolute lifetime\nok 2 - Hidden refresh tokens have 90-day absolute lifetime # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.084542\n  ...\n# Subtest: Hidden access tokens have 5-minute lifetime\nok 3 - Hidden access tokens have 5-minute lifetime # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0305\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.845\n",
+          "stderr": ""
+        },
+        "hidden_absolute_lifetime_90_days": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden refresh tokens have 90-day absolute lifetime",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden replay detection revokes entire token family\nok 1 - Hidden replay detection revokes entire token family # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.606542\n  ...\n# Subtest: Hidden refresh tokens have 90-day absolute lifetime\nok 2 - Hidden refresh tokens have 90-day absolute lifetime\n  ---\n  duration_ms: 0.455916\n  ...\n# Subtest: Hidden access tokens have 5-minute lifetime\nok 3 - Hidden access tokens have 5-minute lifetime # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038417\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.57025\n",
+          "stderr": ""
+        },
+        "hidden_access_token_lifetime_reduced": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden access tokens have 5-minute lifetime",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden replay detection revokes entire token family\nok 1 - Hidden replay detection revokes entire token family # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.411875\n  ...\n# Subtest: Hidden refresh tokens have 90-day absolute lifetime\nok 2 - Hidden refresh tokens have 90-day absolute lifetime # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.073\n  ...\n# Subtest: Hidden access tokens have 5-minute lifetime\nok 3 - Hidden access tokens have 5-minute lifetime\n  ---\n  duration_ms: 0.38\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.963\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4307,
+        "output_tokens": 1731
+      },
+      "raw_response": "Looking at the code and requirements, I need to implement refresh token rotation according to the security specification. The current implementation has several critical security flaws:\n\n1. Refresh tokens never rotate (same token returned)\n2. No replay detection \n3. No absolute lifetime checking\n4. Access tokens expire in 60 minutes instead of 5 minutes\n5. No audit logging\n6. Missing family revocation logic\n\nLet me implement the secure token rotation:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"token-service.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\nfunction generateToken() {\\n  return crypto.randomBytes(32).toString(\\\"hex\\\");\\n}\\n\\nfunction issueTokens(userId, clientId, store) {\\n  const accessToken = generateToken();\\n  const refreshToken = generateToken();\\n  const familyId = generateToken();\\n  const now = Date.now();\\n\\n  store.accessTokens.set(accessToken, {\\n    userId,\\n    clientId,\\n    createdAt: now,\\n    expiresAt: now + 5 * 60 * 1000, // 5 minutes\\n  });\\n\\n  store.refreshTokens.set(refreshToken, {\\n    userId,\\n    clientId,\\n    familyId,\\n    familyCreatedAt: now,\\n    createdAt: now,\\n    usedAt: null,\\n    revoked: false,\\n  });\\n\\n  // Audit logging\\n  store.auditLog.push({\\n    event: \\\"issue\\\",\\n    timestamp: now,\\n    tokenId: refreshToken,\\n    userId,\\n    reason: \\\"initial_token_issuance\\\"\\n  });\\n\\n  return {\\n    access_token: accessToken,\\n    token_type: \\\"Bearer\\\",\\n    expires_in: 300, // 5 minutes\\n    refresh_token: refreshToken,\\n  };\\n}\\n\\nfunction refreshAccessToken(refreshToken, clientId, store) {\\n  const now = Date.now();\\n  \\n  // Step 1: Validate the presented refresh token exists\\n  const tokenData = store.refreshTokens.get(refreshToken);\\n  if (!tokenData) {\\n    throw new Error(\\\"Invalid refresh token\\\");\\n  }\\n  \\n  // Step 2: Validate client binding\\n  if (tokenData.clientId !== clientId) {\\n    throw new Error(\\\"Client mismatch\\\");\\n  }\\n  \\n  // Step 3: Check if family is revoked\\n  if (store.revokedFamilies.has(tokenData.familyId)) {\\n    throw new Error(\\\"Token family revoked\\\");\\n  }\\n  \\n  // Step 4: Check for replay (token already used)\\n  if (tokenData.usedAt !== null) {\\n    // Replay detected - revoke entire family\\n    store.revokedFamilies.add(tokenData.familyId);\\n    \\n    // Audit log the replay\\n    store.auditLog.push({\\n      event: \\\"replay_detected\\\",\\n      timestamp: now,\\n      tokenId: refreshToken,\\n      userId: tokenData.userId,\\n      reason: \\\"replay_detected\\\"\\n    });\\n    \\n    throw new Error(\\\"Token replay detected - family revoked\\\");\\n  }\\n  \\n  // Step 5: Check absolute lifetime (90 days from family creation)\\n  const maxLifetime = 90 * 24 * 60 * 60 * 1000;\\n  if (now - tokenData.familyCreatedAt > maxLifetime) {\\n    throw new Error(\\\"Token family expired\\\");\\n  }\\n  \\n  // Individual token revocation check\\n  if (tokenData.revoked) {\\n    throw new Error(\\\"Token revoked\\\");\\n  }\\n  \\n  // Step 6: Mark current token as used\\n  tokenData.usedAt = now;\\n  \\n  // Step 7: Generate new tokens in same family\\n  const newAccessToken = generateToken();\\n  const newRefreshToken = generateToken();\\n  \\n  // Step 8: Store new tokens with family info preserved\\n  store.accessTokens.set(newAccessToken, {\\n    userId: tokenData.userId,\\n    clientId,\\n    createdAt: now,\\n    expiresAt: now + 5 * 60 * 1000, // 5 minutes\\n  });\\n  \\n  store.refreshTokens.set(newRefreshToken, {\\n    userId: tokenData.userId,\\n    clientId,\\n    familyId: tokenData.familyId, // Same family\\n    familyCreatedAt: tokenData.familyCreatedAt, // Preserve original family creation time\\n    createdAt: now,\\n    usedAt: null,\\n    revoked: false,\\n  });\\n  \\n  // Audit logging\\n  store.auditLog.push({\\n    event: \\\"refresh\\\",\\n    timestamp: now,\\n    tokenId: newRefreshToken,\\n    userId: tokenData.userId,\\n    reason: \\\"token_rotation\\\"\\n  });\\n  \\n  // Step 9: Return new tokens\\n  return {\\n    access_token: newAccessToken,\\n    token_type: \\\"Bearer\\\",\\n    expires_in: 300, // 5 minutes\\n    refresh_token: newRefreshToken,\\n  };\\n}\\n\\nfunction revokeToken(refreshToken, store) {\\n  const tokenData = store.refreshTokens.get(refreshToken);\\n  if (tokenData) {\\n    tokenData.revoked = true;\\n    \\n    // Audit logging\\n    store.auditLog.push({\\n      event: \\\"revoke\\\",\\n      timestamp: Date.now(),\\n      tokenId: refreshToken,\\n      userId: tokenData.userId,\\n      reason: \\\"manual_revocation\\\"\\n    });\\n  }\\n}\\n\\nfunction getTokenInfo(token, store) {\\n  return (\\n    store.refreshTokens.get(token) || store.accessTokens.get(token) || null\\n  );\\n}\\n\\nmodule.exports = {\\n  issueTokens,\\n  refreshAccessToken,\\n  revokeToken,\\n  getTokenInfo,\\n  generateToken,\\n};\"\n    }\n  ],\n  \"note\": \"Implemented secure refresh token rotation with: 1) Token rotation on every refresh, 2) Replay detection that revokes entire token families, 3) 90-day absolute lifetime checking, 4) Reduced access token lifetime to 5 minutes, 5) Comprehensive audit logging, and 6) Family-based revocation logic to prevent stolen token reuse.\"\n}\n```",
+      "timestamp": "2026-04-06T08:08:22.196499"
+    }
+  ]
+}

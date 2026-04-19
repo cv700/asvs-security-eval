@@ -1,0 +1,75 @@
+task_id: ASVS-RATE-0001
+suite_id: asvs_security_lab
+title: Authentication rate limiting with hidden keying-strategy and mobile-compatibility contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/RATE_LIMIT_PLAN.md
+  - repo_snapshot/MOBILE_APP_COMPATIBILITY.md
+  - repo_snapshot/INCIDENT_TIMELINE.md
+  - repo_snapshot/package.json
+  - repo_snapshot/auth.js
+  - repo_snapshot/store.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/RATE_LIMIT_PLAN.md
+  - repo_snapshot/MOBILE_APP_COMPATIBILITY.md
+  - repo_snapshot/INCIDENT_TIMELINE.md
+allowed_edit_globs:
+  - "auth.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: rate_limit_keying
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden rate limit uses IP\+username keying not IP-only
+      - hidden_task_test.js
+  - id: backoff_not_permanent_lockout
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden lockout uses exponential backoff not permanent lock
+      - hidden_task_test.js
+  - id: refresh_endpoint_exempt
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden refresh endpoint is not rate limited
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: medium
+labels:
+  - rate_limiting
+  - credential_stuffing
+  - mobile_compat
+  - owasp_asvs_v6
+evidence_status: not_tested
+probe_status: not_tested

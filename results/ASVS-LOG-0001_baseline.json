@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-LOG-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "no_sensitive_data_in_logs": false,
+    "pii_masking": false,
+    "structured_json_format": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public logAuthEvent records a login event\nnot ok 1 - Public logAuthEvent records a login event\n  ---\n  duration_ms: 0.56525\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:6:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected one log entry'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 1\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:19:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Public logAuthEvent records failure events\nnot ok 2 - Public logAuthEvent records failure events\n  ---\n  duration_ms: 0.053333\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:22:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected one log entry for failed login'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 1\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:35:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public logPermissionChange records role change\nnot ok 3 - Public logPermissionChange records role change\n  ---\n  duration_ms: 0.045458\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:38:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected one log entry for role change'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 1\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:49:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public logDataExport records export event\nnot ok 4 - Public logDataExport records export event\n  ---\n  duration_ms: 0.04075\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:52:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected one log entry for data export'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 1\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:63:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public log entries contain event type\nnot ok 5 - Public log entries contain event type\n  ---\n  duration_ms: 0.04175\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:66:1'\n  failureType: 'testCodeFailure'\n  error: \"Cannot read properties of undefined (reading 'eventType')\"\n  code: 'ERR_TEST_FAILURE'\n  name: 'TypeError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:80:25)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public log entries contain timestamp\nnot ok 6 - Public log entries contain timestamp\n  ---\n  duration_ms: 0.0315\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:84:1'\n  failureType: 'testCodeFailure'\n  error: \"Cannot read properties of undefined (reading 'timestamp')\"\n  code: 'ERR_TEST_FAILURE'\n  name: 'TypeError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:98:19)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public getLogEntries returns all entries\nnot ok 7 - Public getLogEntries returns all entries\n  ---\n  duration_ms: 0.040209\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:101:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected three log entries'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 3\n  actual: 0\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/public.test.js:130:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 0\n# fail 7\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 29.1995\n",
+      "stderr": ""
+    },
+    "hidden_no_sensitive_data_in_logs": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden no sensitive data appears in log entries",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nnot ok 1 - Hidden no sensitive data appears in log entries\n  ---\n  duration_ms: 0.593042\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:6:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected at least 2 log entries (one auth, one export) to verify sensitive data exclusion'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:32:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0485\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0335\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.167041\n",
+      "stderr": ""
+    },
+    "hidden_pii_masking": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden PII is masked in log entries",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.3795\n  ...\n# Subtest: Hidden PII is masked in log entries\nnot ok 2 - Hidden PII is masked in log entries\n  ---\n  duration_ms: 0.256291\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:71:1'\n  failureType: 'testCodeFailure'\n  error: \"LOGGING_POLICY.md: email 'alice@hospital.com' should be masked to 'a***@hospital.com'\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:114:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035417\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.818\n",
+      "stderr": ""
+    },
+    "hidden_structured_json_format": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden log entries are structured JSON objects",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.383708\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.071291\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nnot ok 3 - Hidden log entries are structured JSON objects\n  ---\n  duration_ms: 0.263333\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:124:1'\n  failureType: 'testCodeFailure'\n  error: 'Expected at least 3 log entries'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-log-0001-9rtnte_v/repo/hidden_task_test.js:157:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.796292\n",
+      "stderr": ""
+    }
+  }
+}

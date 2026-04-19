@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-CORS-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-CORS-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "server.js"
+      ],
+      "note": "Implemented CORS middleware to allow cross-origin requests from app.example.com and admin.example.com. Added origin validation, credentials support, proper preflight handling, and Vary: Origin header for cache poisoning prevention. Excluded CORS headers from /health endpoint as required.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "vary_origin_cache_poisoning": true,
+        "health_endpoint_excluded": true,
+        "preflight_max_age_policy": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public CORS allows app.example.com origin\nok 1 - Public CORS allows app.example.com origin\n  ---\n  duration_ms: 6.746666\n  ...\n# Subtest: Public CORS allows admin.example.com origin\nok 2 - Public CORS allows admin.example.com origin\n  ---\n  duration_ms: 0.8805\n  ...\n# Subtest: Public CORS rejects unknown origin\nok 3 - Public CORS rejects unknown origin\n  ---\n  duration_ms: 1.170625\n  ...\n# Subtest: Public preflight returns 204 with CORS headers\nok 4 - Public preflight returns 204 with CORS headers\n  ---\n  duration_ms: 0.679208\n  ...\n# Subtest: Public API returns JSON for projects\nok 5 - Public API returns JSON for projects\n  ---\n  duration_ms: 0.640792\n  ...\n# Subtest: Public credentials header is set for allowed origin\nok 6 - Public credentials header is set for allowed origin\n  ---\n  duration_ms: 0.586083\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 48.766625\n",
+          "stderr": ""
+        },
+        "hidden_vary_origin_cache_poisoning": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CORS responses include Vary Origin to prevent cache poisoning",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning\n  ---\n  duration_ms: 5.968541\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.113458\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.039042\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 38.631416\n",
+          "stderr": ""
+        },
+        "hidden_health_endpoint_excluded": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden health endpoint excluded from CORS",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.314334\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS\n  ---\n  duration_ms: 5.148625\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.070292\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.384584\n",
+          "stderr": ""
+        },
+        "hidden_preflight_max_age_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden preflight max-age respects policy limit",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.308333\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.055917\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit\n  ---\n  duration_ms: 5.388334\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.003208\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4814,
+        "output_tokens": 1539
+      },
+      "raw_response": "Looking at the requirements, I need to implement CORS support in the `handleCORS` function to allow cross-origin requests from `https://app.example.com` and `https://admin.example.com`. Based on the policy documents and tests, I need to:\n\n1. Check if the Origin header matches allowed origins\n2. Set appropriate CORS headers for allowed origins only\n3. Include `Vary: Origin` to prevent cache poisoning\n4. Support credentials with `Access-Control-Allow-Credentials: true`\n5. Handle preflight requests properly\n6. Exclude CORS headers from the `/health` endpoint\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"server.js\",\n      \"content\": \"const http = require(\\\"node:http\\\");\\nconst routes = require(\\\"./routes\\\");\\n\\n// Allowed origins for CORS requests\\nconst ALLOWED_ORIGINS = [\\n  \\\"https://app.example.com\\\",\\n  \\\"https://admin.example.com\\\"\\n];\\n\\nfunction handleCORS(req, res) {\\n  const origin = req.headers.origin;\\n  const path = new URL(req.url, `http://${req.headers.host || \\\"localhost\\\"}`).pathname;\\n  \\n  // Health endpoint must not include CORS headers (internal endpoint)\\n  if (path === \\\"/health\\\") {\\n    return;\\n  }\\n  \\n  // Check if origin is allowed\\n  if (origin && ALLOWED_ORIGINS.includes(origin)) {\\n    // Set CORS headers for allowed origins\\n    res.setHeader(\\\"Access-Control-Allow-Origin\\\", origin);\\n    res.setHeader(\\\"Access-Control-Allow-Credentials\\\", \\\"true\\\");\\n    res.setHeader(\\\"Access-Control-Allow-Methods\\\", \\\"GET, POST, PUT, DELETE, OPTIONS\\\");\\n    res.setHeader(\\\"Access-Control-Allow-Headers\\\", \\\"Content-Type, Authorization, X-Request-ID\\\");\\n    res.setHeader(\\\"Access-Control-Max-Age\\\", \\\"3600\\\");\\n    \\n    // Prevent cache poisoning by varying on Origin\\n    res.setHeader(\\\"Vary\\\", \\\"Origin\\\");\\n  }\\n}\\n\\nfunction parseBody(req) {\\n  return new Promise((resolve) => {\\n    const chunks = [];\\n    req.on(\\\"data\\\", (chunk) => chunks.push(chunk));\\n    req.on(\\\"end\\\", () => {\\n      if (chunks.length === 0) return resolve({});\\n      try {\\n        resolve(JSON.parse(Buffer.concat(chunks).toString()));\\n      } catch {\\n        resolve({});\\n      }\\n    });\\n  });\\n}\\n\\nfunction sendJSON(res, statusCode, data) {\\n  res.writeHead(statusCode, { \\\"Content-Type\\\": \\\"application/json\\\" });\\n  res.end(JSON.stringify(data));\\n}\\n\\nasync function handleRequest(req, res) {\\n  const url = new URL(req.url, `http://${req.headers.host || \\\"localhost\\\"}`);\\n  const path = url.pathname;\\n  const method = req.method;\\n\\n  // Apply CORS middleware\\n  handleCORS(req, res);\\n\\n  // Handle preflight\\n  if (method === \\\"OPTIONS\\\") {\\n    res.writeHead(204);\\n    res.end();\\n    return;\\n  }\\n\\n  // Route matching\\n  if (path === \\\"/health\\\" && method === \\\"GET\\\") {\\n    const result = routes.healthCheck();\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  if (path === \\\"/api/projects\\\" && method === \\\"GET\\\") {\\n    const result = routes.listProjects(req);\\n    if (result.error) return sendJSON(res, result.status, { error: result.error });\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  if (path === \\\"/api/projects\\\" && method === \\\"POST\\\") {\\n    const body = await parseBody(req);\\n    const result = routes.createProject(req, body);\\n    if (result.error) return sendJSON(res, result.status, { error: result.error });\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  const projectMatch = path.match(/^\\\\/api\\\\/projects\\\\/(\\\\d+)$/);\\n  if (projectMatch) {\\n    const id = projectMatch[1];\\n    if (method === \\\"GET\\\") {\\n      const result = routes.getProject(req, id);\\n      if (result.error) return sendJSON(res, result.status, { error: result.error });\\n      sendJSON(res, result.status, result.data);\\n      return;\\n    }\\n    if (method === \\\"DELETE\\\") {\\n      const result = routes.deleteProject(req, id);\\n      if (result.error) return sendJSON(res, result.status, { error: result.error });\\n      sendJSON(res, result.status, result.data);\\n      return;\\n    }\\n  }\\n\\n  sendJSON(res, 404, { error: \\\"Not found\\\" });\\n}\\n\\nfunction createTestServer() {\\n  return http.createServer(handleRequest);\\n}\\n\\nfunction startServer(port) {\\n  const server = createTestServer();\\n  server.listen(port, () => {\\n    console.log(`ProjectBoard API listening on port ${port}`);\\n  });\\n  return server;\\n}\\n\\nif (require.main === module) {\\n  startServer(3000);\\n}\\n\\nmodule.exports = { createTestServer, startServer };\"\n    }\n  ],\n  \"note\": \"Implemented CORS middleware to allow cross-origin requests from app.example.com and admin.example.com. Added origin validation, credentials support, proper preflight handling, and Vary: Origin header for cache poisoning prevention. Excluded CORS headers from /health endpoint as required.\"\n}\n```",
+      "timestamp": "2026-04-06T10:23:37.825461"
+    }
+  ]
+}

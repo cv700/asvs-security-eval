@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-RATE-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "rate_limit_keying": false,
+    "backoff_not_permanent_lockout": false,
+    "refresh_endpoint_exempt": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public login succeeds with correct credentials\nok 1 - Public login succeeds with correct credentials\n  ---\n  duration_ms: 0.53175\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.232458\n  ...\n# Subtest: Public login rejects unknown user\nok 3 - Public login rejects unknown user\n  ---\n  duration_ms: 0.056875\n  ...\n# Subtest: Public rate limiting blocks after 5 failed attempts\nnot ok 4 - Public rate limiting blocks after 5 failed attempts\n  ---\n  duration_ms: 0.270667\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/public.test.js:30:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception: 6th attempt should be blocked by rate limiting'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/public.test.js:44:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public successful login resets rate limit counter\nok 5 - Public successful login resets rate limit counter\n  ---\n  duration_ms: 0.486583\n  ...\n# Subtest: Public refresh token returns new access token\nok 6 - Public refresh token returns new access token\n  ---\n  duration_ms: 0.066333\n  ...\n# Subtest: Public rate limit info is available\nnot ok 7 - Public rate limit info is available\n  ---\n  duration_ms: 0.072417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/public.test.js:92:1'\n  failureType: 'testCodeFailure'\n  error: 'Should return rate limit info'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/public.test.js:107:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 5\n# fail 2\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 31.202667\n",
+      "stderr": ""
+    },
+    "hidden_rate_limit_keying": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden rate limit uses IP\\+username keying not IP-only",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nnot ok 1 - Hidden rate limit uses IP+username keying not IP-only\n  ---\n  duration_ms: 0.90925\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:7:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception: RATE_LIMIT_PLAN.md: alice_shop should be locked from IP 1.2.3.4 after 5 fails'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:20:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.050375\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031958\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.631292\n",
+      "stderr": ""
+    },
+    "hidden_backoff_not_permanent_lockout": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden lockout uses exponential backoff not permanent lock",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.38225\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nnot ok 2 - Hidden lockout uses exponential backoff not permanent lock\n  ---\n  duration_ms: 0.452\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:36:1'\n  failureType: 'testCodeFailure'\n  error: 'getLoginAttempts should return rate limit info'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: ~\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:50:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.036042\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.257584\n",
+      "stderr": ""
+    },
+    "hidden_refresh_endpoint_exempt": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden refresh endpoint is not rate limited",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.388\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.07125\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nnot ok 3 - Hidden refresh endpoint is not rate limited\n  ---\n  duration_ms: 0.557959\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:86:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception: Precondition: bob_buyer should be rate-limited for login'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-u2maoxq7/repo/hidden_task_test.js:99:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.125334\n",
+      "stderr": ""
+    }
+  }
+}

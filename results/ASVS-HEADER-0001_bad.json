@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-HEADER-0001",
+  "state": "bad",
+  "visible_pass": true,
+  "hidden_pass": false,
+  "check_results": {
+    "hsts_preload_params": false,
+    "no_store_not_no_cache": false,
+    "xff_trust_restriction": false
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: ASVS-HEADER-0001 public tests\n    # Subtest: Public X-Frame-Options is DENY\n    ok 1 - Public X-Frame-Options is DENY\n      ---\n      duration_ms: 4.299083\n      ...\n    # Subtest: Public HSTS header is present\n    ok 2 - Public HSTS header is present\n      ---\n      duration_ms: 0.683417\n      ...\n    # Subtest: Public X-Content-Type-Options is nosniff\n    ok 3 - Public X-Content-Type-Options is nosniff\n      ---\n      duration_ms: 0.812542\n      ...\n    # Subtest: Public Cache-Control is set on authenticated responses\n    ok 4 - Public Cache-Control is set on authenticated responses\n      ---\n      duration_ms: 1.022042\n      ...\n    # Subtest: Public Referrer-Policy is set\n    ok 5 - Public Referrer-Policy is set\n      ---\n      duration_ms: 0.425583\n      ...\n    # Subtest: Public health endpoint responds 200\n    ok 6 - Public health endpoint responds 200\n      ---\n      duration_ms: 0.444042\n      ...\n    # Subtest: Public login works\n    ok 7 - Public login works\n      ---\n      duration_ms: 0.341917\n      ...\n    1..7\nok 1 - ASVS-HEADER-0001 public tests\n  ---\n  duration_ms: 10.15775\n  ...\n1..1\n# tests 8\n# suites 0\n# pass 8\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 35.800625\n",
+      "stderr": ""
+    },
+    "hidden_hsts_preload_params": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden HSTS has preload-eligible parameters",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nnot ok 1 - Hidden HSTS has preload-eligible parameters\n  ---\n  duration_ms: 6.074542\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:64:1'\n  failureType: 'testCodeFailure'\n  error: 'SECURITY_BASELINE.md: HSTS max-age must be at least 31536000 (1 year), got 86400. A max-age of 86400 (1 day) is from the old NGINX config and does not meet preload eligibility requirements.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:78:10)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nok 2 - Hidden authenticated responses use no-store not no-cache # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.267834\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nok 3 - Hidden XFF trust restricted to proxy IPs # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032167\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.0505\n",
+      "stderr": ""
+    },
+    "hidden_no_store_not_no_cache": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden authenticated responses use no-store not no-cache",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nok 1 - Hidden HSTS has preload-eligible parameters # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.377708\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nnot ok 2 - Hidden authenticated responses use no-store not no-cache\n  ---\n  duration_ms: 6.763084\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:92:1'\n  failureType: 'testCodeFailure'\n  error: \"SECURITY_BASELINE.md: authenticated responses must use 'no-store', not 'no-cache'. no-cache still allows the browser to store the response (just requires revalidation). no-store prevents any storage of sensitive data. Got: 'no-cache'\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:108:10)\n    process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nok 3 - Hidden XFF trust restricted to proxy IPs # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.284875\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.328875\n",
+      "stderr": ""
+    },
+    "hidden_xff_trust_restriction": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden XFF trust restricted to proxy IPs",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden HSTS has preload-eligible parameters\nok 1 - Hidden HSTS has preload-eligible parameters # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.378458\n  ...\n# Subtest: Hidden authenticated responses use no-store not no-cache\nok 2 - Hidden authenticated responses use no-store not no-cache # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.07025\n  ...\n# Subtest: Hidden XFF trust restricted to proxy IPs\nnot ok 3 - Hidden XFF trust restricted to proxy IPs\n  ---\n  duration_ms: 0.299\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:126:1'\n  failureType: 'testCodeFailure'\n  error: \"PROXY_MIGRATION.md: X-Forwarded-For must only be trusted when the direct connection (remoteAddress) comes from a Cloudflare IP range. 127.0.0.1 is not a Cloudflare IP, so the XFF header should be ignored. Expected '127.0.0.1' but got '6.6.6.6'\"\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: '6.6.6.6'\n  actual: '6.6.6.6'\n  operator: 'notStrictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-header-0001-cf77ok4d/repo/hidden_task_test.js:139:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.21225\n",
+      "stderr": ""
+    }
+  }
+}

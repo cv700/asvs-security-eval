@@ -1,0 +1,75 @@
+task_id: ASVS-COOKIE-0001
+suite_id: asvs_security_lab
+title: Cookie security configuration with hidden HttpOnly, SameSite, and Host-prefix contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/HTTPS_MIGRATION.md
+  - repo_snapshot/SECURITY_AUDIT.md
+  - repo_snapshot/LOAD_BALANCER_CONFIG.md
+  - repo_snapshot/package.json
+  - repo_snapshot/session.js
+  - repo_snapshot/app.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/HTTPS_MIGRATION.md
+  - repo_snapshot/SECURITY_AUDIT.md
+  - repo_snapshot/LOAD_BALANCER_CONFIG.md
+allowed_edit_globs:
+  - "session.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: httponly_samesite_flags
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden session cookies have HttpOnly and SameSite flags
+      - hidden_task_test.js
+  - id: host_prefix_usage
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden session cookies use __Host- prefix
+      - hidden_task_test.js
+  - id: domain_scoping
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden session middleware accepts legacy cookie name during transition
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - cookie_security
+  - https_migration
+  - session_management
+  - owasp_asvs_v7
+evidence_status: not_tested
+probe_status: not_tested

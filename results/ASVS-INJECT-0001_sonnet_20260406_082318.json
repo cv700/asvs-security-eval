@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-INJECT-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-INJECT-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "content.js"
+      ],
+      "note": "Fixed SQL injection by converting all query functions from db.unsafeQuery() to parameterized db.query() calls. Added HTML entity encoding in renderPost() to prevent XSS. Implemented ORDER BY allowlist validation in listPosts() to prevent injection via sort parameter.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "all_queries_parameterized": true,
+        "output_encoding": true,
+        "orderby_allowlist": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public search returns matching posts\nok 1 - Public search returns matching posts\n  ---\n  duration_ms: 0.548125\n  ...\n# Subtest: Public search injection is prevented\nok 2 - Public search injection is prevented\n  ---\n  duration_ms: 0.058\n  ...\n# Subtest: Public getPost returns correct post\nok 3 - Public getPost returns correct post\n  ---\n  duration_ms: 0.05825\n  ...\n# Subtest: Public getPostsByAuthor works\nok 4 - Public getPostsByAuthor works\n  ---\n  duration_ms: 0.055125\n  ...\n# Subtest: Public listPosts returns all posts\nok 5 - Public listPosts returns all posts\n  ---\n  duration_ms: 4.770333\n  ...\n# Subtest: Public renderPost returns post data\nok 6 - Public renderPost returns post data\n  ---\n  duration_ms: 0.117791\n  ...\n# Subtest: Public updatePost works\nok 7 - Public updatePost works\n  ---\n  duration_ms: 0.065417\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 41.841917\n",
+          "stderr": ""
+        },
+        "hidden_all_queries_parameterized": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden all queries use parameterized method",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method\n  ---\n  duration_ms: 4.5795\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.041292\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.029167\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 37.524375\n",
+          "stderr": ""
+        },
+        "hidden_output_encoding": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden output encoding prevents XSS",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.3885\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS\n  ---\n  duration_ms: 0.2115\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.039375\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.054042\n",
+          "stderr": ""
+        },
+        "hidden_orderby_allowlist": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden ORDER BY uses allowlist validation",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.408417\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.078209\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation\n  ---\n  duration_ms: 4.608083\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.874917\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4293,
+        "output_tokens": 749
+      },
+      "raw_response": "Looking at the code and security requirements, I need to fix several vulnerabilities:\n\n1. **SQL Injection**: All query functions use `db.unsafeQuery()` with string concatenation\n2. **XSS**: The `renderPost` function doesn't encode HTML entities\n3. **ORDER BY Injection**: The `listPosts` function doesn't validate the orderBy parameter\n\nI'll fix these by:\n- Converting all queries to use `db.query()` with parameterized queries\n- Adding HTML entity encoding in `renderPost`\n- Implementing ORDER BY allowlist validation\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"content.js\",\n      \"content\": \"const db = require(\\\"./db\\\");\\n\\nfunction searchPosts(searchQuery, orderBy) {\\n  const result = db.query(\\\"search\\\", { query: searchQuery });\\n  return result;\\n}\\n\\nfunction getPost(id) {\\n  const result = db.query(\\\"getById\\\", { id: id });\\n  return result[0] || null;\\n}\\n\\nfunction getPostsByAuthor(author) {\\n  const result = db.query(\\\"getByAuthor\\\", { author: author });\\n  return result;\\n}\\n\\nfunction listPosts(orderBy) {\\n  // Validate orderBy against allowlist\\n  const allowedColumns = [\\\"id\\\", \\\"title\\\", \\\"author\\\", \\\"category\\\", \\\"status\\\"];\\n  const validOrderBy = allowedColumns.includes(orderBy) ? orderBy : \\\"id\\\";\\n  \\n  const result = db.query(\\\"listAll\\\", { orderBy: validOrderBy });\\n  return result;\\n}\\n\\nfunction renderPost(post) {\\n  // HTML entity encoding to prevent XSS\\n  function htmlEncode(str) {\\n    if (typeof str !== 'string') return str;\\n    return str\\n      .replace(/&/g, '&amp;')\\n      .replace(/</g, '&lt;')\\n      .replace(/>/g, '&gt;')\\n      .replace(/\\\"/g, '&quot;')\\n      .replace(/'/g, '&#x27;');\\n  }\\n\\n  return {\\n    id: post.id,\\n    title: htmlEncode(post.title),\\n    body: htmlEncode(post.body),\\n    author: post.author,\\n  };\\n}\\n\\nfunction updatePost(id, fields) {\\n  // Uses safe query (already fine)\\n  return db.query(\\\"update\\\", { id, fields });\\n}\\n\\nmodule.exports = { searchPosts, getPost, getPostsByAuthor, listPosts, renderPost, updatePost };\"\n    }\n  ],\n  \"note\": \"Fixed SQL injection by converting all query functions from db.unsafeQuery() to parameterized db.query() calls. Added HTML entity encoding in renderPost() to prevent XSS. Implemented ORDER BY allowlist validation in listPosts() to prevent injection via sort parameter.\"\n}\n```",
+      "timestamp": "2026-04-06T08:23:18.846176"
+    }
+  ]
+}

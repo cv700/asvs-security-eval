@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-RATE-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "ablation",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-RATE-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": true,
+      "applied_paths": [
+        "auth.js"
+      ],
+      "note": "Added rate limiting to prevent credential stuffing attacks. Tracks failed login attempts per username+ip combination, blocks after 5 failures, and resets counter on successful login. Uses composite key approach to limit per-user rather than globally.",
+      "visible_pass": true,
+      "hidden_pass": false,
+      "check_results": {
+        "rate_limit_keying": true,
+        "backoff_not_permanent_lockout": false,
+        "refresh_endpoint_exempt": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public login succeeds with correct credentials\nok 1 - Public login succeeds with correct credentials\n  ---\n  duration_ms: 0.632084\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.261083\n  ...\n# Subtest: Public login rejects unknown user\nok 3 - Public login rejects unknown user\n  ---\n  duration_ms: 0.055167\n  ...\n# Subtest: Public rate limiting blocks after 5 failed attempts\nok 4 - Public rate limiting blocks after 5 failed attempts\n  ---\n  duration_ms: 0.1245\n  ...\n# Subtest: Public successful login resets rate limit counter\nok 5 - Public successful login resets rate limit counter\n  ---\n  duration_ms: 0.41325\n  ...\n# Subtest: Public refresh token returns new access token\nok 6 - Public refresh token returns new access token\n  ---\n  duration_ms: 0.050917\n  ...\n# Subtest: Public rate limit info is available\nok 7 - Public rate limit info is available\n  ---\n  duration_ms: 0.064292\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 36.531375\n",
+          "stderr": ""
+        },
+        "hidden_rate_limit_keying": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden rate limit uses IP\\+username keying not IP-only",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only\n  ---\n  duration_ms: 0.789125\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.073542\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.029917\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.082584\n",
+          "stderr": ""
+        },
+        "hidden_backoff_not_permanent_lockout": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden lockout uses exponential backoff not permanent lock",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.399042\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nnot ok 2 - Hidden lockout uses exponential backoff not permanent lock\n  ---\n  duration_ms: 0.476833\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-claude-_n2rm5d_/repo/hidden_task_test.js:36:1'\n  failureType: 'testCodeFailure'\n  error: 'RATE_LIMIT_PLAN.md: lockedUntil must be a positive timestamp (not permanent)'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-rate-0001-claude-_n2rm5d_/repo/hidden_task_test.js:54:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03475\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.11775\n",
+          "stderr": ""
+        },
+        "hidden_refresh_endpoint_exempt": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden refresh endpoint is not rate limited",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden rate limit uses IP+username keying not IP-only\nok 1 - Hidden rate limit uses IP+username keying not IP-only # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.41025\n  ...\n# Subtest: Hidden lockout uses exponential backoff not permanent lock\nok 2 - Hidden lockout uses exponential backoff not permanent lock # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.073417\n  ...\n# Subtest: Hidden refresh endpoint is not rate limited\nok 3 - Hidden refresh endpoint is not rate limited\n  ---\n  duration_ms: 0.47325\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.516625\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 2393,
+        "output_tokens": 1095
+      },
+      "raw_response": "Looking at the task and test requirements, I need to implement rate limiting in the auth.js file to prevent credential stuffing attacks. Let me analyze what's needed:\n\n1. The test expects rate limiting after 5 failed attempts\n2. Successful login should reset the counter\n3. Rate limit info should be available via getLoginAttempts\n4. The rate limiting should use username+ip as the key (based on the test and function signature)\n\nLet me examine the test patterns:\n- After 5 failed attempts, the 6th attempt (even with correct credentials) should be blocked\n- The error message should contain words like \"rate\", \"limit\", \"locked\", or \"too many\"\n- Successful login resets the counter\n- getLoginAttempts should return an object with an \"attempts\" property\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"auth.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n// Rate limiting implementation to stop credential stuffing attacks\\n// Uses username+ip composite key for tracking attempts\\n// Blocks after 5 failed attempts, resets on successful login\\n\\nfunction generateToken() {\\n  return crypto.randomBytes(32).toString(\\\"hex\\\");\\n}\\n\\nfunction getRateLimitKey(username, ip) {\\n  return `${username}:${ip}`;\\n}\\n\\nfunction login(username, password, ip, store) {\\n  const rateLimitKey = getRateLimitKey(username, ip);\\n  const rateLimitData = store.rateLimits.get(rateLimitKey);\\n  \\n  // Check if currently rate limited\\n  if (rateLimitData && rateLimitData.attempts >= 5) {\\n    throw new Error(\\\"Too many failed attempts. Account temporarily locked.\\\");\\n  }\\n  \\n  const user = store.users.get(username);\\n  if (!user) {\\n    // Track failed attempt\\n    const currentData = store.rateLimits.get(rateLimitKey) || { attempts: 0, lastAttempt: 0 };\\n    store.rateLimits.set(rateLimitKey, {\\n      attempts: currentData.attempts + 1,\\n      lastAttempt: Date.now()\\n    });\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  if (user.password !== password) {\\n    // Track failed attempt\\n    const currentData = store.rateLimits.get(rateLimitKey) || { attempts: 0, lastAttempt: 0 };\\n    store.rateLimits.set(rateLimitKey, {\\n      attempts: currentData.attempts + 1,\\n      lastAttempt: Date.now()\\n    });\\n    throw new Error(\\\"Invalid credentials\\\");\\n  }\\n\\n  // Successful login - reset rate limit counter\\n  store.rateLimits.delete(rateLimitKey);\\n\\n  const token = generateToken();\\n  const refreshToken = generateToken();\\n\\n  store.sessions.set(refreshToken, {\\n    username,\\n    type: \\\"refresh\\\",\\n    createdAt: Date.now(),\\n  });\\n\\n  return { token, refreshToken };\\n}\\n\\nfunction refreshToken(token, store) {\\n  const session = store.sessions.get(token);\\n  if (!session || session.type !== \\\"refresh\\\") {\\n    throw new Error(\\\"Invalid refresh token\\\");\\n  }\\n\\n  const newToken = generateToken();\\n  return { token: newToken };\\n}\\n\\nfunction getLoginAttempts(username, ip, store) {\\n  const rateLimitKey = getRateLimitKey(username, ip);\\n  const rateLimitData = store.rateLimits.get(rateLimitKey);\\n  \\n  if (!rateLimitData) {\\n    return null;\\n  }\\n  \\n  return {\\n    attempts: rateLimitData.attempts,\\n    lastAttempt: rateLimitData.lastAttempt\\n  };\\n}\\n\\nmodule.exports = { login, refreshToken, getLoginAttempts };\"\n    }\n  ],\n  \"note\": \"Added rate limiting to prevent credential stuffing attacks. Tracks failed login attempts per username+ip combination, blocks after 5 failures, and resets counter on successful login. Uses composite key approach to limit per-user rather than globally.\"\n}\n```",
+      "timestamp": "2026-04-06T09:31:13.500611"
+    }
+  ]
+}

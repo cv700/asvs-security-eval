@@ -1,0 +1,75 @@
+task_id: ASVS-CSP-0001
+suite_id: asvs_security_lab
+title: Content Security Policy with hidden nonce-based scripts, report-only mode, and framing contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/CSP_DEPLOYMENT_PLAN.md
+  - repo_snapshot/CDN_MIGRATION.md
+  - repo_snapshot/ANALYTICS_TEAM_NOTES.md
+  - repo_snapshot/package.json
+  - repo_snapshot/middleware.js
+  - repo_snapshot/app.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/CSP_DEPLOYMENT_PLAN.md
+  - repo_snapshot/CDN_MIGRATION.md
+  - repo_snapshot/ANALYTICS_TEAM_NOTES.md
+allowed_edit_globs:
+  - "middleware.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: nonce_not_unsafe_inline
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden CSP uses nonces not unsafe-inline
+      - hidden_task_test.js
+  - id: report_only_mode
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden CSP deployed in report-only mode
+      - hidden_task_test.js
+  - id: frame_ancestors_and_base_uri
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden CSP includes frame-ancestors and base-uri
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - csp
+  - content_security_policy
+  - cdn
+  - owasp_asvs_v3
+evidence_status: not_tested
+probe_status: not_tested

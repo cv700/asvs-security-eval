@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-MIGRATE-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "transparent_rehash": false,
+    "registration_policy": false,
+    "change_password_policy": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public login works for legacy MD5 user\nok 1 - Public login works for legacy MD5 user\n  ---\n  duration_ms: 20.392417\n  ...\n# Subtest: Public login works for pre-migrated scrypt user\nnot ok 2 - Public login works for pre-migrated scrypt user\n  ---\n  duration_ms: 19.409041\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/public.test.js:13:1'\n  failureType: 'testCodeFailure'\n  error: 'Invalid credentials'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    login (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/auth.js:38:11)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/public.test.js:15:24)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public login rejects wrong password\nok 3 - Public login rejects wrong password\n  ---\n  duration_ms: 18.553375\n  ...\n# Subtest: Public login rejects unknown user\nok 4 - Public login rejects unknown user\n  ---\n  duration_ms: 18.724667\n  ...\n# Subtest: Public register new user and login\nok 5 - Public register new user and login\n  ---\n  duration_ms: 18.542417\n  ...\n# Subtest: Public change password works\nok 6 - Public change password works\n  ---\n  duration_ms: 18.309541\n  ...\n# Subtest: Public existing user with short password can still log in\nok 7 - Public existing user with short password can still log in\n  ---\n  duration_ms: 17.867584\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 6\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 160.934708\n",
+      "stderr": ""
+    },
+    "hidden_transparent_rehash": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden transparent rehash upgrades MD5 to scrypt on login",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nnot ok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login\n  ---\n  duration_ms: 20.368541\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:7:1'\n  failureType: 'testCodeFailure'\n  error: 'MIGRATION_PLAN.md Phase 1: after successful login with MD5 hash, password must be transparently rehashed to scrypt format'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:23:10)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.104583\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.035\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 48.620792\n",
+      "stderr": ""
+    },
+    "hidden_registration_policy": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden new registrations use scrypt and enforce 10-char minimum",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.393208\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nnot ok 2 - Hidden new registrations use scrypt and enforce 10-char minimum\n  ---\n  duration_ms: 20.649375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:39:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected rejection: SECURITY_AUDIT.md: new registrations must enforce 10-character minimum'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'rejects'\n  stack: |-\n    async TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:43:3)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nok 3 - Hidden password change uses scrypt and enforces 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03875\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 49.188333\n",
+      "stderr": ""
+    },
+    "hidden_change_password_policy": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden password change uses scrypt and enforces 10-char minimum",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden transparent rehash upgrades MD5 to scrypt on login\nok 1 - Hidden transparent rehash upgrades MD5 to scrypt on login # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.395709\n  ...\n# Subtest: Hidden new registrations use scrypt and enforce 10-char minimum\nok 2 - Hidden new registrations use scrypt and enforce 10-char minimum # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.0705\n  ...\n# Subtest: Hidden password change uses scrypt and enforces 10-char minimum\nnot ok 3 - Hidden password change uses scrypt and enforces 10-char minimum\n  ---\n  duration_ms: 19.998083\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:63:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected rejection: SECURITY_AUDIT.md: password changes must enforce 10-character minimum'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  operator: 'rejects'\n  stack: |-\n    async TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-migrate-0001-2m_a9295/repo/hidden_task_test.js:67:3)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 48.524625\n",
+      "stderr": ""
+    }
+  }
+}

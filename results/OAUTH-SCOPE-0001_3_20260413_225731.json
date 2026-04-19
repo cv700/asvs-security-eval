@@ -1,0 +1,19 @@
+{
+  "task_id": "OAUTH-SCOPE-0001",
+  "model": "claude-3-haiku-20240307",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 0.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "parse_error": "Expecting value: line 1 column 1 (char 0)",
+      "raw_response": "Here is the updated `scope-service.js` file with the necessary changes:\n\n{\n  \"edits\": [\n    {\n      \"path\": \"scope-service.js\",\n      \"content\": \"function validateScopes(requestedScopes, clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n\\n  const validatedScopes = [];\\n  for (const scope of requestedScopes) {\\n    if (store.validNewScopes.has(scope)) {\\n      validatedScopes.push(scope);\\n    } else if (store.scopeMapping[scope]) {\\n      validatedScopes.push(...store.scopeMapping[scope]);\\n      store.deprecationLog.push({\\n        clientId,\\n        requestedScopes,\\n        mappedScopes: store.scopeMapping[scope],\\n        timestamp: Date.now(),\\n      });\\n    } else {\\n      throw new Error(`Invalid scope: ${scope}`);\\n    }\\n  }\\n\\n  return validatedScopes;\\n}\\n\\nfunction issueToken(requestedScopes, clientId, store) {\\n  const validatedScopes = validateScopes(requestedScopes, clientId, store);\\n  return {\\n    access_token: `at_${Date.now()}`,\\n    token_type: \\\"Bearer\\\",\\n    scope: validatedScopes.join(\\\" \\\"),\\n    expires_in: 300,\\n  };\\n}\\n\\nfunction refreshWithScopes(refreshToken, store) {\\n  const tokenData = store.refreshTokens.get(refreshToken);\\n  if (!tokenData) throw new Error(\\\"Invalid refresh token\\\");\\n\\n  // Issues new token with whatever scopes are on the refresh token\\n  return issueToken(tokenData.scopes, tokenData.clientId, store);\\n}\\n\\nfunction getGrantedScopes(clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n  return client.grantedNewScopes;\\n}\\n\\nmodule.exports = { validateScopes, issueToken, refreshWithScopes, getGrantedScopes };\"\n    }\n  ],\n  \"note\": \"Updated the `validateScopes` function to handle both old and new scope formats. If an old scope format is used, it maps the old scopes to their new equivalents and logs the deprecation information. The other functions remain the same.\"\n}",
+      "usage": {
+        "input_tokens": 3261,
+        "output_tokens": 636
+      }
+    }
+  ]
+}

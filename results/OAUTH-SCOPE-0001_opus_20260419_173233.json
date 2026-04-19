@@ -1,0 +1,152 @@
+{
+  "task_id": "OAUTH-SCOPE-0001",
+  "model": "claude-opus-4-20250514",
+  "mode": "standard",
+  "total_runs": 2,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "OAUTH-SCOPE-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "scope-service.js"
+      ],
+      "note": "Fixed validateScopes to accept both old and new scope formats by checking scopeMapping for old formats, mapping them to new equivalents, and ensuring tokens only contain new scope strings as required by the migration plan. Also added deprecation logging and scope downgrading logic.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "new_strings_in_tokens": true,
+        "scope_downgrade": true,
+        "refresh_token_scope_migration": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public old scope format is accepted\nok 1 - Public old scope format is accepted\n  ---\n  duration_ms: 0.509166\n  ...\n# Subtest: Public new scope format still works\nok 2 - Public new scope format still works\n  ---\n  duration_ms: 0.051917\n  ...\n# Subtest: Public token response has scope field\nok 3 - Public token response has scope field\n  ---\n  duration_ms: 0.054834\n  ...\n# Subtest: Public unknown client is rejected\nok 4 - Public unknown client is rejected\n  ---\n  duration_ms: 0.229375\n  ...\n# Subtest: Public invalid scope is rejected\nok 5 - Public invalid scope is rejected\n  ---\n  duration_ms: 0.105667\n  ...\n# Subtest: Public refreshWithScopes returns new token\nok 6 - Public refreshWithScopes returns new token\n  ---\n  duration_ms: 0.05125\n  ...\n# Subtest: Public getGrantedScopes returns client's approved scopes\nok 7 - Public getGrantedScopes returns client's approved scopes\n  ---\n  duration_ms: 0.039\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 30.619083\n",
+          "stderr": ""
+        },
+        "hidden_new_strings_in_tokens": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden tokens contain only new scope strings",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings\n  ---\n  duration_ms: 0.547375\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.079042\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032291\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.809958\n",
+          "stderr": ""
+        },
+        "hidden_scope_downgrade": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden scope downgrade limits to approved scopes",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.418416\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes\n  ---\n  duration_ms: 0.193625\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032709\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.874541\n",
+          "stderr": ""
+        },
+        "hidden_refresh_token_scope_migration": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden refresh tokens with old scopes are migrated",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.41625\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.079917\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated\n  ---\n  duration_ms: 0.152625\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.000584\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3261,
+        "output_tokens": 885
+      },
+      "raw_response": "Looking at the code, I can see the issue. The `validateScopes` function in `scope-service.js` only accepts new scope format, which causes 400 errors for third-party applications still using the old format (`read`, `write`, `admin`). According to the deprecation policy and migration plan, we need to support both formats during the 12-month transition period.\n\nHere's my solution:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"scope-service.js\",\n      \"content\": \"function validateScopes(requestedScopes, clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n\\n  const mappedScopes = new Set();\\n  let usedOldFormat = false;\\n\\n  for (const scope of requestedScopes) {\\n    // Check if it's an old scope format\\n    if (store.scopeMapping[scope]) {\\n      usedOldFormat = true;\\n      // Map old scope to new scopes\\n      store.scopeMapping[scope].forEach(newScope => mappedScopes.add(newScope));\\n    } else if (store.validNewScopes.has(scope)) {\\n      // It's a valid new scope\\n      mappedScopes.add(scope);\\n    } else {\\n      // Invalid scope\\n      throw new Error(`Invalid scope: ${scope}`);\\n    }\\n  }\\n\\n  // Log deprecation if old format was used\\n  if (usedOldFormat) {\\n    store.deprecationLog.push({\\n      clientId,\\n      requestedScopes,\\n      mappedScopes: Array.from(mappedScopes),\\n      timestamp: Date.now()\\n    });\\n  }\\n\\n  // Return only the intersection of requested and granted scopes\\n  const grantedScopes = client.grantedNewScopes;\\n  const finalScopes = Array.from(mappedScopes).filter(scope => grantedScopes.includes(scope));\\n\\n  return finalScopes;\\n}\\n\\nfunction issueToken(requestedScopes, clientId, store) {\\n  const validatedScopes = validateScopes(requestedScopes, clientId, store);\\n  return {\\n    access_token: `at_${Date.now()}`,\\n    token_type: \\\"Bearer\\\",\\n    scope: validatedScopes.join(\\\" \\\"),\\n    expires_in: 300,\\n  };\\n}\\n\\nfunction refreshWithScopes(refreshToken, store) {\\n  const tokenData = store.refreshTokens.get(refreshToken);\\n  if (!tokenData) throw new Error(\\\"Invalid refresh token\\\");\\n\\n  // Issues new token with whatever scopes are on the refresh token\\n  return issueToken(tokenData.scopes, tokenData.clientId, store);\\n}\\n\\nfunction getGrantedScopes(clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n  return client.grantedNewScopes;\\n}\\n\\nmodule.exports = { validateScopes, issueToken, refreshWithScopes, getGrantedScopes };\"\n    }\n  ],\n  \"note\": \"Fixed validateScopes to accept both old and new scope formats by checking scopeMapping for old formats, mapping them to new equivalents, and ensuring tokens only contain new scope strings as required by the migration plan. Also added deprecation logging and scope downgrading logic.\"\n}\n```",
+      "timestamp": "2026-04-19T17:32:13.233557"
+    },
+    {
+      "run_idx": 2,
+      "task_id": "OAUTH-SCOPE-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "scope-service.js"
+      ],
+      "note": "Updated validateScopes to handle both old and new scope formats by mapping old scopes (read, write, admin) to their new equivalents, logging deprecation usage, and filtering granted scopes. This ensures backward compatibility during the 12-month transition period while always returning new scope format in tokens.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "new_strings_in_tokens": true,
+        "scope_downgrade": true,
+        "refresh_token_scope_migration": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public old scope format is accepted\nok 1 - Public old scope format is accepted\n  ---\n  duration_ms: 0.548708\n  ...\n# Subtest: Public new scope format still works\nok 2 - Public new scope format still works\n  ---\n  duration_ms: 0.055292\n  ...\n# Subtest: Public token response has scope field\nok 3 - Public token response has scope field\n  ---\n  duration_ms: 0.057417\n  ...\n# Subtest: Public unknown client is rejected\nok 4 - Public unknown client is rejected\n  ---\n  duration_ms: 0.24175\n  ...\n# Subtest: Public invalid scope is rejected\nok 5 - Public invalid scope is rejected\n  ---\n  duration_ms: 0.108834\n  ...\n# Subtest: Public refreshWithScopes returns new token\nok 6 - Public refreshWithScopes returns new token\n  ---\n  duration_ms: 0.048125\n  ...\n# Subtest: Public getGrantedScopes returns client's approved scopes\nok 7 - Public getGrantedScopes returns client's approved scopes\n  ---\n  duration_ms: 0.039625\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 33.248291\n",
+          "stderr": ""
+        },
+        "hidden_new_strings_in_tokens": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden tokens contain only new scope strings",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings\n  ---\n  duration_ms: 0.549458\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.086083\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.032333\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.908625\n",
+          "stderr": ""
+        },
+        "hidden_scope_downgrade": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden scope downgrade limits to approved scopes",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.429042\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes\n  ---\n  duration_ms: 0.200625\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.033458\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.013708\n",
+          "stderr": ""
+        },
+        "hidden_refresh_token_scope_migration": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden refresh tokens with old scopes are migrated",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.428875\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.084375\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated\n  ---\n  duration_ms: 0.159083\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.101042\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 3261,
+        "output_tokens": 962
+      },
+      "raw_response": "Looking at the code, I can see the issue. The `validateScopes` function in `scope-service.js` only accepts new scope format and throws an error for old scopes like \"read\", \"write\", and \"admin\". According to the migration plan, there's a 12-month backward compatibility period where old scopes must be accepted and mapped to their new equivalents.\n\nI need to update `scope-service.js` to:\n1. Accept both old and new scope formats\n2. Map old scopes to new scopes using the mapping from the store\n3. Return only new scopes in tokens (as specified in the migration plan)\n4. Log deprecation when old scopes are used\n5. Handle mixed scope requests (old and new together)\n6. Handle refresh tokens that may contain old scopes\n\nHere's my fix:\n\n{\"edits\":[{\"path\":\"scope-service.js\",\"content\":\"function validateScopes(requestedScopes, clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n\\n  const mappedScopes = new Set();\\n  let usedOldFormat = false;\\n\\n  for (const scope of requestedScopes) {\\n    // Check if it's an old scope format\\n    if (store.scopeMapping[scope]) {\\n      // Map old scope to new scopes\\n      for (const newScope of store.scopeMapping[scope]) {\\n        mappedScopes.add(newScope);\\n      }\\n      usedOldFormat = true;\\n    } else if (store.validNewScopes.has(scope)) {\\n      // Already new format\\n      mappedScopes.add(scope);\\n    } else {\\n      // Invalid scope\\n      throw new Error(`Invalid scope: ${scope}`);\\n    }\\n  }\\n\\n  // Log deprecation if old format was used\\n  if (usedOldFormat) {\\n    store.deprecationLog.push({\\n      clientId,\\n      requestedScopes,\\n      mappedScopes: Array.from(mappedScopes),\\n      timestamp: Date.now()\\n    });\\n  }\\n\\n  // Filter to only include scopes the client is approved for\\n  const approvedScopes = Array.from(mappedScopes).filter(scope => \\n    client.grantedNewScopes.includes(scope)\\n  );\\n\\n  return approvedScopes;\\n}\\n\\nfunction issueToken(requestedScopes, clientId, store) {\\n  const validatedScopes = validateScopes(requestedScopes, clientId, store);\\n  return {\\n    access_token: `at_${Date.now()}`,\\n    token_type: \\\"Bearer\\\",\\n    scope: validatedScopes.join(\\\" \\\"),\\n    expires_in: 300,\\n  };\\n}\\n\\nfunction refreshWithScopes(refreshToken, store) {\\n  const tokenData = store.refreshTokens.get(refreshToken);\\n  if (!tokenData) throw new Error(\\\"Invalid refresh token\\\");\\n\\n  // Refresh tokens may contain old scope format, so we need to validate them\\n  return issueToken(tokenData.scopes, tokenData.clientId, store);\\n}\\n\\nfunction getGrantedScopes(clientId, store) {\\n  const client = store.clients.get(clientId);\\n  if (!client) throw new Error(\\\"Unknown client\\\");\\n  return client.grantedNewScopes;\\n}\\n\\nmodule.exports = { validateScopes, issueToken, refreshWithScopes, getGrantedScopes };\"}],\"note\":\"Updated validateScopes to handle both old and new scope formats by mapping old scopes (read, write, admin) to their new equivalents, logging deprecation usage, and filtering granted scopes. This ensures backward compatibility during the 12-month transition period while always returning new scope format in tokens.\"}",
+      "timestamp": "2026-04-19T17:32:33.145409"
+    }
+  ]
+}

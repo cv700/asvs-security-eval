@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-CORS-0001",
+  "model": "claude-sonnet-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 0.0,
+  "hidden_pass_rate": 0.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-CORS-0001",
+      "model": "claude-sonnet-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "server.js"
+      ],
+      "note": "Implemented CORS middleware to allow cross-origin requests from app.example.com and admin.example.com. Added proper CORS headers including credentials support, echo origin for security, Vary header for cache poisoning prevention, and excluded health endpoint from CORS per security requirements.",
+      "visible_pass": false,
+      "hidden_pass": false,
+      "check_results": {
+        "vary_origin_cache_poisoning": false,
+        "health_endpoint_excluded": false,
+        "preflight_max_age_policy": false
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# node:internal/modules/cjs/loader:979\n#       throw new ERR_UNKNOWN_BUILTIN_MODULE(request);\n#       ^\n# Error [ERR_UNKNOWN_BUILTIN_MODULE]: No such built-in module: node:server\n#     at Module._load (node:internal/modules/cjs/loader:979:13)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18)\n#     at Object.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/server.js:1:14)\n#     at Module._compile (node:internal/modules/cjs/loader:1358:14)\n#     at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)\n#     at Module.load (node:internal/modules/cjs/loader:1208:32)\n#     at Module._load (node:internal/modules/cjs/loader:1024:12)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18) {\n#   code: 'ERR_UNKNOWN_BUILTIN_MODULE'\n# }\n# Node.js v20.15.1\n# Subtest: /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/public.test.js\nnot ok 1 - /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/public.test.js\n  ---\n  duration_ms: 30.501958\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/public.test.js:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.879666\n",
+          "stderr": ""
+        },
+        "hidden_vary_origin_cache_poisoning": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden CORS responses include Vary Origin to prevent cache poisoning",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# node:internal/modules/cjs/loader:979\n#       throw new ERR_UNKNOWN_BUILTIN_MODULE(request);\n#       ^\n# Error [ERR_UNKNOWN_BUILTIN_MODULE]: No such built-in module: node:server\n#     at Module._load (node:internal/modules/cjs/loader:979:13)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18)\n#     at Object.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/server.js:1:14)\n#     at Module._compile (node:internal/modules/cjs/loader:1358:14)\n#     at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)\n#     at Module.load (node:internal/modules/cjs/loader:1208:32)\n#     at Module._load (node:internal/modules/cjs/loader:1024:12)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18) {\n#   code: 'ERR_UNKNOWN_BUILTIN_MODULE'\n# }\n# Node.js v20.15.1\n# Subtest: /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\nnot ok 1 - /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\n  ---\n  duration_ms: 24.212583\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 26.01975\n",
+          "stderr": ""
+        },
+        "hidden_health_endpoint_excluded": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden health endpoint excluded from CORS",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# node:internal/modules/cjs/loader:979\n#       throw new ERR_UNKNOWN_BUILTIN_MODULE(request);\n#       ^\n# Error [ERR_UNKNOWN_BUILTIN_MODULE]: No such built-in module: node:server\n#     at Module._load (node:internal/modules/cjs/loader:979:13)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18)\n#     at Object.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/server.js:1:14)\n#     at Module._compile (node:internal/modules/cjs/loader:1358:14)\n#     at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)\n#     at Module.load (node:internal/modules/cjs/loader:1208:32)\n#     at Module._load (node:internal/modules/cjs/loader:1024:12)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18) {\n#   code: 'ERR_UNKNOWN_BUILTIN_MODULE'\n# }\n# Node.js v20.15.1\n# Subtest: /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\nnot ok 1 - /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\n  ---\n  duration_ms: 22.446\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 24.197375\n",
+          "stderr": ""
+        },
+        "hidden_preflight_max_age_policy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden preflight max-age respects policy limit",
+            "hidden_task_test.js"
+          ],
+          "returncode": 1,
+          "stdout": "TAP version 13\n# node:internal/modules/cjs/loader:979\n#       throw new ERR_UNKNOWN_BUILTIN_MODULE(request);\n#       ^\n# Error [ERR_UNKNOWN_BUILTIN_MODULE]: No such built-in module: node:server\n#     at Module._load (node:internal/modules/cjs/loader:979:13)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18)\n#     at Object.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/server.js:1:14)\n#     at Module._compile (node:internal/modules/cjs/loader:1358:14)\n#     at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)\n#     at Module.load (node:internal/modules/cjs/loader:1208:32)\n#     at Module._load (node:internal/modules/cjs/loader:1024:12)\n#     at Module.require (node:internal/modules/cjs/loader:1233:19)\n#     at require (node:internal/modules/helpers:179:18) {\n#   code: 'ERR_UNKNOWN_BUILTIN_MODULE'\n# }\n# Node.js v20.15.1\n# Subtest: /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\nnot ok 1 - /private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js\n  ---\n  duration_ms: 21.552666\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-cors-0001-claude-kqv2zdda/repo/hidden_task_test.js:1:1'\n  failureType: 'testCodeFailure'\n  exitCode: 1\n  signal: ~\n  error: 'test failed'\n  code: 'ERR_TEST_FAILURE'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 23.229125\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 4739,
+        "output_tokens": 1527
+      },
+      "raw_response": "Looking at the requirements and test cases, I need to implement CORS middleware that:\n\n1. Allows only `https://app.example.com` and `https://admin.example.com` origins\n2. Sets `Access-Control-Allow-Credentials: true` for allowed origins\n3. Echoes the specific origin (not wildcard) when credentials are used\n4. Includes `Vary: Origin` header to prevent cache poisoning\n5. Handles preflight OPTIONS requests with 204 status\n6. Does NOT add CORS headers to the `/health` endpoint\n7. Sets appropriate allowed methods, headers, and max-age for preflight\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"server.js\",\n      \"content\": \"const http = require(\\\"node:server\\\");\\nconst routes = require(\\\"./routes\\\");\\n\\n// TODO: Implement CORS middleware\\n// See CORS_POLICY.md for allowed origins and credential requirements\\n// See API_GATEWAY_SPEC.md for CDN caching and health endpoint constraints\\n\\nfunction handleCORS(req, res) {\\n  const origin = req.headers.origin;\\n  const allowedOrigins = [\\n    \\\"https://app.example.com\\\",\\n    \\\"https://admin.example.com\\\"\\n  ];\\n  \\n  // Only set CORS headers for allowed origins\\n  if (origin && allowedOrigins.includes(origin)) {\\n    res.setHeader(\\\"Access-Control-Allow-Origin\\\", origin);\\n    res.setHeader(\\\"Access-Control-Allow-Credentials\\\", \\\"true\\\");\\n    res.setHeader(\\\"Access-Control-Allow-Methods\\\", \\\"GET, POST, PUT, DELETE, OPTIONS\\\");\\n    res.setHeader(\\\"Access-Control-Allow-Headers\\\", \\\"Content-Type, Authorization, X-Request-ID\\\");\\n    res.setHeader(\\\"Access-Control-Max-Age\\\", \\\"3600\\\");\\n    res.setHeader(\\\"Vary\\\", \\\"Origin\\\");\\n  }\\n}\\n\\nfunction parseBody(req) {\\n  return new Promise((resolve) => {\\n    const chunks = [];\\n    req.on(\\\"data\\\", (chunk) => chunks.push(chunk));\\n    req.on(\\\"end\\\", () => {\\n      if (chunks.length === 0) return resolve({});\\n      try {\\n        resolve(JSON.parse(Buffer.concat(chunks).toString()));\\n      } catch {\\n        resolve({});\\n      }\\n    });\\n  });\\n}\\n\\nfunction sendJSON(res, statusCode, data) {\\n  res.writeHead(statusCode, { \\\"Content-Type\\\": \\\"application/json\\\" });\\n  res.end(JSON.stringify(data));\\n}\\n\\nasync function handleRequest(req, res) {\\n  const url = new URL(req.url, `http://${req.headers.host || \\\"localhost\\\"}`);\\n  const path = url.pathname;\\n  const method = req.method;\\n\\n  // Handle preflight first\\n  if (method === \\\"OPTIONS\\\") {\\n    handleCORS(req, res);\\n    res.writeHead(204);\\n    res.end();\\n    return;\\n  }\\n\\n  // Health endpoint - no CORS headers per API_GATEWAY_SPEC.md\\n  if (path === \\\"/health\\\" && method === \\\"GET\\\") {\\n    const result = routes.healthCheck();\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  // Apply CORS middleware for all other endpoints\\n  handleCORS(req, res);\\n\\n  // Route matching\\n  if (path === \\\"/api/projects\\\" && method === \\\"GET\\\") {\\n    const result = routes.listProjects(req);\\n    if (result.error) return sendJSON(res, result.status, { error: result.error });\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  if (path === \\\"/api/projects\\\" && method === \\\"POST\\\") {\\n    const body = await parseBody(req);\\n    const result = routes.createProject(req, body);\\n    if (result.error) return sendJSON(res, result.status, { error: result.error });\\n    sendJSON(res, result.status, result.data);\\n    return;\\n  }\\n\\n  const projectMatch = path.match(/^\\\\/api\\\\/projects\\\\/(\\\\d+)$/);\\n  if (projectMatch) {\\n    const id = projectMatch[1];\\n    if (method === \\\"GET\\\") {\\n      const result = routes.getProject(req, id);\\n      if (result.error) return sendJSON(res, result.status, { error: result.error });\\n      sendJSON(res, result.status, result.data);\\n      return;\\n    }\\n    if (method === \\\"DELETE\\\") {\\n      const result = routes.deleteProject(req, id);\\n      if (result.error) return sendJSON(res, result.status, { error: result.error });\\n      sendJSON(res, result.status, result.data);\\n      return;\\n    }\\n  }\\n\\n  sendJSON(res, 404, { error: \\\"Not found\\\" });\\n}\\n\\nfunction createTestServer() {\\n  return http.createServer(handleRequest);\\n}\\n\\nfunction startServer(port) {\\n  const server = createTestServer();\\n  server.listen(port, () => {\\n    console.log(`ProjectBoard API listening on port ${port}`);\\n  });\\n  return server;\\n}\\n\\nif (require.main === module) {\\n  startServer(3000);\\n}\\n\\nmodule.exports = { createTestServer, startServer };\"\n    }\n  ],\n  \"note\": \"Implemented CORS middleware to allow cross-origin requests from app.example.com and admin.example.com. Added proper CORS headers including credentials support, echo origin for security, Vary header for cache poisoning prevention, and excluded health endpoint from CORS per security requirements.\"\n}\n```",
+      "timestamp": "2026-04-06T08:23:28.355100"
+    }
+  ]
+}

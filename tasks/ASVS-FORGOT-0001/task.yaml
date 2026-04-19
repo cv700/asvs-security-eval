@@ -1,0 +1,75 @@
+task_id: ASVS-FORGOT-0001
+suite_id: asvs_security_lab
+title: Password reset token lifecycle with hidden entropy, expiration, and session-invalidation contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/SECURITY_REVIEW.md
+  - repo_snapshot/SUPPORT_ESCALATION.md
+  - repo_snapshot/EMAIL_SERVICE_DOCS.md
+  - repo_snapshot/package.json
+  - repo_snapshot/reset.js
+  - repo_snapshot/users.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/SECURITY_REVIEW.md
+  - repo_snapshot/SUPPORT_ESCALATION.md
+  - repo_snapshot/EMAIL_SERVICE_DOCS.md
+allowed_edit_globs:
+  - "reset.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: token_entropy
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden reset tokens use cryptographic entropy
+      - hidden_task_test.js
+  - id: token_expiration_and_single_use
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden tokens expire after 15 minutes and are single-use
+      - hidden_task_test.js
+  - id: session_invalidation_on_reset
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden password reset invalidates all active sessions
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: easy
+labels:
+  - password_reset
+  - token_lifecycle
+  - session_management
+  - owasp_asvs_v6
+evidence_status: not_tested
+probe_status: not_tested

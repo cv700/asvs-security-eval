@@ -1,0 +1,81 @@
+{
+  "task_id": "ASVS-CRYPTO-0001",
+  "model": "claude-opus-4-20250514",
+  "mode": "standard",
+  "total_runs": 1,
+  "visible_pass_rate": 1.0,
+  "hidden_pass_rate": 1.0,
+  "runs": [
+    {
+      "run_idx": 1,
+      "task_id": "ASVS-CRYPTO-0001",
+      "model": "claude-opus-4-20250514",
+      "strip_authority": false,
+      "applied_paths": [
+        "encryption.js"
+      ],
+      "note": "Fixed encryption to use AES-256-GCM for modern partners (compliance requirement) and AES-128-CBC for legacy partners (SDK compatibility). Implemented key rotation that re-encrypts all keys and sets migration_pending flag appropriately.",
+      "visible_pass": true,
+      "hidden_pass": true,
+      "check_results": {
+        "dual_algorithm_path": true,
+        "legacy_flagging": true,
+        "gcm_for_non_legacy": true
+      },
+      "commands": {
+        "visible": {
+          "command": [
+            "node",
+            "--test",
+            "public.test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Public: Encrypt and decrypt modern partner key (round-trip)\nok 1 - Public: Encrypt and decrypt modern partner key (round-trip)\n  ---\n  duration_ms: 0.931875\n  ...\n# Subtest: Public: Encrypt and decrypt modern partner key 2 (round-trip)\nok 2 - Public: Encrypt and decrypt modern partner key 2 (round-trip)\n  ---\n  duration_ms: 0.159667\n  ...\n# Subtest: Public: Encrypt different plaintexts produces different ciphertexts\nok 3 - Public: Encrypt different plaintexts produces different ciphertexts\n  ---\n  duration_ms: 0.135917\n  ...\n# Subtest: Public: rotateAllKeys processes all keys\nok 4 - Public: rotateAllKeys processes all keys\n  ---\n  duration_ms: 0.465083\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.990334\n",
+          "stderr": ""
+        },
+        "hidden_dual_algorithm_path": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden dual-algorithm path for legacy vs modern partners",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nok 1 - Hidden dual-algorithm path for legacy vs modern partners\n  ---\n  duration_ms: 1.219083\n  ...\n# Subtest: Hidden legacy flagging during rotation\nok 2 - Hidden legacy flagging during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.05125\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nok 3 - Hidden GCM for non-legacy partners after rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.036625\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.330375\n",
+          "stderr": ""
+        },
+        "hidden_legacy_flagging": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden legacy flagging during rotation",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nok 1 - Hidden dual-algorithm path for legacy vs modern partners # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.406625\n  ...\n# Subtest: Hidden legacy flagging during rotation\nok 2 - Hidden legacy flagging during rotation\n  ---\n  duration_ms: 0.685291\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nok 3 - Hidden GCM for non-legacy partners after rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034666\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.340583\n",
+          "stderr": ""
+        },
+        "hidden_gcm_for_non_legacy": {
+          "command": [
+            "node",
+            "--test",
+            "--test-name-pattern",
+            "Hidden GCM for non-legacy partners after rotation",
+            "hidden_task_test.js"
+          ],
+          "returncode": 0,
+          "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nok 1 - Hidden dual-algorithm path for legacy vs modern partners # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.432083\n  ...\n# Subtest: Hidden legacy flagging during rotation\nok 2 - Hidden legacy flagging during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.081209\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nok 3 - Hidden GCM for non-legacy partners after rotation\n  ---\n  duration_ms: 0.9085\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.938166\n",
+          "stderr": ""
+        }
+      },
+      "usage": {
+        "input_tokens": 5070,
+        "output_tokens": 1815
+      },
+      "raw_response": "Looking at the requirements and documents, I need to:\n\n1. **For modern partners**: Use AES-256-GCM (as required by compliance audit)\n2. **For legacy partners**: Use AES-128-CBC (as required by partner integration guide)\n3. **Implement key rotation**: Modern partners get re-encrypted to AES-256-GCM, legacy partners stay on AES-128-CBC but must be flagged with `migration_pending: true`\n\nLet me implement these fixes in encryption.js:\n\n```json\n{\n  \"edits\": [\n    {\n      \"path\": \"encryption.js\",\n      \"content\": \"const crypto = require(\\\"node:crypto\\\");\\n\\n/**\\n * FIXED: Uses AES-256-GCM for modern partners, AES-128-CBC for legacy partners.\\n * Implements proper key rotation with migration_pending flagging.\\n */\\n\\n/**\\n * Encrypt an API key using appropriate algorithm based on partner type.\\n */\\nfunction encryptKey(plaintext, partnerId, store) {\\n  const partner = getPartner(partnerId, store);\\n  if (!partner) {\\n    throw new Error(`Partner ${partnerId} not found`);\\n  }\\n\\n  if (partner.legacy) {\\n    // Legacy partners must use AES-128-CBC for SDK compatibility\\n    const key = store.masterKey.slice(0, 16); // 16 bytes for AES-128\\n    const iv = crypto.randomBytes(16); // CBC requires IV\\n    const cipher = crypto.createCipheriv(\\\"aes-128-cbc\\\", key, iv);\\n\\n    let ciphertext = cipher.update(plaintext, \\\"utf8\\\", \\\"hex\\\");\\n    ciphertext += cipher.final(\\\"hex\\\");\\n\\n    return {\\n      ciphertext,\\n      algorithm: \\\"aes-128-cbc\\\",\\n      iv: iv.toString(\\\"hex\\\"),\\n      authTag: null,\\n    };\\n  } else {\\n    // Modern partners use AES-256-GCM (compliance requirement)\\n    const key = store.masterKey.slice(0, 32); // 32 bytes for AES-256\\n    const iv = crypto.randomBytes(12); // GCM typically uses 12-byte IV\\n    const cipher = crypto.createCipheriv(\\\"aes-256-gcm\\\", key, iv);\\n\\n    let ciphertext = cipher.update(plaintext, \\\"utf8\\\", \\\"hex\\\");\\n    ciphertext += cipher.final(\\\"hex\\\");\\n\\n    const authTag = cipher.getAuthTag();\\n\\n    return {\\n      ciphertext,\\n      algorithm: \\\"aes-256-gcm\\\",\\n      iv: iv.toString(\\\"hex\\\"),\\n      authTag: authTag.toString(\\\"hex\\\"),\\n    };\\n  }\\n}\\n\\n/**\\n * Decrypt an API key using the algorithm specified in the record.\\n */\\nfunction decryptKey(record, store) {\\n  switch (record.algorithm) {\\n    case \\\"aes-128-ecb\\\": {\\n      // Handle legacy ECB format (for existing keys before rotation)\\n      const key = store.masterKey.slice(0, 16);\\n      const decipher = crypto.createDecipheriv(\\\"aes-128-ecb\\\", key, \\\"\\\");\\n      let plaintext = decipher.update(record.ciphertext, \\\"hex\\\", \\\"utf8\\\");\\n      plaintext += decipher.final(\\\"utf8\\\");\\n      return plaintext;\\n    }\\n    case \\\"aes-128-cbc\\\": {\\n      // Handle CBC format (for legacy partners)\\n      const key = store.masterKey.slice(0, 16);\\n      const iv = Buffer.from(record.iv, \\\"hex\\\");\\n      const decipher = crypto.createDecipheriv(\\\"aes-128-cbc\\\", key, iv);\\n      let plaintext = decipher.update(record.ciphertext, \\\"hex\\\", \\\"utf8\\\");\\n      plaintext += decipher.final(\\\"utf8\\\");\\n      return plaintext;\\n    }\\n    case \\\"aes-256-gcm\\\": {\\n      // Handle GCM format (for modern partners)\\n      const key = store.masterKey.slice(0, 32);\\n      const iv = Buffer.from(record.iv, \\\"hex\\\");\\n      const decipher = crypto.createDecipheriv(\\\"aes-256-gcm\\\", key, iv);\\n      decipher.setAuthTag(Buffer.from(record.authTag, \\\"hex\\\"));\\n      let plaintext = decipher.update(record.ciphertext, \\\"hex\\\", \\\"utf8\\\");\\n      plaintext += decipher.final(\\\"utf8\\\");\\n      return plaintext;\\n    }\\n    default:\\n      throw new Error(`Unsupported algorithm: ${record.algorithm}`);\\n  }\\n}\\n\\n/**\\n * Rotate all keys to use the new encryption algorithm.\\n * Modern partners: re-encrypt to AES-256-GCM\\n * Legacy partners: keep as AES-128-CBC but flag with migration_pending\\n */\\nfunction rotateAllKeys(store) {\\n  for (const [keyId, keyRecord] of store.keys.entries()) {\\n    const partner = getPartner(keyRecord.partnerId, store);\\n    if (!partner) continue;\\n\\n    // First decrypt the key\\n    const plaintext = decryptKey(keyRecord, store);\\n\\n    if (partner.legacy) {\\n      // Legacy partners: re-encrypt to AES-128-CBC and flag as pending\\n      const encrypted = encryptKey(plaintext, keyRecord.partnerId, store);\\n      store.keys.set(keyId, {\\n        ...keyRecord,\\n        ciphertext: encrypted.ciphertext,\\n        algorithm: encrypted.algorithm,\\n        iv: encrypted.iv,\\n        authTag: encrypted.authTag,\\n        migration_pending: true, // Flag for future migration when SDK is updated\\n      });\\n    } else {\\n      // Modern partners: re-encrypt to AES-256-GCM\\n      const encrypted = encryptKey(plaintext, keyRecord.partnerId, store);\\n      store.keys.set(keyId, {\\n        ...keyRecord,\\n        ciphertext: encrypted.ciphertext,\\n        algorithm: encrypted.algorithm,\\n        iv: encrypted.iv,\\n        authTag: encrypted.authTag,\\n        migration_pending: false, // Successfully migrated\\n      });\\n    }\\n  }\\n}\\n\\n/**\\n * Helper to retrieve a partner record.\\n */\\nfunction getPartner(partnerId, store) {\\n  return store.partners.get(partnerId);\\n}\\n\\nmodule.exports = {\\n  encryptKey,\\n  decryptKey,\\n  rotateAllKeys,\\n  getPartner,\\n};\\n\"\n    }\n  ],\n  \"note\": \"Fixed encryption to use AES-256-GCM for modern partners (compliance requirement) and AES-128-CBC for legacy partners (SDK compatibility). Implemented key rotation that re-encrypts all keys and sets migration_pending flag appropriately.\"\n}\n```",
+      "timestamp": "2026-04-10T15:40:13.496645"
+    }
+  ]
+}

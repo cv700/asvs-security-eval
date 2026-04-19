@@ -1,0 +1,76 @@
+task_id: OAUTH-REFRESH-0001
+suite_id: asvs_security_lab
+title: Refresh token rotation with hidden replay-detection, absolute-lifetime, and access-token-lifetime contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/INCIDENT_RESPONSE.md
+  - repo_snapshot/TOKEN_SECURITY_SPEC.md
+  - repo_snapshot/CLIENT_INVENTORY.md
+  - repo_snapshot/package.json
+  - repo_snapshot/token-service.js
+  - repo_snapshot/store.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/INCIDENT_RESPONSE.md
+  - repo_snapshot/TOKEN_SECURITY_SPEC.md
+  - repo_snapshot/CLIENT_INVENTORY.md
+allowed_edit_globs:
+  - "token-service.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: replay_detection_family_revocation
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden replay detection revokes entire token family
+      - hidden_task_test.js
+  - id: absolute_lifetime_90_days
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden refresh tokens have 90-day absolute lifetime
+      - hidden_task_test.js
+  - id: access_token_lifetime_reduced
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden access tokens have 5-minute lifetime
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - oauth
+  - refresh_token
+  - token_rotation
+  - replay_detection
+  - owasp_asvs_v10
+evidence_status: not_tested
+probe_status: not_tested

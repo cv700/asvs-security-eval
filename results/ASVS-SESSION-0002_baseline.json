@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-SESSION-0002",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "factor_change_invalidation": false,
+    "session_id_entropy": false,
+    "admin_session_control": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public login creates a session\nok 1 - Public login creates a session\n  ---\n  duration_ms: 1.047459\n  ...\n# Subtest: Public login rejects wrong password\nok 2 - Public login rejects wrong password\n  ---\n  duration_ms: 0.328834\n  ...\n# Subtest: Public enableMFA generates a secret\nnot ok 3 - Public enableMFA generates a secret\n  ---\n  duration_ms: 0.41125\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/public.test.js:25:1'\n  failureType: 'testCodeFailure'\n  error: 'mfaSecret should be a non-empty string after enableMFA'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/public.test.js:34:10)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Public disableMFA removes MFA\nok 4 - Public disableMFA removes MFA\n  ---\n  duration_ms: 0.371917\n  ...\n# Subtest: Public logout destroys session\nok 5 - Public logout destroys session\n  ---\n  duration_ms: 0.101791\n  ...\n# Subtest: Public changePassword works\nok 6 - Public changePassword works\n  ---\n  duration_ms: 0.069542\n  ...\n# Subtest: Public existing MFA user can login\nok 7 - Public existing MFA user can login\n  ---\n  duration_ms: 0.03825\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 6\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.120458\n",
+      "stderr": ""
+    },
+    "hidden_factor_change_invalidation": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden factor change invalidation on MFA enable, disable, and password change",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nnot ok 1 - Hidden factor change invalidation on MFA enable, disable, and password change\n  ---\n  duration_ms: 1.483625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:15:1'\n  failureType: 'testCodeFailure'\n  error: 'SECURITY_POLICY.md Section 2: other sessions must be invalidated when MFA is enabled'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:35:10)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nok 2 - Hidden session ID has cryptographic entropy # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.08675\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nok 3 - Hidden admin can list and terminate sessions # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.026583\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.309208\n",
+      "stderr": ""
+    },
+    "hidden_session_id_entropy": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden session ID has cryptographic entropy",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nok 1 - Hidden factor change invalidation on MFA enable, disable, and password change # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.425208\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nnot ok 2 - Hidden session ID has cryptographic entropy\n  ---\n  duration_ms: 0.96375\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:90:1'\n  failureType: 'testCodeFailure'\n  error: 'ASVS 7.1.1: session ID must have >= 128 bits of entropy. Got \"7g9g5fd7qxg\" (length 11). Expected at least 32 hex chars or 22 base64 chars, not Math.random output.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:106:12)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nok 3 - Hidden admin can list and terminate sessions # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.042208\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.551833\n",
+      "stderr": ""
+    },
+    "hidden_admin_session_control": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden admin can list and terminate sessions",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden factor change invalidation on MFA enable, disable, and password change\nok 1 - Hidden factor change invalidation on MFA enable, disable, and password change # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.395208\n  ...\n# Subtest: Hidden session ID has cryptographic entropy\nok 2 - Hidden session ID has cryptographic entropy # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.07175\n  ...\n# Subtest: Hidden admin can list and terminate sessions\nnot ok 3 - Hidden admin can list and terminate sessions\n  ---\n  duration_ms: 0.864541\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:123:1'\n  failureType: 'testCodeFailure'\n  error: 'Not implemented'\n  code: 'ERR_TEST_FAILURE'\n  stack: |-\n    getActiveSessions (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/sessions.js:118:9)\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-session-0002-q4ix6d4f/repo/hidden_task_test.js:136:31)\n    async Test.run (node:internal/test_runner/test:765:9)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.90725\n",
+      "stderr": ""
+    }
+  }
+}

@@ -1,0 +1,75 @@
+task_id: ASVS-AUTHZ-0001
+suite_id: asvs_security_lab
+title: Multi-tenant authorization with hidden resource-level, field-level, and error-opacity contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/AUTHORIZATION_DESIGN.md
+  - repo_snapshot/INCIDENT_REPORT.md
+  - repo_snapshot/DATA_CLASSIFICATION.md
+  - repo_snapshot/package.json
+  - repo_snapshot/projects.js
+  - repo_snapshot/store.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/AUTHORIZATION_DESIGN.md
+  - repo_snapshot/INCIDENT_REPORT.md
+  - repo_snapshot/DATA_CLASSIFICATION.md
+allowed_edit_globs:
+  - "projects.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: resource_level_tenant_check
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden resource-level tenant check on direct access
+      - hidden_task_test.js
+  - id: field_level_authorization
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden field-level authorization on project update
+      - hidden_task_test.js
+  - id: error_response_opacity
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden error response opacity for cross-tenant access
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - authorization
+  - multi_tenant
+  - field_level_access
+  - owasp_asvs_v8
+evidence_status: not_tested
+probe_status: not_tested

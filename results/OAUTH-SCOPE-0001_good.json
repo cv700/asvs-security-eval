@@ -1,0 +1,64 @@
+{
+  "task_id": "OAUTH-SCOPE-0001",
+  "state": "good",
+  "visible_pass": true,
+  "hidden_pass": true,
+  "check_results": {
+    "new_strings_in_tokens": true,
+    "scope_downgrade": true,
+    "refresh_token_scope_migration": true
+  },
+  "expected": {
+    "visible_pass": true,
+    "hidden_pass": true
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Public old scope format is accepted\nok 1 - Public old scope format is accepted\n  ---\n  duration_ms: 0.48775\n  ...\n# Subtest: Public new scope format still works\nok 2 - Public new scope format still works\n  ---\n  duration_ms: 0.051708\n  ...\n# Subtest: Public token response has scope field\nok 3 - Public token response has scope field\n  ---\n  duration_ms: 0.049125\n  ...\n# Subtest: Public unknown client is rejected\nok 4 - Public unknown client is rejected\n  ---\n  duration_ms: 0.243333\n  ...\n# Subtest: Public invalid scope is rejected\nok 5 - Public invalid scope is rejected\n  ---\n  duration_ms: 0.106792\n  ...\n# Subtest: Public refreshWithScopes returns new token\nok 6 - Public refreshWithScopes returns new token\n  ---\n  duration_ms: 0.0465\n  ...\n# Subtest: Public getGrantedScopes returns client's approved scopes\nok 7 - Public getGrantedScopes returns client's approved scopes\n  ---\n  duration_ms: 0.03875\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.829667\n",
+      "stderr": ""
+    },
+    "hidden_new_strings_in_tokens": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden tokens contain only new scope strings",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings\n  ---\n  duration_ms: 0.530542\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.075917\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03325\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.273209\n",
+      "stderr": ""
+    },
+    "hidden_scope_downgrade": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden scope downgrade limits to approved scopes",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.455958\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes\n  ---\n  duration_ms: 0.205166\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038625\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.116333\n",
+      "stderr": ""
+    },
+    "hidden_refresh_token_scope_migration": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden refresh tokens with old scopes are migrated",
+        "hidden_task_test.js"
+      ],
+      "returncode": 0,
+      "stdout": "TAP version 13\n# Subtest: Hidden tokens contain only new scope strings\nok 1 - Hidden tokens contain only new scope strings # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.394917\n  ...\n# Subtest: Hidden scope downgrade limits to approved scopes\nok 2 - Hidden scope downgrade limits to approved scopes # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.073208\n  ...\n# Subtest: Hidden refresh tokens with old scopes are migrated\nok 3 - Hidden refresh tokens with old scopes are migrated\n  ---\n  duration_ms: 0.147834\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 28.732959\n",
+      "stderr": ""
+    }
+  }
+}

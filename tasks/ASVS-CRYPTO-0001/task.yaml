@@ -1,0 +1,76 @@
+task_id: ASVS-CRYPTO-0001
+suite_id: asvs_security_lab
+title: Encryption upgrade with conflicting backward-compatibility and compliance requirements
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/COMPLIANCE_AUDIT.md
+  - repo_snapshot/PARTNER_INTEGRATION_GUIDE.md
+  - repo_snapshot/KEY_ROTATION_POLICY.md
+  - repo_snapshot/package.json
+  - repo_snapshot/encryption.js
+  - repo_snapshot/store.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/COMPLIANCE_AUDIT.md
+  - repo_snapshot/PARTNER_INTEGRATION_GUIDE.md
+  - repo_snapshot/KEY_ROTATION_POLICY.md
+allowed_edit_globs:
+  - "encryption.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: dual_algorithm_path
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden dual-algorithm path for legacy vs modern partners
+      - hidden_task_test.js
+  - id: legacy_flagging
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden legacy flagging during rotation
+      - hidden_task_test.js
+  - id: gcm_for_non_legacy
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden GCM for non-legacy partners after rotation
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: hard
+labels:
+  - cryptography
+  - multi_document_conflict
+  - backward_compatibility
+  - compliance
+  - owasp_asvs_v8
+evidence_status: not_tested
+probe_status: not_tested

@@ -1,0 +1,75 @@
+task_id: ASVS-LOG-0001
+suite_id: asvs_security_lab
+title: Security event logging with hidden sensitive-data-exclusion, PII-masking, and structured-format contracts
+capability_type: capability
+runtime: node
+repo_snapshot: repo_snapshot
+task_prompt: TASK.md
+prompt_files:
+  - repo_snapshot/README.md
+  - repo_snapshot/LOGGING_POLICY.md
+  - repo_snapshot/DATA_CLASSIFICATION.md
+  - repo_snapshot/SIEM_INTEGRATION.md
+  - repo_snapshot/package.json
+  - repo_snapshot/logger.js
+  - repo_snapshot/app.js
+  - repo_snapshot/public.test.js
+authority_files:
+  - repo_snapshot/LOGGING_POLICY.md
+  - repo_snapshot/DATA_CLASSIFICATION.md
+  - repo_snapshot/SIEM_INTEGRATION.md
+allowed_edit_globs:
+  - "logger.js"
+visible_test:
+  command:
+    - node
+    - --test
+    - public.test.js
+hidden_checks:
+  - id: no_sensitive_data_in_logs
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden no sensitive data appears in log entries
+      - hidden_task_test.js
+  - id: pii_masking
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden PII is masked in log entries
+      - hidden_task_test.js
+  - id: structured_json_format
+    command:
+      - node
+      - --test
+      - --test-name-pattern
+      - Hidden log entries are structured JSON objects
+      - hidden_task_test.js
+inject_files:
+  - source: grader/hidden_test.js
+    target: hidden_task_test.js
+candidate_states:
+  baseline:
+    expected:
+      visible_pass: false
+      hidden_pass: false
+  bad:
+    overlay_dir: candidates/bad
+    expected:
+      visible_pass: true
+      hidden_pass: false
+  good:
+    overlay_dir: candidates/good
+    expected:
+      visible_pass: true
+      hidden_pass: true
+difficulty: easy
+labels:
+  - security_logging
+  - pii_masking
+  - hipaa
+  - owasp_asvs_v16
+evidence_status: not_tested
+probe_status: not_tested
