@@ -24,7 +24,7 @@ FAIL=0
 for task in "${TASKS[@]}"; do
   echo ""
   echo "--- $task (ablation) ---"
-  if uv run python scripts/run_claude.py --task "$task" --strip-authority; then
+  if python scripts/run_claude.py --task "$task" --strip-authority; then
     PASS=$((PASS + 1))
     echo "DONE: $task"
   else

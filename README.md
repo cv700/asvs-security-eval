@@ -5,22 +5,25 @@
 ## Quick Start
 
 ```bash
-# Validate all three calibration states for one task
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Validate all three calibration states (no API key needed)
 bash scripts/validate_all.sh
 
 # Run a model against a task
 export ANTHROPIC_API_KEY="sk-..."
-uv run python scripts/run_claude.py --task ASVS-AUTHZ-0001
+python scripts/run_claude.py --task ASVS-AUTHZ-0001
 
 # Run with specific model and multiple trials
-uv run python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model claude-opus-4-20250514 --runs 3
+python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model claude-opus-4-20250514 --runs 3
 
 # Run with OpenAI model
 export OPENAI_API_KEY="sk-..."
-uv run python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model gpt-4o --provider openai
+python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model gpt-4o
 
 # Run authority-ablation (contamination probe)
-uv run python scripts/run_claude.py --task ASVS-AUTHZ-0001 --strip-authority
+python scripts/run_claude.py --task ASVS-AUTHZ-0001 --strip-authority
 ```
 
 ## Architecture
@@ -97,21 +100,21 @@ Model run results are saved as JSON in `results/`. Each file contains the full t
 
 ## Dependencies
 
-- **Runtime**: Node.js 16+ (for `node:test` and `node:assert/strict`)
-- **Harness**: Python 3.10+, managed by `uv` (deps in repo root `pyproject.toml`)
+- **Runtime**: Node.js 18+ (for `node:test` and `node:assert/strict`)
+- **Harness**: Python 3.10+ with `pyyaml`, `anthropic`, `openai` (`pip install -r requirements.txt`)
 - **API**: `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` environment variable (provider auto-detected from model name)
-- **No npm dependencies**: All JS code uses Node.js built-ins only
+- **Validation only**: Node.js + Python with `pyyaml` (no API key needed)
 
 ## Directory Layout
 
 ```
-asvs_security_lab/
-├── README.md          # This file
-├── TASK_SPEC.md       # Normative specification for the split-verifier architecture
-├── suite.yaml         # Suite metadata
-├── tasks/             # 17 task environments
-├── scripts/           # Run harness, validation, analysis tools
-└── results/           # Model run outputs (JSON)
+├── README.md              # This file
+├── TASK_SPEC.md           # Normative specification for the split-verifier architecture
+├── requirements.txt       # Python dependencies
+├── suite.yaml             # Suite metadata
+├── tasks/                 # 17 task environments
+├── scripts/               # Run harness, validation, analysis tools
+└── results/               # Model run outputs (JSON)
 ```
 
 ## License
