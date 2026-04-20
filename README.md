@@ -6,6 +6,7 @@
 
 ```bash
 # Install Python dependencies
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # Validate all three calibration states (no API key needed)
@@ -13,17 +14,17 @@ bash scripts/validate_all.sh
 
 # Run a model against a task
 export ANTHROPIC_API_KEY="sk-..."
-python scripts/run_claude.py --task ASVS-AUTHZ-0001
+python3 scripts/run_claude.py --task ASVS-AUTHZ-0001
 
 # Run with specific model and multiple trials
-python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model claude-opus-4-20250514 --runs 3
+python3 scripts/run_claude.py --task ASVS-AUTHZ-0001 --model claude-opus-4-20250514 --runs 3
 
 # Run with OpenAI model
 export OPENAI_API_KEY="sk-..."
-python scripts/run_claude.py --task ASVS-AUTHZ-0001 --model gpt-4o
+python3 scripts/run_claude.py --task ASVS-AUTHZ-0001 --model gpt-4o
 
 # Run authority-ablation (contamination probe)
-python scripts/run_claude.py --task ASVS-AUTHZ-0001 --strip-authority
+python3 scripts/run_claude.py --task ASVS-AUTHZ-0001 --strip-authority
 ```
 
 ## Architecture
