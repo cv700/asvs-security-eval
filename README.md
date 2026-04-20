@@ -111,7 +111,9 @@ asvs_security_lab/
 ├── suite.yaml         # Suite metadata
 ├── tasks/             # 17 task environments
 ├── scripts/           # Run harness, validation, analysis tools
-├── results/           # Model run outputs (JSON)
-├── docs/              # Pitch materials, one-pagers, visualizations
-└── notes/             # Analysis notes, session summaries
+└── results/           # Model run outputs (JSON)
 ```
+
+## License
+
+CC BY-NC 4.0. Free for research and evaluation. For commercial licensing, contact coopveit@gmail.com.
