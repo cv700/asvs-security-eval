@@ -21,7 +21,7 @@
         "public.test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Public logAuthEvent records a login event\nok 1 - Public logAuthEvent records a login event\n  ---\n  duration_ms: 0.412166\n  ...\n# Subtest: Public logAuthEvent records failure events\nok 2 - Public logAuthEvent records failure events\n  ---\n  duration_ms: 0.044084\n  ...\n# Subtest: Public logPermissionChange records role change\nok 3 - Public logPermissionChange records role change\n  ---\n  duration_ms: 0.049417\n  ...\n# Subtest: Public logDataExport records export event\nok 4 - Public logDataExport records export event\n  ---\n  duration_ms: 0.041375\n  ...\n# Subtest: Public log entries contain event type\nok 5 - Public log entries contain event type\n  ---\n  duration_ms: 0.083541\n  ...\n# Subtest: Public log entries contain timestamp\nok 6 - Public log entries contain timestamp\n  ---\n  duration_ms: 0.030917\n  ...\n# Subtest: Public getLogEntries returns all entries\nok 7 - Public getLogEntries returns all entries\n  ---\n  duration_ms: 0.037792\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 27.557208\n",
+      "stdout": "TAP version 13\n# Subtest: Public logAuthEvent records a login event\nok 1 - Public logAuthEvent records a login event\n  ---\n  duration_ms: 0.457208\n  ...\n# Subtest: Public logAuthEvent records failure events\nok 2 - Public logAuthEvent records failure events\n  ---\n  duration_ms: 0.050833\n  ...\n# Subtest: Public logPermissionChange records role change\nok 3 - Public logPermissionChange records role change\n  ---\n  duration_ms: 0.054583\n  ...\n# Subtest: Public logDataExport records export event\nok 4 - Public logDataExport records export event\n  ---\n  duration_ms: 0.045917\n  ...\n# Subtest: Public log entries contain event type\nok 5 - Public log entries contain event type\n  ---\n  duration_ms: 0.096583\n  ...\n# Subtest: Public log entries contain timestamp\nok 6 - Public log entries contain timestamp\n  ---\n  duration_ms: 0.034875\n  ...\n# Subtest: Public getLogEntries returns all entries\nok 7 - Public getLogEntries returns all entries\n  ---\n  duration_ms: 0.0415\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 30.588292\n",
       "stderr": ""
     },
     "hidden_no_sensitive_data_in_logs": {
@@ -33,7 +33,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries\n  ---\n  duration_ms: 0.495917\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.03625\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.028542\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.22825\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries\n  ---\n  duration_ms: 0.552333\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.042625\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031209\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.468208\n",
       "stderr": ""
     },
     "hidden_pii_masking": {
@@ -45,7 +45,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.3775\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries\n  ---\n  duration_ms: 0.138459\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.029084\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.159417\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.42425\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries\n  ---\n  duration_ms: 0.156209\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.033416\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 29.864959\n",
       "stderr": ""
     },
     "hidden_structured_json_format": {
@@ -57,7 +57,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.381875\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.06775\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects\n  ---\n  duration_ms: 0.302042\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.749\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden no sensitive data appears in log entries\nok 1 - Hidden no sensitive data appears in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.4485\n  ...\n# Subtest: Hidden PII is masked in log entries\nok 2 - Hidden PII is masked in log entries # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.078333\n  ...\n# Subtest: Hidden log entries are structured JSON objects\nok 3 - Hidden log entries are structured JSON objects\n  ---\n  duration_ms: 0.349083\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.595541\n",
       "stderr": ""
     }
   }

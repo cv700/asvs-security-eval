@@ -21,7 +21,7 @@
         "public.test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Public CORS allows app.example.com origin\nok 1 - Public CORS allows app.example.com origin\n  ---\n  duration_ms: 4.867667\n  ...\n# Subtest: Public CORS allows admin.example.com origin\nok 2 - Public CORS allows admin.example.com origin\n  ---\n  duration_ms: 0.648291\n  ...\n# Subtest: Public CORS rejects unknown origin\nok 3 - Public CORS rejects unknown origin\n  ---\n  duration_ms: 0.798\n  ...\n# Subtest: Public preflight returns 204 with CORS headers\nok 4 - Public preflight returns 204 with CORS headers\n  ---\n  duration_ms: 0.494125\n  ...\n# Subtest: Public API returns JSON for projects\nok 5 - Public API returns JSON for projects\n  ---\n  duration_ms: 0.503375\n  ...\n# Subtest: Public credentials header is set for allowed origin\nok 6 - Public credentials header is set for allowed origin\n  ---\n  duration_ms: 0.413042\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 34.021708\n",
+      "stdout": "TAP version 13\n# Subtest: Public CORS allows app.example.com origin\nok 1 - Public CORS allows app.example.com origin\n  ---\n  duration_ms: 5.520208\n  ...\n# Subtest: Public CORS allows admin.example.com origin\nok 2 - Public CORS allows admin.example.com origin\n  ---\n  duration_ms: 0.747833\n  ...\n# Subtest: Public CORS rejects unknown origin\nok 3 - Public CORS rejects unknown origin\n  ---\n  duration_ms: 0.825625\n  ...\n# Subtest: Public preflight returns 204 with CORS headers\nok 4 - Public preflight returns 204 with CORS headers\n  ---\n  duration_ms: 0.579375\n  ...\n# Subtest: Public API returns JSON for projects\nok 5 - Public API returns JSON for projects\n  ---\n  duration_ms: 0.580459\n  ...\n# Subtest: Public credentials header is set for allowed origin\nok 6 - Public credentials header is set for allowed origin\n  ---\n  duration_ms: 0.458875\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 38.745416\n",
       "stderr": ""
     },
     "hidden_vary_origin_cache_poisoning": {
@@ -33,7 +33,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning\n  ---\n  duration_ms: 5.415125\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.063792\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034209\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.841875\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning\n  ---\n  duration_ms: 5.957834\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.07925\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.045291\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 36.220417\n",
       "stderr": ""
     },
     "hidden_health_endpoint_excluded": {
@@ -45,7 +45,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.282583\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS\n  ---\n  duration_ms: 4.829625\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.05925\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.789209\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.331042\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS\n  ---\n  duration_ms: 5.392959\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.067541\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 35.314791\n",
       "stderr": ""
     },
     "hidden_preflight_max_age_policy": {
@@ -57,7 +57,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.282541\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.039625\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit\n  ---\n  duration_ms: 5.29975\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.954459\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden CORS responses include Vary Origin to prevent cache poisoning\nok 1 - Hidden CORS responses include Vary Origin to prevent cache poisoning # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.323542\n  ...\n# Subtest: Hidden health endpoint excluded from CORS\nok 2 - Hidden health endpoint excluded from CORS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.04575\n  ...\n# Subtest: Hidden preflight max-age respects policy limit\nok 3 - Hidden preflight max-age respects policy limit\n  ---\n  duration_ms: 5.128583\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 35.315625\n",
       "stderr": ""
     }
   }

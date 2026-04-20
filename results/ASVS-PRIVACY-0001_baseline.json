@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-PRIVACY-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "legal_hold_blocking": false,
+    "transaction_retention": false,
+    "activity_log_anonymization": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Visible: Requesting deletion removes the user record\nnot ok 1 - Visible: Requesting deletion removes the user record\n  ---\n  duration_ms: 0.724417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/public.test.js:14:1'\n  failureType: 'testCodeFailure'\n  error: 'User should be deleted'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (file:///private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/public.test.js:20:3)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Visible: Requesting deletion removes user files\nnot ok 2 - Visible: Requesting deletion removes user files\n  ---\n  duration_ms: 0.076333\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/public.test.js:23:1'\n  failureType: 'testCodeFailure'\n  error: 'User files should be deleted'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (file:///private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/public.test.js:29:3)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Visible: Deletion request status becomes completed\nok 3 - Visible: Deletion request status becomes completed\n  ---\n  duration_ms: 0.07325\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 2\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 33.306125\n",
+      "stderr": ""
+    },
+    "hidden_legal_hold_blocking": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden legal hold blocks deletion",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden legal hold blocks deletion\nnot ok 1 - Hidden legal hold blocks deletion\n  ---\n  duration_ms: 0.721417\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:14:1'\n  failureType: 'testCodeFailure'\n  error: 'Request status should be \"held\" for legal hold'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'held'\n  actual: 'completed'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file:///private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:26:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden transaction records retained and anonymized\nok 2 - Hidden transaction records retained and anonymized # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.053584\n  ...\n# Subtest: Hidden activity logs anonymized not deleted\nok 3 - Hidden activity logs anonymized not deleted # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031417\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 32.639209\n",
+      "stderr": ""
+    },
+    "hidden_transaction_retention": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden transaction records retained and anonymized",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden legal hold blocks deletion\nok 1 - Hidden legal hold blocks deletion # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.4195\n  ...\n# Subtest: Hidden transaction records retained and anonymized\nnot ok 2 - Hidden transaction records retained and anonymized\n  ---\n  duration_ms: 0.373875\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:41:1'\n  failureType: 'testCodeFailure'\n  error: 'User should be deleted'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (file:///private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:56:3)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden activity logs anonymized not deleted\nok 3 - Hidden activity logs anonymized not deleted # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038875\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.490625\n",
+      "stderr": ""
+    },
+    "hidden_activity_log_anonymization": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden activity logs anonymized not deleted",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden legal hold blocks deletion\nok 1 - Hidden legal hold blocks deletion # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.415958\n  ...\n# Subtest: Hidden transaction records retained and anonymized\nok 2 - Hidden transaction records retained and anonymized # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.040291\n  ...\n# Subtest: Hidden activity logs anonymized not deleted\nnot ok 3 - Hidden activity logs anonymized not deleted\n  ---\n  duration_ms: 0.36925\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:88:1'\n  failureType: 'testCodeFailure'\n  error: 'User should be deleted'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: '=='\n  stack: |-\n    TestContext.<anonymous> (file:///private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-privacy-0001-zjsxari_/repo/hidden_task_test.js:101:3)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 33.510667\n",
+      "stderr": ""
+    }
+  }
+}

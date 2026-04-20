@@ -1,0 +1,64 @@
+{
+  "task_id": "ASVS-CRYPTO-0001",
+  "state": "baseline",
+  "visible_pass": false,
+  "hidden_pass": false,
+  "check_results": {
+    "dual_algorithm_path": false,
+    "legacy_flagging": false,
+    "gcm_for_non_legacy": false
+  },
+  "expected": {
+    "visible_pass": false,
+    "hidden_pass": false
+  },
+  "matches_expected": true,
+  "commands": {
+    "visible": {
+      "command": [
+        "node",
+        "--test",
+        "public.test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Public: Encrypt and decrypt modern partner key (round-trip)\nok 1 - Public: Encrypt and decrypt modern partner key (round-trip)\n  ---\n  duration_ms: 0.861334\n  ...\n# Subtest: Public: Encrypt and decrypt modern partner key 2 (round-trip)\nok 2 - Public: Encrypt and decrypt modern partner key 2 (round-trip)\n  ---\n  duration_ms: 0.155708\n  ...\n# Subtest: Public: Encrypt different plaintexts produces different ciphertexts\nok 3 - Public: Encrypt different plaintexts produces different ciphertexts\n  ---\n  duration_ms: 0.090125\n  ...\n# Subtest: Public: rotateAllKeys processes all keys\nnot ok 4 - Public: rotateAllKeys processes all keys\n  ---\n  duration_ms: 0.330583\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/public.test.js:56:1'\n  failureType: 'testCodeFailure'\n  error: 'Modern key ciphertext should change after rotation (re-encrypted)'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: '27193133b9b9d783a732ab382576353c852306e2baa1e14a4024c51d90f01aef'\n  actual: '27193133b9b9d783a732ab382576353c852306e2baa1e14a4024c51d90f01aef'\n  operator: 'notStrictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/public.test.js:68:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 3\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 32.183\n",
+      "stderr": ""
+    },
+    "hidden_dual_algorithm_path": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden dual-algorithm path for legacy vs modern partners",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nnot ok 1 - Hidden dual-algorithm path for legacy vs modern partners\n  ---\n  duration_ms: 0.977625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:7:1'\n  failureType: 'testCodeFailure'\n  error: 'Legacy partner key should use aes-128-cbc'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'aes-128-cbc'\n  actual: 'aes-128-ecb'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:14:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    node:internal/test_runner/harness:247:12\n    node:internal/process/task_queues:140:7\n    AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    AsyncResource.runMicrotask (node:internal/process/task_queues:137:8)\n  ...\n# Subtest: Hidden legacy flagging during rotation\nok 2 - Hidden legacy flagging during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.096416\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nok 3 - Hidden GCM for non-legacy partners after rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.031625\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.44875\n",
+      "stderr": ""
+    },
+    "hidden_legacy_flagging": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden legacy flagging during rotation",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nok 1 - Hidden dual-algorithm path for legacy vs modern partners # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.419417\n  ...\n# Subtest: Hidden legacy flagging during rotation\nnot ok 2 - Hidden legacy flagging during rotation\n  ---\n  duration_ms: 0.625\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:71:1'\n  failureType: 'testCodeFailure'\n  error: 'Legacy partner 1 key should have migration_pending: true'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: true\n  actual: false\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:95:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nok 3 - Hidden GCM for non-legacy partners after rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.038708\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.233833\n",
+      "stderr": ""
+    },
+    "hidden_gcm_for_non_legacy": {
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern",
+        "Hidden GCM for non-legacy partners after rotation",
+        "hidden_task_test.js"
+      ],
+      "returncode": 1,
+      "stdout": "TAP version 13\n# Subtest: Hidden dual-algorithm path for legacy vs modern partners\nok 1 - Hidden dual-algorithm path for legacy vs modern partners # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.421833\n  ...\n# Subtest: Hidden legacy flagging during rotation\nok 2 - Hidden legacy flagging during rotation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.079167\n  ...\n# Subtest: Hidden GCM for non-legacy partners after rotation\nnot ok 3 - Hidden GCM for non-legacy partners after rotation\n  ---\n  duration_ms: 0.588834\n  location: '/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:117:1'\n  failureType: 'testCodeFailure'\n  error: 'Modern key 1 should be encrypted with aes-256-gcm after rotation'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 'aes-256-gcm'\n  actual: 'aes-128-ecb'\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (/private/var/folders/tq/_l_j7rw13d7g28w5946f0b0m0000gn/T/asvs-crypto-0001-gaex_p84/repo/hidden_task_test.js:127:10)\n    Test.runInAsyncScope (node:async_hooks:206:9)\n    Test.run (node:internal/test_runner/test:764:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:492:18)\n    Test.postRun (node:internal/test_runner/test:860:19)\n    Test.run (node:internal/test_runner/test:806:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:492:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.139208\n",
+      "stderr": ""
+    }
+  }
+}

@@ -21,7 +21,7 @@
         "public.test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Public search returns matching posts\nok 1 - Public search returns matching posts\n  ---\n  duration_ms: 0.45575\n  ...\n# Subtest: Public search injection is prevented\nok 2 - Public search injection is prevented\n  ---\n  duration_ms: 0.048708\n  ...\n# Subtest: Public getPost returns correct post\nok 3 - Public getPost returns correct post\n  ---\n  duration_ms: 0.051083\n  ...\n# Subtest: Public getPostsByAuthor works\nok 4 - Public getPostsByAuthor works\n  ---\n  duration_ms: 0.047458\n  ...\n# Subtest: Public listPosts returns all posts\nok 5 - Public listPosts returns all posts\n  ---\n  duration_ms: 4.021917\n  ...\n# Subtest: Public renderPost returns post data\nok 6 - Public renderPost returns post data\n  ---\n  duration_ms: 0.051959\n  ...\n# Subtest: Public updatePost works\nok 7 - Public updatePost works\n  ---\n  duration_ms: 0.041167\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 31.788417\n",
+      "stdout": "TAP version 13\n# Subtest: Public search returns matching posts\nok 1 - Public search returns matching posts\n  ---\n  duration_ms: 0.506375\n  ...\n# Subtest: Public search injection is prevented\nok 2 - Public search injection is prevented\n  ---\n  duration_ms: 0.056834\n  ...\n# Subtest: Public getPost returns correct post\nok 3 - Public getPost returns correct post\n  ---\n  duration_ms: 0.055125\n  ...\n# Subtest: Public getPostsByAuthor works\nok 4 - Public getPostsByAuthor works\n  ---\n  duration_ms: 0.049292\n  ...\n# Subtest: Public listPosts returns all posts\nok 5 - Public listPosts returns all posts\n  ---\n  duration_ms: 4.367375\n  ...\n# Subtest: Public renderPost returns post data\nok 6 - Public renderPost returns post data\n  ---\n  duration_ms: 0.067792\n  ...\n# Subtest: Public updatePost works\nok 7 - Public updatePost works\n  ---\n  duration_ms: 0.049875\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 35.416666\n",
       "stderr": ""
     },
     "hidden_all_queries_parameterized": {
@@ -33,7 +33,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method\n  ---\n  duration_ms: 4.464125\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.036833\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.027459\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.084125\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method\n  ---\n  duration_ms: 4.946666\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.044667\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.033334\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.8175\n",
       "stderr": ""
     },
     "hidden_output_encoding": {
@@ -45,7 +45,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.385625\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS\n  ---\n  duration_ms: 0.167625\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.030708\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 27.50525\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.427958\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS\n  ---\n  duration_ms: 0.193958\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.034583\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 30.099708\n",
       "stderr": ""
     },
     "hidden_orderby_allowlist": {
@@ -57,7 +57,7 @@
         "hidden_task_test.js"
       ],
       "returncode": 0,
-      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.377166\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.070875\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation\n  ---\n  duration_ms: 4.006833\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 31.410625\n",
+      "stdout": "TAP version 13\n# Subtest: Hidden all queries use parameterized method\nok 1 - Hidden all queries use parameterized method # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.421209\n  ...\n# Subtest: Hidden output encoding prevents XSS\nok 2 - Hidden output encoding prevents XSS # SKIP test name does not match pattern\n  ---\n  duration_ms: 0.083041\n  ...\n# Subtest: Hidden ORDER BY uses allowlist validation\nok 3 - Hidden ORDER BY uses allowlist validation\n  ---\n  duration_ms: 4.431208\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 2\n# todo 0\n# duration_ms 34.912333\n",
       "stderr": ""
     }
   }
